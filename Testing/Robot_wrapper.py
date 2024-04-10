@@ -2,16 +2,52 @@ import time
 
 from xarm.wrapper import XArmAPI
 
-#;aybe I should put this on a .json file later
+#maybe I should put this on a .json file later
 ipAddress = '192.168.1.240'
-points = {
-    'Name': 'VialStorage',
-    'x' : 500,
-    'y' : 0,
-    'z' : 200}
+
+#Points in Pathway:
+# InitialPosition
+# VialStoragePoint
+# Vial(Number)
+# VialStoragePoint
+# Scale
+# DispenserPoint
+# Dispenser
+# DispenserPoint
+# Scale
+# DispenserPoint
+# Dispenser
+# DispenserPoint
+# Scale
+# VialHolder
+# PipettePoint
+# Pipette
+# PipettePoint
+# PipetteTips
+# SolventsPoint
+# Binder(Number)
+# VialHolder
+# Trash
+# PipettePoint
+# Pipette
+# VialHolder
+# MixerPoint
+# Mixer
+
+fixed_points = {
+    "VialStoragePoint": (500, 0, 200, 0, 90, 0),
+    "DispenserPoint": (600, 100, 250, 0, 90, 0),
+    "Dispenser": (700, -50, 180, 0, 90, 0),
+    "MixerPoint": (700, -50, 180, 0, 90, 0),     
+}
+
+def GoTo_point(name, speed=20, wait=True):
+        position = fixed_points[name]
+        arm.set_position(x=position[0], y=position[1], z=position[2], roll=position[3], pitch=position[4], yaw=position[5], speed=speed, wait=wait)
+
+GoTo_point("VialStoragePoint")
 
 
-print(points['VialStorage'])
 
 #Do we need this section?
 def hangle_err_warn_changed(item):
@@ -41,10 +77,6 @@ class Robot():
         arm.set_gripper_position(460, wait=True)
         arm.set_position(x=365, y=470, z=450, roll=0, pitch=90, yaw=0, speed=20, wait=True)
         arm.set_position(x=365, y=470, z=350, roll=0, pitch=90, yaw=0, speed=20, wait=True)
-
-
-
-
 
 
 def PickupPipette():
