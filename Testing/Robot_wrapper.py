@@ -104,7 +104,7 @@ class Robot():
         self.arm.GoTo_point("Trash")
     
     class VialBox:
-        def __init__(self, start_position=(365, 470, 450)):
+        def __init__(self, start_position=(-280, -100, -27.3)):
             self.row_count = 2
             self.column_count = 4
             self.row_spacing = 1  
@@ -112,16 +112,19 @@ class Robot():
             self.start_position = start_position  
 
         def get_vial_position(self, vial_number): #Vial1(StartPosition) has index 0
-            row = vial_number // self.column_count
-            column = vial_number % self.column_count
-            x = self.start_position[0] + column * (self.column_spacing)  # Berechnung der Position in x-Richtung
-            y = self.start_position[1] - row * (self.row_spacing)  # Berechnung der Position in y-Richtung
-            z = self.start_position[2]
-            return x, y, z
+            if vial_number == 0:
+                return self.start_position
+            else:
+                row = vial_number // self.column_count
+                column = vial_number % self.column_count
+                x = self.start_position[0] + column * (self.column_spacing)  # Berechnung der Position in x-Richtung
+                y = self.start_position[1] - row * (self.row_spacing)  # Berechnung der Position in y-Richtung
+                z = self.start_position[2]
+                return x, y, z
 
-        def GoTo_Vial(self, vial_number, arm):
+        def GoTo_Vial(self, vial_number):
             x, y, z = self.get_vial_position(vial_number)
-            self.arm.set_position(x=x, y=y, z=z, roll=0, pitch=90, yaw=0, speed=20, wait=True)
+            self.arm.set_position(x=x, y=y, z=z, roll=-152, pitch=88, yaw=120, speed=20, wait=True)
 
 #Getting position of tips:
     class Tips:
@@ -148,8 +151,8 @@ Test = Robot(ip)
 Test.GoTo_InitialPoint()
 Test.arm.set_gripper_position(550, wait=True)
 Test.GoTo_Point("VialStoragePoint", 20)
-Test.GoTo_Tip(0)
-        self.arm.set_gripper_position(205, wait=True)
-        time.sleep(1)
-        self.arm.set_position(x=365, y=470, z=450, roll=0, pitch=90, yaw=0, speed=20, wait=True)
-        self.arm.GoTo_Point("VialStoragePoint", 20)           
+Test.GoTo_Vial(0)
+Test.arm.set_gripper_position(205, wait=True)
+time.sleep(1)
+Test.arm.set_position(x=365, y=470, z=450, roll=0, pitch=90, yaw=0, speed=20, wait=True)
+Test.GoTo_Point("VialStoragePoint", 20)           
