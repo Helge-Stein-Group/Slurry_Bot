@@ -63,3 +63,14 @@ class Motor:
             response = self.connection.read_response()
             if response == 'MOTOR_FINISHED':
                 break
+    def moveUp(self, steps, wait_for_motor=True):
+        """ Moves the motor clockwise at the current speed for a set number of steps. """
+                self.connection.send_command(str(self.num) + "F" + str(steps))
+        if wait_for_motor:
+            self.wait_for_motor()
+
+    def moveDown(self, steps, wait_for_motor=True):
+        """ Moves the motor clockwise at the current speed for a set number of steps. """
+        self.connection.send_command(str(self.num) + "F-" + str(steps))
+        if wait_for_motor:
+            self.wait_for_motor()
