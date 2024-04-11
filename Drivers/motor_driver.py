@@ -73,3 +73,8 @@ class Motor():
             response =  self.ser.readline().decode('utf-8').strip()
             if response == 'MOTOR_FINISHED':
                 self.motor_moving = False
+
+    def moveCounterClockwise(self, steps):
+        """ Moves the motor counter-clockwise at the current speed for a set number of steps. """
+        self.motor_moving = True
+        self.send(str(self.num) + "B" + str(steps) + "\n")'''
