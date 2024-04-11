@@ -26,28 +26,24 @@ class Calibration:
 
     def calibrate(self, steps, repeat, motor, scale):
         weights = np.zeros((len(steps), repeat))  # Initialize array to store weights
+        first_action = True
         for i in range(repeat):
             for idx, step in enumerate(steps):
-                user_input = ''
-                print('Place beaker on balance')
-                while user_input.lower() != 'y':
-                    user_input = input("Press 'y' to continue: ")
-                user_input = ''
+                if first_action == True:
+                    # Move vial from Storage on scale
+                    first_cycle = False
+                else:
+                    # Move vial from dispensing unit on scale
                 time.sleep(2)
                 scale.tare()
-                print('Place beaker under dispensing unit')
-                while user_input.lower() != 'y':
-                    user_input = input("Press 'y' to continue: ")
-                user_input = ''
+                # Move vial from scale under dispensing unit 
                 time.sleep(2)
                 motor.move(step)
                 time.sleep(2)
-                while user_input.lower() != 'y':
-                    print('Place beaker on balance')
-                    user_input = input("Press 'y' to continue: ")
-                user_input = ''
+                # Move vial from dispensing unit on scale
                 time.sleep(2)
                 weights[idx, i] = scale.measure_stable().value
+        # Move vial from scale to storage
         # Fitting
         avg_weights = np.mean(weights, axis=1)
         steps_matrix = np.vstack((steps, np.ones_like(steps))).T  # Formatting steps properly
@@ -108,15 +104,9 @@ class Calibration:
             writer.writerow(headers)
             for i in range(len(self.steps)):
                 writer.writerow([self.steps[i], self.avg_weights[i], self.std_error_weights[i], self.relative_std_error_weights[i]])
-class Glassware:
-    def __init__(self):
-        self.weight = None
-    
-    def determine_net_weight(self, scale):
-        self.weight = scale.measure_stable().value
-
 
 def dispense(weight:float, cal_id:int, motor, scale):
+    #assumes initial vial position on scale
     with open('Calibration_File.csv', 'r') as cal_file:
         reader = csv.DictReader(cal_file)
         for row in reader:
@@ -129,48 +119,18 @@ def dispense(weight:float, cal_id:int, motor, scale):
         else:
             raise ValueError("No matching ID found")
     calc_steps = int(round((weight-y_intercept)/slope))
-    user_input = ''
-    print('Place beaker on balance')
-    time.sleep(1)
-    while user_input.lower() != 'y':
-        user_input = input("Press 'y' to continue: ")
-    user_input = ''
     time.sleep(2)
     scale.tare()
     time.sleep(2)
-    print('Place beaker under dispensing unit')
-    time.sleep(1)
-    while user_input.lower() != 'y':
-        user_input = input("Press 'y' to continue: ")
-    user_input = ''
+    # move vial from scale under dispensing unit
     motor.move(calc_steps)
     time.sleep(2)
-    print('Place beaker on balance')
-    time.sleep(1)
-    while user_input.lower() != 'y':
-        user_input = input("Press 'y' to continue: ")
-    user_input = ''
+    # move vial from dispensing unit on scale
     time.sleep(2)
     weight_dispensed = scale.measure_stable().value
     return weight_dispensed
 
 def dispense_precisely(desired_weight:float, cal_id:int, motor, scale):
-    weight = desired_weight
-    user_input = ''
-    print('Ensure that balance is empty')
-    time.sleep(1)
-    while user_input.lower() != 'y':
-        user_input = input("Press 'y' to continue: ")
-    user_input = ''
-    time.sleep(2)
-    scale.tare()
-    time.sleep(2)
-    print('Place beaker on balance')
-    time.sleep(1)
-    while user_input.lower() != 'y':
-        user_input = input("Press 'y' to continue: ")
-    user_input = ''
-    mass_netto = scale.measure_stable().value
     with open('Calibration_File.csv', 'r') as cal_file:
         reader = csv.DictReader(cal_file)
         for row in reader:
@@ -179,7 +139,7 @@ def dispense_precisely(desired_weight:float, cal_id:int, motor, scale):
                 break
         else:
             raise ValueError("No matching ID found")
-
+    
     formatted_date = date.replace(' ', '_').replace(':', '')
     with open(f'report_cal_id_{cal_id}_{formatted_date}.csv', 'r') as report_file:
         reader = csv.DictReader(report_file)
@@ -190,8 +150,15 @@ def dispense_precisely(desired_weight:float, cal_id:int, motor, scale):
             AVG_weights.append(float(row['AVG_weight']))
             STD_rel_weight.append(float(row['STD_rel_weight']))
             STD_weight.append(float(row['STD_weight']))
-
-    # Aprroximation (but systematic under-estimation expected)
+    
+    weight = desired_weight
+    scale.tare()
+    first_action = True
+    time.sleep(2)
+    # Move vial from storage on scale
+    time.sleep(1)
+    mass_netto = scale.measure_stable().value
+    # Aprroximation
     weight_dispensed = 0
     improvement_expected = True
     while improvement_expected:
@@ -201,7 +168,7 @@ def dispense_precisely(desired_weight:float, cal_id:int, motor, scale):
             if abs (AVG_weight - weight) < abs(closest - weight):
                 closest_index = i
         weight_current_step = (1-3*STD_rel_weight[closest_index]) * weight #3-sigma criterion
-        weight_dispensed = dispense(weight=weight_current_step,cal_id=cal_id,motor=motor,scale=scale)
+        weight_dispensed, first_cycle = dispense(weight=weight_current_step,cal_id=cal_id,motor=motor,scale=scale)
         
         if weight - weight_dispensed < 3 * STD_weight[closest_index]:
             improvement_expected = False
@@ -212,22 +179,14 @@ def dispense_precisely(desired_weight:float, cal_id:int, motor, scale):
     if weight > 0:
         weight_dispensed = dispense(weight=weight,cal_id=cal_id,motor=motor,scale=scale)
 
-    print('Ensure that balance is empty')
-    time.sleep(1)
-    while user_input.lower() != 'y':
-        user_input = input("Press 'y' to continue: ")
-    user_input = ''
+    # robot pickup vial from scale and keep it (maybe storage directly located next to scale)
     time.sleep(2)
     scale.tare()
     time.sleep(2)
-    print('Place beaker on balance')
-    time.sleep(1)
-    while user_input.lower() != 'y':
-        user_input = input("Press 'y' to continue: ")
-    user_input = ''
+    # robot place vial on scale again
     mass_brutto = scale.measure_stable().value
     weight_dispensed = mass_brutto-mass_netto
     relative_weighing_error = (weight_dispensed-desired_weight)/desired_weight
     absolute_weighing_error = weight_dispensed - desired_weight
-    
+    # robot return vial in storage
     return weight_dispensed, relative_weighing_error, absolute_weighing_error
