@@ -13,6 +13,7 @@ class Motor():
         self.conf = conf
         self.baud = baud
         self.timeout = timeout
+        self.motor_moving = False
         #try: 
         self.ser = serial.Serial(conf, baud, timeout=timeout)
         # except serial.SerialException:
@@ -49,18 +50,26 @@ class Motor():
         else:
             raise motorError('Acceleration must be between 0 and 1000')
 
-    def move(self, steps):
+    def move(self, steps, wait_for_motor:bool=True):
         """ Moves the motor clockwise at the current speed for a set number of steps. """
+        self.motor_moving = True
         self.send(str(self.num) + "F" + str(steps))
+        if wait_for_motor:
+            self.wait_for_motor()
 
     def moveUp(self, steps):
         """ Moves the motor clockwise at the current speed for a set number of steps. """
+        self.motor_moving = True
         self.send(str(self.num) + "F" + str(steps))
 
     def moveDown(self, steps):
         """ Moves the motor clockwise at the current speed for a set number of steps. """
+        self.motor_moving = True
         self.send(str(self.num) + "F-" + str(steps))
 
-''' def moveCounterClockwise(self, steps):
-        """ Moves the motor counter-clockwise at the current speed for a set number of steps. """
-        self.send(str(self.num) + "B" + str(steps) + "\n")'''
+    def wait_for_motor(self):
+        """ Wait for acknowledgment from the motor that task is finished """
+        while self.motor_moving:
+            response =  self.ser.readline().decode('utf-8').strip()
+            if response == 'MOTOR_FINISHED':
+                self.motor_moving = False
