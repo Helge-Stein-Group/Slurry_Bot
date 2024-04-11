@@ -2,21 +2,13 @@ import time
 from xarm.wrapper import XArmAPI
 
 #maybe I should put this on a .json file later
-ipAddress = '192.168.1.240'
+ip = '192.168.1.200'
 
-
-#Do we need this section?
+#This function is called when the error or warning code changes
 def hangle_err_warn_changed(item):
     print('ErrorCode: {}, WarnCode: {}'.format(item['error_code'], item['warn_code']))
 
 
-# set speed 500mm/s
-code = arm.set_linear_track_speed(500)
-print('set linear track speed, code={}'.format(code))
-
-# set position 300mm
-code = arm.set_linear_track_pos(300, wait=True)
-print('[wait]set linear track pos, code={}'.format(code))
 fixed_points = {
     "InitialPoint": (-228, 0, 133, 0, 90, 180),
     "VialStoragePoint": (-280, -100, 125, -152, 88, 120),
@@ -31,14 +23,13 @@ fixed_points = {
     "Trash": (700, -50, 180, 0, 90, 0),
     "MixerPoint": (-639.3, 0, 317.8, -107.4, 88.2, 163.9),     
 }
-
 #Vial0(x=-283.4, y=-100, z=-31.2, roll=-152.4, pitch=88.8, yaw=120.6, speed=20, wait=True)
 #GripperVialClose:185 Open:290, 
 #Rail Pos.:600mm (till Dispenser 1)
 #Rail Pos.:200mm
 class Robot():
-    def _init_(self, ip):
-        self.arm = XArmAPI(ip, do_not_open=True)
+    def __init__(self, ip):
+        self.arm = XArmAPI(ip)
         self.arm.motion_enable(enable=True)
         self.arm.set_mode(0)
         self.arm.set_state(state=0)
@@ -46,6 +37,7 @@ class Robot():
         self.arm.set_gripper_mode(0)
         self.arm.set_linear_track_back_origin(wait=True)
         self.arm.set_linear_track_enable(True)
+        self.arm.set_linear_track_speed(500)
         self.arm.set_initial_point([-228, 0, 133, 0, 90, 180])
         self.arm.register_error_warn_changed_callback(hangle_err_warn_changed)
         self.arm.connect()
@@ -55,7 +47,7 @@ class Robot():
 
     def GoTo_InitialPoint(self):
         self.arm.set_linear_track_pos(600, wait=True)
-        self.arm_set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20, wait=True)
+        self.arm.set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20, wait=True)
 
     def GoTo_Point(self, name, speed, wait=True):
         position = fixed_points[name]
@@ -111,12 +103,6 @@ class Robot():
     def Trash(self):
         self.arm.GoTo_point("Trash")
     
-    def VialToMixer(self):
-        
-
-#Testing stuff
-#Getting position of vials:
-
     class VialBox:
         def __init__(self, start_position=(365, 470, 450)):
             self.row_count = 2
@@ -135,7 +121,7 @@ class Robot():
 
         def GoTo_Vial(self, vial_number, arm):
             x, y, z = self.get_vial_position(vial_number)
-            arm.set_position(x=x, y=y, z=z, roll=0, pitch=90, yaw=0, speed=20, wait=True)
+            self.arm.set_position(x=x, y=y, z=z, roll=0, pitch=90, yaw=0, speed=20, wait=True)
 
 #Getting position of tips:
     class Tips:
@@ -156,10 +142,14 @@ class Robot():
 
         def GoTo_Tip(self, tip_number, arm):
             x, y, z = self.get_tip_position(tip_number)
-            arm.set_position(x=x, y=y, z=z, roll=0, pitch=90, yaw=0, speed=20, wait=True)
+            self.arm.set_position(x=x, y=y, z=z, roll=0, pitch=90, yaw=0, speed=20, wait=True)
 
-#For remebering the trajectory
-arm = XArmAPI(ip, is_radian=True)
-arm.motion_enable(enable=True)
-arm.set_mode(0)
-arm.set_state(state=0)
+Test = Robot(ip)
+Test.GoTo_InitialPoint()
+Test.arm.set_gripper_position(550, wait=True)
+Test.GoTo_Point("VialStoragePoint", 20)
+Test.GoTo_Tip(0)
+        self.arm.set_gripper_position(205, wait=True)
+        time.sleep(1)
+        self.arm.set_position(x=365, y=470, z=450, roll=0, pitch=90, yaw=0, speed=20, wait=True)
+        self.arm.GoTo_Point("VialStoragePoint", 20)           
