@@ -9,22 +9,33 @@ ipAddress = '192.168.1.240'
 def hangle_err_warn_changed(item):
     print('ErrorCode: {}, WarnCode: {}'.format(item['error_code'], item['warn_code']))
 
+
+# set speed 500mm/s
+code = arm.set_linear_track_speed(500)
+print('set linear track speed, code={}'.format(code))
+
+# set position 300mm
+code = arm.set_linear_track_pos(300, wait=True)
+print('[wait]set linear track pos, code={}'.format(code))
 fixed_points = {
-    "InitialPoint": (500, 0, 200, 0, 90, 0),
-    "VialStoragePoint": (500, 0, 200, 0, 90, 0),
-    "Scale":(600, 100, 250, 0, 90, 0),
-    "DispenserPoint": (600, 100, 250, 0, 90, 0),
-    "Dispenser1": (700, -50, 180, 0, 90, 0),
-    "VialRestPoint": (600, 100, 250, 0, 90, 0),
-    "PipettePoint": (600, 100, 250, 0, 90, 0),
-    "TipsStoragePoint": (700, -50, 180, 0, 90, 0), 
-    "LiquidStoragePoint": (600, 100, 250, 0, 90, 0),
+    "InitialPoint": (-228, 0, 133, 0, 90, 180),
+    "VialStoragePoint": (-280, -100, 125, -152, 88, 120),
+    "Scale":(-291.9, 104.6, 92, -152.4, 88.8, -61.6),
+    "DispenserPoint": (-419.3, 104.5, 92, -64.9, 90, -106),
+    "Dispenser1": (-532.4, -96.8, 56.1, 127.7, 88.8, -52.4),
+    "VialRestPoint": (-363.6, -105.4, 35.8, 127.7, 88.8, -52.4),
+    "PipettePoint": (-497.3, -116.5, 192.5, -107.4, 88.2, 163.9),
+    "LiquidStoragePoint": (-275.2, -174, 214.1, -107.4, 88.2, 163.9),
     "Binder": (600, 100, 250, 0, 90, 0),
-    "Solevnt": (700, -50, 180, 0, 90, 0),
+    "Solvent": (700, -50, 180, 0, 90, 0),
     "Trash": (700, -50, 180, 0, 90, 0),
-    "MixerPoint": (700, -50, 180, 0, 90, 0),     
+    "MixerPoint": (-639.3, 0, 317.8, -107.4, 88.2, 163.9),     
 }
 
+#Vial0(x=-283.4, y=-100, z=-31.2, roll=-152.4, pitch=88.8, yaw=120.6, speed=20, wait=True)
+#GripperVialClose:185 Open:290, 
+#Rail Pos.:600mm (till Dispenser 1)
+#Rail Pos.:200mm
 class Robot():
     def _init_(self, ip):
         self.arm = XArmAPI(ip, do_not_open=True)
@@ -33,13 +44,19 @@ class Robot():
         self.arm.set_state(state=0)
         self.arm.set_gripper_enable(True)
         self.arm.set_gripper_mode(0)
-        self.arm.set_initial_point([0, 0, 0, -180, 90, 0])
+        self.arm.set_linear_track_back_origin(wait=True)
+        self.arm.set_linear_track_enable(True)
+        self.arm.set_initial_point([-228, 0, 133, 0, 90, 180])
         self.arm.register_error_warn_changed_callback(hangle_err_warn_changed)
         self.arm.connect()
 
     def close(self):
         self.arm.disconnect()
-    
+
+    def GoTo_InitialPoint(self):
+        self.arm.set_linear_track_pos(600, wait=True)
+        self.arm_set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20, wait=True)
+
     def GoTo_Point(self, name, speed, wait=True):
         position = fixed_points[name]
         self.arm.set_position(x=position[0], y=position[1], z=position[2], roll=position[3], pitch=position[4], yaw=position[5], speed=speed, wait=wait)
