@@ -8,7 +8,7 @@ ipAddress = '192.168.1.240'
 #Points in Pathway:
 # InitialPosition
 # VialStoragePoint
-# Vial(Number)
+# NewVial(Number)
 # VialStoragePoint
 # Scale
 # DispenserPoint
@@ -19,14 +19,14 @@ ipAddress = '192.168.1.240'
 # Dispenser
 # DispenserPoint
 # Scale
-# VialHolder
+# VialRestPoint
 # PipettePoint
 # Pipette
 # PipettePoint
-# PipetteTips
-# SolventsPoint
+# Tips
+# LiquidStoragePoint
 # Binder(Number)
-# VialHolder
+# VialRestPoint
 # Trash
 # PipettePoint
 # Pipette
@@ -37,10 +37,17 @@ ipAddress = '192.168.1.240'
 fixed_points = {
     "InitialPoint": (500, 0, 200, 0, 90, 0),
     "VialStoragePoint": (500, 0, 200, 0, 90, 0),
-    "NewVial": {(500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0)
-    }
+    "NewVial": {(500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0)},
+    "Scale":(600, 100, 250, 0, 90, 0),
     "DispenserPoint": (600, 100, 250, 0, 90, 0),
-    "Dispenser": (700, -50, 180, 0, 90, 0),
+    "Dispenser": {(700, -50, 180, 0, 90, 0), (700, -50, 180, 0, 90, 0), (700, -50, 180, 0, 90, 0)},
+    "VialRestPoint": (600, 100, 250, 0, 90, 0),
+    "PipettePoint": (600, 100, 250, 0, 90, 0),
+    "Tips": {(700, -50, 180, 0, 90, 0), (700, -50, 180, 0, 90, 0), (700, -50, 180, 0, 90, 0)},
+    "LiquidStoragePoint": (600, 100, 250, 0, 90, 0),
+    "Binder": (600, 100, 250, 0, 90, 0),
+    "Solevnt": {(700, -50, 180, 0, 90, 0), (700, -50, 180, 0, 90, 0)},
+    "Trash": (700, -50, 180, 0, 90, 0),
     "MixerPoint": (700, -50, 180, 0, 90, 0),     
 }
 
