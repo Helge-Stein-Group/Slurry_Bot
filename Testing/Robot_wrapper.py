@@ -1,66 +1,29 @@
 import time
-
 from xarm.wrapper import XArmAPI
 
 #maybe I should put this on a .json file later
 ipAddress = '192.168.1.240'
 
-#Points in Pathway:
-# InitialPosition
-# VialStoragePoint
-# NewVial(Number)
-# VialStoragePoint
-# Scale
-# DispenserPoint
-# Dispenser
-# DispenserPoint
-# Scale
-# DispenserPoint
-# Dispenser
-# DispenserPoint
-# Scale
-# VialRestPoint
-# PipettePoint
-# Pipette
-# PipettePoint
-# Tips
-# LiquidStoragePoint
-# Binder(Number)
-# VialRestPoint
-# Trash
-# PipettePoint
-# Pipette
-# VialHolder
-# MixerPoint
-# Mixer
+
+#Do we need this section?
+def hangle_err_warn_changed(item):
+    print('ErrorCode: {}, WarnCode: {}'.format(item['error_code'], item['warn_code']))
 
 fixed_points = {
     "InitialPoint": (500, 0, 200, 0, 90, 0),
     "VialStoragePoint": (500, 0, 200, 0, 90, 0),
-    "NewVial": (500, 0, 200, 0, 90, 0),
     "Scale":(600, 100, 250, 0, 90, 0),
     "DispenserPoint": (600, 100, 250, 0, 90, 0),
-    "Dispenser": (700, -50, 180, 0, 90, 0),
+    "Dispenser1": (700, -50, 180, 0, 90, 0),
     "VialRestPoint": (600, 100, 250, 0, 90, 0),
     "PipettePoint": (600, 100, 250, 0, 90, 0),
-    "Tips": (700, -50, 180, 0, 90, 0), 
+    "TipsStoragePoint": (700, -50, 180, 0, 90, 0), 
     "LiquidStoragePoint": (600, 100, 250, 0, 90, 0),
     "Binder": (600, 100, 250, 0, 90, 0),
     "Solevnt": (700, -50, 180, 0, 90, 0),
     "Trash": (700, -50, 180, 0, 90, 0),
     "MixerPoint": (700, -50, 180, 0, 90, 0),     
 }
-
-def GoTo_point(name, speed=20, wait=True):
-        position = fixed_points[name]
-        arm.set_position(x=position[0], y=position[1], z=position[2], roll=position[3], pitch=position[4], yaw=position[5], speed=speed, wait=wait)
-
-GoTo_point("VialStoragePoint")
-
-
-#Do we need this section?
-def hangle_err_warn_changed(item):
-    print('ErrorCode: {}, WarnCode: {}'.format(item['error_code'], item['warn_code']))
 
 class Robot():
     def _init_(self, ip):
@@ -76,72 +39,107 @@ class Robot():
 
     def close(self):
         self.arm.disconnect()
-
-    def GoToVialPickUp(self, vialNum):
+    
+    def GoTo_Point(self, name, speed, wait=True):
+        position = fixed_points[name]
+        self.arm.set_position(x=position[0], y=position[1], z=position[2], roll=position[3], pitch=position[4], yaw=position[5], speed=speed, wait=wait)
+    
+    def PickUpVial(self, vialnumber):
         self.arm.set_gripper_position(550, wait=True)
-        self.arm.GoTo_point("VialStoragePoint")
-        self.arm.GoTo_point("NewVial[0]")
-
-        self.arm.set_position(x=500, y=0, z=200, roll=0, pitch=90, yaw=0, speed=20, wait=True)
-        self.arm.set_gripper_position(460, wait=True)
+        self.arm.GoTo_Point("VialStoragePoint", 20)
+        self.arm.GoTo_Tip(vialnumber)
+        self.arm.set_gripper_position(205, wait=True)
+        time.sleep(1)
         self.arm.set_position(x=365, y=470, z=450, roll=0, pitch=90, yaw=0, speed=20, wait=True)
-        self.arm.set_position(x=365, y=470, z=350, roll=0, pitch=90, yaw=0, speed=20, wait=True)
+        self.arm.GoTo_Point("VialStoragePoint", 20)
 
-def PickupPipette():
-    arm.set_gripper_position(800, wait=True)
-    arm.set_position(x=500, y=0, z=200, roll=0, pitch=90, yaw=0, speed=20, wait=True)
-    arm.set_gripper_position(460, wait=True)
-    arm.set_position(x=365, y=470, z=450, roll=0, pitch=90, yaw=0, speed=20, wait=True)
-    arm.set_position(x=365, y=470, z=350, roll=0, pitch=90, yaw=0, speed=20, wait=True)
+    def VialToScale(self):
+        self.arm.GoTo_point("scale")
+        self.arm.set_position(x=300, y=-400, z=200, roll=0, pitch=90, yaw=-90, speed=120, wait=True)
+        self.arm.set_position(x=-20, y=-550, z=200, roll=0, pitch=90, yaw=-90, speed=120, wait=True)
+        self.arm.set_gripper_position(500, wait=True)
 
-def VialPickUp():
-    arm.set_gripper_position(500, wait=True, speed=700)
-    arm.set_position(x=395, y=476, z=200, roll=0, pitch=90, yaw=0, speed=110, wait=True)
-    arm.set_position(x=395, y=476, z=70, roll=0, pitch=90, yaw=0, speed=20, wait=True)
-    arm.set_gripper_position(205, wait=True)
-    time.sleep(1)
-    arm.set_position(x=395, y=476, z=200, roll=0, pitch=90, yaw=0, speed=50, wait=True)
+    def ScaleToDispenser(self, Dispensername):
+        self.arm.set_gripper_position(205, wait=True)
+        self.arm.set_position(x=-20, y=-627, z=200, roll=0, pitch=90, yaw=-90, speed=60, wait=True)
+        self.arm.set_position(x=-20, y=-550, z=200, roll=0, pitch=90, yaw=-90, speed=120, wait=True)
+        self.arm.GoTo_point("DispenserPoint")
+        self.arm.GoTo_point(Dispensername)
+        self.arm.GoTo_point("DispenserPoint")
 
-def VialToScale():
-    arm.set_position(x=300, y=-400, z=200, roll=0, pitch=90, yaw=-90, speed=120, wait=True)
-    arm.set_position(x=-20, y=-550, z=200, roll=0, pitch=90, yaw=-90, speed=120, wait=True)
-    arm.set_position(x=-20, y=-627, z=200, roll=0, pitch=90, yaw=-90, speed=60, wait=True)
-    arm.set_position(x=-20, y=-627, z=159, roll=0, pitch=90, yaw=-90, speed=20, wait=True)
-    arm.set_gripper_position(500, wait=True)
+    def DispenserToScale(self):
+        self.arm.GoTo_point("Scale")
+        self.arm.set_gripper_position(500, wait=True)
 
+    def ScaleToVialRestPoint(self):
+        self.arm.set_gripper_position(205, wait=True)
+        self.arm.GoTo_point("VialRestPoint")
+        self.arm.set_gripper_position(500, wait=True)
+        time.sleep(1)
+        self.arm.GoTo_point("VialRestPoint")
 
-def ScaleToDispenser():
-    arm.set_gripper_position(205, wait=True)
-    arm.set_position(x=-20, y=-627, z=200, roll=0, pitch=90, yaw=-90, speed=60, wait=True)
-    arm.set_position(x=-20, y=-550, z=200, roll=0, pitch=90, yaw=-90, speed=120, wait=True)
-    arm.set_position(x=400, y=-400, z=200, roll=0, pitch=90, yaw=-90, speed=120, wait=True)
-    arm.set_position(x=170, y=735, z=90, roll=0, pitch=90, yaw=90, speed=80, wait=True)
-    arm.set_position(x=170, y=835, z=90, roll=0, pitch=90, yaw=90, speed=20, wait=True)
-    time.sleep(1)
+    def PickUpPipette(self):
+        self.arm.GoTo_point("PipettePoint")
+        self.arm.set_position(x=500, y=0, z=200, roll=0, pitch=90, yaw=0, speed=20, wait=True)
+        self.arm.set_gripper_position(260, wait=True)
+        self.arm.GoTo_point("PipettePoint")
 
-def DispenserToScale():
-    arm.set_position(x=170, y=735, z=90, roll=0, pitch=90, yaw=90, speed=20, wait=True)
-    arm.set_position(x=300, y=483, z=133, roll=0, pitch=90, yaw=0, speed=120, wait=True)
-    arm.set_position(x=400, y=-400, z=200, roll=0, pitch=90, yaw=-90, speed=120, wait=True)
-    arm.set_position(x=-21, y=-627, z=200, roll=0, pitch=90, yaw=-90, speed=80, wait=True)
-    arm.set_position(x=-21, y=-627, z=159, roll=0, pitch=90, yaw=-90, speed=20, wait=True)
-    arm.set_gripper_position(500, wait=True)
+    def GoToLiquid(self, Liquidname):
+        self.arm.GoTo_point("LiquidStoragePoint")
+        self.arm.GoTo_point(Liquidname)
+    
+    def LiquidToVial (self):
+        self.arm.GoTo_point("VialRestPoint")
+    
+    def Trash(self):
+        self.arm.GoTo_point("Trash")
+    
+    def VialToMixer(self):
+        
 
-def ScaleToVialHolder():
-    arm.set_gripper_position(205, wait=True)
-    arm.set_position(x=-20, y=-627, z=200, roll=0, pitch=90, yaw=-90, speed=80, wait=True)
-    arm.set_position(x=300, y=-400, z=200, roll=0, pitch=90, yaw=-90, speed=120, wait=True)
-    arm.set_position(x=395, y=476, z=200, roll=0, pitch=90, yaw=0, speed=120, wait=True)
-    arm.set_position(x=395, y=476, z=70, roll=0, pitch=90, yaw=0, speed=20, wait=True)
-    arm.set_gripper_position(500, wait=True)
-    time.sleep(1)
-    arm.set_position(x=394, y=475, z=200, roll=0, pitch=90, yaw=0, speed=50, wait=True)
+#Testing stuff
+#Getting position of vials:
 
-def GoToInitialPosition():
-    arm.set_position(x=400, y=0, z=133, roll=0, pitch=90, yaw=0, speed=120, wait=True)
+    class VialBox:
+        def __init__(self, start_position=(365, 470, 450)):
+            self.row_count = 2
+            self.column_count = 4
+            self.row_spacing = 1  
+            self.column_spacing = 1  
+            self.start_position = start_position  
 
+        def get_vial_position(self, vial_number): #Vial1(StartPosition) has index 0
+            row = vial_number // self.column_count
+            column = vial_number % self.column_count
+            x = self.start_position[0] + column * (self.column_spacing)  # Berechnung der Position in x-Richtung
+            y = self.start_position[1] - row * (self.row_spacing)  # Berechnung der Position in y-Richtung
+            z = self.start_position[2]
+            return x, y, z
 
-Test()
+        def GoTo_Vial(self, vial_number, arm):
+            x, y, z = self.get_vial_position(vial_number)
+            arm.set_position(x=x, y=y, z=z, roll=0, pitch=90, yaw=0, speed=20, wait=True)
+
+#Getting position of tips:
+    class Tips:
+        def __init__(self, start_position=(365, 470, 450)):
+            self.row_count = 5
+            self.column_count = 8
+            self.row_spacing = 0.5  # Spacing zwischen den Reihen
+            self.column_spacing = 0.5  # Spacing zwischen den Spalten
+            self.start_position = start_position
+
+        def get_tip_position(self, tip_number):
+            row = tip_number // self.column_count
+            column = tip_number % self.column_count
+            x = self.start_position[0] + column * self.column_spacing
+            y = self.start_position[1] - row * self.row_spacing
+            z = self.start_position[2]
+            return x, y, z
+
+        def GoTo_Tip(self, tip_number, arm):
+            x, y, z = self.get_tip_position(tip_number)
+            arm.set_position(x=x, y=y, z=z, roll=0, pitch=90, yaw=0, speed=20, wait=True)
 
 #For remebering the trajectory
 arm = XArmAPI(ip, is_radian=True)
