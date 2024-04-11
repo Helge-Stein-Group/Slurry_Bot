@@ -37,16 +37,16 @@ ipAddress = '192.168.1.240'
 fixed_points = {
     "InitialPoint": (500, 0, 200, 0, 90, 0),
     "VialStoragePoint": (500, 0, 200, 0, 90, 0),
-    "NewVial": {(500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0), (500, 0, 200, 0, 90, 0)},
+    "NewVial": (500, 0, 200, 0, 90, 0),
     "Scale":(600, 100, 250, 0, 90, 0),
     "DispenserPoint": (600, 100, 250, 0, 90, 0),
-    "Dispenser": {(700, -50, 180, 0, 90, 0), (700, -50, 180, 0, 90, 0), (700, -50, 180, 0, 90, 0)},
+    "Dispenser": (700, -50, 180, 0, 90, 0),
     "VialRestPoint": (600, 100, 250, 0, 90, 0),
     "PipettePoint": (600, 100, 250, 0, 90, 0),
-    "Tips": {(700, -50, 180, 0, 90, 0), (700, -50, 180, 0, 90, 0), (700, -50, 180, 0, 90, 0)},
+    "Tips": (700, -50, 180, 0, 90, 0), 
     "LiquidStoragePoint": (600, 100, 250, 0, 90, 0),
     "Binder": (600, 100, 250, 0, 90, 0),
-    "Solevnt": {(700, -50, 180, 0, 90, 0), (700, -50, 180, 0, 90, 0)},
+    "Solevnt": (700, -50, 180, 0, 90, 0),
     "Trash": (700, -50, 180, 0, 90, 0),
     "MixerPoint": (700, -50, 180, 0, 90, 0),     
 }
@@ -56,7 +56,6 @@ def GoTo_point(name, speed=20, wait=True):
         arm.set_position(x=position[0], y=position[1], z=position[2], roll=position[3], pitch=position[4], yaw=position[5], speed=speed, wait=wait)
 
 GoTo_point("VialStoragePoint")
-
 
 
 #Do we need this section?
@@ -80,6 +79,8 @@ class Robot():
 
     def GoToVialPickUp(self, vialNum):
         self.arm.set_gripper_position(550, wait=True)
+        self.arm.GoTo_point("VialStoragePoint")
+        self.arm.GoTo_point("NewVial[0]")
 
         self.arm.set_position(x=500, y=0, z=200, roll=0, pitch=90, yaw=0, speed=20, wait=True)
         self.arm.set_gripper_position(460, wait=True)
