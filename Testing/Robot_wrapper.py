@@ -6,7 +6,6 @@ from xarm.wrapper import XArmAPI
 def hangle_err_warn_changed(item):
     print('ErrorCode: {}, WarnCode: {}'.format(item['error_code'], item['warn_code']))
 
-
 class Robot():
     def __init__(self):
         self.arm = XArmAPI('192.168.1.200')
@@ -46,53 +45,59 @@ class Robot():
         position = fixed_points[name]
         self.arm.set_position(x=position[0], y=position[1], z=position[2], roll=position[3], pitch=position[4], yaw=position[5], speed=speed, wait=wait)
     
-    def PickUpVial(self):
+    def PickUpVial0(self):
         robot.arm.set_gripper_position(400, wait=True)
         robot.GoTo_Point("VialStoragePoint", 100)
         robot.GoTo_Point("Vial0", 60)
-        robot.arm.set_gripper_position(185, wait=True)
+        robot.arm.set_gripper_position(185, wait=True)#grab vial
         robot.GoTo_Point("VialStoragePoint", 60)  
 
     def VialToScale(self):
-        self.arm.GoTo_point("scale")
-        self.arm.set_position(x=300, y=-400, z=200, roll=0, pitch=90, yaw=-90, speed=120, wait=True)
-        self.arm.set_position(x=-20, y=-550, z=200, roll=0, pitch=90, yaw=-90, speed=120, wait=True)
-        self.arm.set_gripper_position(500, wait=True)
+        robot.arm.set_position(x=-280, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=60, wait=True)#inbetween point
+        robot.GoTo_Point("Scale", 60)
+        robot.arm.set_position(y=130, relative=True, speed=60, wait=True)#moving into the scale
+        robot.arm.set_position(z=-39.5, relative=True, speed=30, wait=True)#moving down on the scale
+        robot.arm.set_gripper_position(400, wait=True)
 
-    def ScaleToDispenser(self, Dispensername):
-        self.arm.set_gripper_position(205, wait=True)
-        self.arm.set_position(x=-20, y=-627, z=200, roll=0, pitch=90, yaw=-90, speed=60, wait=True)
-        self.arm.set_position(x=-20, y=-550, z=200, roll=0, pitch=90, yaw=-90, speed=120, wait=True)
-        self.arm.GoTo_point("DispenserPoint")
-        self.arm.GoTo_point(Dispensername)
-        self.arm.GoTo_point("DispenserPoint")
+    def ScaleToDispenser1(self):
+        robot.arm.set_gripper_position(185, wait=True)
+        robot.arm.set_position(z=39.5, relative=True, speed=30, wait=True)#moving up on the scale
+        robot.GoTo_Point("Scale", 60)#moving out of the scale 
+        robot.GoTo_Point("DispenserPoint", 60)
+        robot.GoTo_Point("Dispenser1", 40)
+        robot.arm.set_position(z=35, relative=True, speed=20, wait=True)#closing the dispenser with the vial 
+        robot.GoTo_Point("Dispenser1", 20)
 
     def DispenserToScale(self):
-        self.arm.GoTo_point("Scale")
-        self.arm.set_gripper_position(500, wait=True)
+        robot.GoTo_Point("DispenserPoint", 60)
+        robot.GoTo_Point("Scale", 60)
+        robot.arm.set_position(y=130, relative=True, speed=60, wait=True)#moving into the scale
+        robot.arm.set_position(z=-39.5, relative=True, speed=30, wait=True)#moving down on the scale 
+        robot.arm.set_gripper_position(400, wait=True)
 
     def ScaleToVialRestPoint(self):
-        self.arm.set_gripper_position(205, wait=True)
-        self.arm.GoTo_point("VialRestPoint")
-        self.arm.set_gripper_position(500, wait=True)
-        time.sleep(1)
-        self.arm.GoTo_point("VialRestPoint")
+        robot.arm.set_gripper_position(185, wait=True)
+        robot.arm.set_position(z=39.5, relative=True, speed=30, wait=True)#moving up on the scale 
+        robot.GoTo_Point("Scale", 60)#moving out of the scale
+        robot.GoTo_Point("DispenserPoint", 60)#used as inbetween point
+        robot.arm.set_linear_track_pos(200, wait=True)
+        robot.GoTo_Point("VialRestPoint", 60)
+        robot.arm.set_position(z=-127, relative=True, speed=20, wait=True)#going down in the hole
+        robot.arm.set_gripper_position(500, wait=True)
 
     def PickUpPipette(self):
-        self.arm.GoTo_point("PipettePoint")
-        self.arm.set_position(x=500, y=0, z=200, roll=0, pitch=90, yaw=0, speed=20, wait=True)
-        self.arm.set_gripper_position(260, wait=True)
-        self.arm.GoTo_point("PipettePoint")
-
-    def GoToLiquid(self, Liquidname):
-        self.arm.GoTo_point("LiquidStoragePoint")
-        self.arm.GoTo_point(Liquidname)
-    
-    def LiquidToVial (self):
-        self.arm.GoTo_point("VialRestPoint")
-    
-    def Trash(self):
-        self.arm.GoTo_point("Trash")
+        robot.GoTo_Point("VialRestPoint", 60)
+        robot.arm.set_gripper_position(800, wait=False)
+        robot.GoTo_Point("PipettePoint", 60)
+        robot.arm.set_position(x=-367, y=-215, z=193.2, roll= 90, pitch= 90, yaw=0, speed=20, wait=True) #grabbing pipette
+        robot.arm.set_gripper_position(450, wait=True)
+        robot.arm.set_position(z=26.8, relative=True, speed=20, wait=True) #lifting pipette
+                
+    #def PickUpPipetteTip(self):
+    #def MoveToBinder(self):
+    #
+       
+        
     
     class VialBox():
         def __init__(self, arm, start_position=(-280, -100, -27.3)):
@@ -120,81 +125,72 @@ class Robot():
             x, y, z = self.get_vial_position(vial_number)
             self.arm.set_position(x=x, y=y, z=z, roll=-152, pitch=88, yaw=120, speed=20, wait=True)
 
-#Getting position of tips:
-    class Tips():
-        def __init__(self, start_position=(365, 470, 450)):
-            self.row_count = 5
-            self.column_count = 8
-            self.row_spacing = 0.5
-            self.column_spacing = 0.5
-            self.start_position = start_position
 
-        def get_tip_position(self, tip_number):
-            row = tip_number // self.column_count
-            column = tip_number % self.column_count
-            x = self.start_position[0] + column * self.column_spacing
-            y = self.start_position[1] - row * self.row_spacing
-            z = self.start_position[2]
-            return x, y, z
-
-        def GoTo_Tip(self, tip_number, arm):
-            x, y, z = self.get_tip_position(tip_number)
-            self.arm.set_position(x=x, y=y, z=z, roll=0, pitch=90, yaw=0, speed=20, wait=True)
-
-    class Inner():
-        def __init__(self):
-            print('in Inner init')
-            self.outer = Robot().arm
-            print('self.outer')
-
-        def printing(self):
-            print('In prinitng mode')
     
-    def callinner(self):
-        self.newinner.printing()
-        print('called inner')
-
-
 robot = Robot()
 
 robot.initialize()
 robot.GoTo_InitialPoint()
 robot.restart()
 
-robot.PickUpVial()  
+robot.PickUpVial0() 
+robot.VialToScale() 
+robot.ScaleToDispenser1()
+robot.DispenserToScale()
+robot.ScaleToVialRestPoint()
+robot.PickUpPipette()
 
-#VialToScale
-robot.arm.set_position(x=-280, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=60, wait=True)
+
+#PickUpVial0: (should work fine)
+robot.arm.set_gripper_position(400, wait=True)
+robot.GoTo_Point("VialStoragePoint", 100)
+robot.GoTo_Point("Vial0", 60)
+robot.arm.set_gripper_position(185, wait=True)#grab vial
+robot.GoTo_Point("VialStoragePoint", 60)  
+
+#VialToScale: (should work fine)
+robot.arm.set_position(x=-280, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=60, wait=True)#inbetween point
 robot.GoTo_Point("Scale", 60)
-robot.arm.set_position(x=-287, y=250, z=92, roll=-90, pitch=90, yaw=0, speed=60, wait=True)
-robot.arm.set_position(x=-287, y=250, z=52.5, roll=-90, pitch=90, yaw=0, speed=30, wait=True)
+robot.arm.set_position(y=130, relative=True, speed=60, wait=True)#moving into the scale
+robot.arm.set_position(z=-39.5, relative=True, speed=30, wait=True)#moving down on the scale
 robot.arm.set_gripper_position(400, wait=True)
 
-#ScaleTODispenser
+#ScaleToDispenser1: (should work fine)
 robot.arm.set_gripper_position(185, wait=True)
-robot.arm.set_position(x=-287, y=250, z=92, roll=-90, pitch=90, yaw=0, speed=60, wait=True)
-robot.GoTo_Point("Scale", 60)
+robot.arm.set_position(z=39.5, relative=True, speed=30, wait=True)#moving up on the scale
+robot.GoTo_Point("Scale", 60)#moving out of the scale 
 robot.GoTo_Point("DispenserPoint", 60)
 robot.GoTo_Point("Dispenser1", 40)
-robot.arm.set_position(x=-537, y=-98, z=75, roll= 180, pitch= 90, yaw=0, speed=20, wait=True)
+robot.arm.set_position(z=35, relative=True, speed=20, wait=True)#closing the dispenser with the vial 
 robot.GoTo_Point("Dispenser1", 20)
 
-#DispenserToRestPoint
+#DispenserToScale:(should work fine)
 robot.GoTo_Point("DispenserPoint", 60)
+robot.GoTo_Point("Scale", 60)
+robot.arm.set_position(y=130, relative=True, speed=60, wait=True)#moving into the scale
+robot.arm.set_position(z=-39.5, relative=True, speed=30, wait=True)#moving down on the scale 
+robot.arm.set_gripper_position(400, wait=True)
+
+#ScaleToVialRestPoint: (should work fine)
+robot.arm.set_gripper_position(185, wait=True)
+robot.arm.set_position(z=39.5, relative=True, speed=30, wait=True)#moving up on the scale 
+robot.GoTo_Point("Scale", 60)#moving out of the scale
+robot.GoTo_Point("DispenserPoint", 60)#used as inbetween point
 robot.arm.set_linear_track_pos(200, wait=True)
 robot.GoTo_Point("VialRestPoint", 60)
-robot.arm.set_position(x=-367.7, y=-104.2, z=-35, roll= 180, pitch= 90, yaw=0, speed=20, wait=True)
+robot.arm.set_position(z=-127, relative=True, speed=20, wait=True)#going down in the hole
 robot.arm.set_gripper_position(500, wait=True)
 
-#From rest to Picking up Pipette
+#PickUpPipette:(should work fine)
 robot.GoTo_Point("VialRestPoint", 60)
 robot.arm.set_gripper_position(800, wait=False)
 robot.GoTo_Point("PipettePoint", 60)
 robot.arm.set_position(x=-367, y=-215, z=193.2, roll= 90, pitch= 90, yaw=0, speed=20, wait=True) #grabbing pipette
 robot.arm.set_gripper_position(450, wait=True)
-robot.arm.set_position(x=-367, y=-212, z=220, roll= 90, pitch= 90, yaw=0, speed=20, wait=True) #lifting pipette
+robot.arm.set_position(z=26.8, relative=True, speed=20, wait=True) #lifting pipette
 
-#Picking up pipette tip
+
+#Picking up pipette tip (needs still work)
 robot.GoTo_Point("PipettePoint", 20)
 
 robot.arm.set_gripper_position(380, wait=True)
@@ -205,31 +201,26 @@ robot.arm.set_position(x=x1, y=y1, z=210, roll= 90, pitch= 91, yaw=0, speed=20, 
 robot.arm.set_position(x=x1, y=y1, z=205, roll= 90, pitch= 91, yaw=0, speed=20, wait=True)
 robot.arm.set_position(x=x1, y=y1, z=200, roll= 90, pitch= 91, yaw=0, speed=20, wait=True)
 robot.arm.set_position(x=x1, y=y1, z=190, roll= 90, pitch= 91, yaw=0, speed=20, wait=True)
-
 robot.arm.set_position(x=-263.5, y=-123.2, z=320, roll= 90, pitch= 91, yaw=0, speed=20, wait=True)
-
-
 robot.arm.set_position(x=x1, y=-120.2, z=300, roll= 90, pitch= 91, yaw=0, speed=60, wait=True)
-
-
 robot.arm.set_position(x=-263.5, y=-123.2, z=300, roll= 90, pitch= 91, yaw=0, speed=20, wait=True)
 robot.arm.set_position(x=-263.5, y=-123.2, z=260, roll= 90, pitch= 91, yaw=0, speed=20, wait=True)
 
-#Pipette to Vial Rest Point
+#PipetteToVialRestPoint (needs to be checked again)
 robot.arm.set_position(x=-367, y=-215, z=193.2, roll= 90, pitch= 90, yaw=0, speed=20, wait=True)
 robot.arm.set_gripper_position(800, wait=False)
 robot.GoTo_Point("PipettePoint", 60)
 robot.GoTo_Point("VialRestPoint", 60)
 
-#Vial Rest Point to Mixer Point
+#VialRestPointToMixer(needs to be checked again)
 robot.arm.set_position(x=-367.7, y=-104.2, z=-35, roll= 180, pitch= 90, yaw=0, speed=20, wait=True)
 robot.arm.set_gripper_position(185, wait=True)
 robot.GoTo_Point("VialRestPoint", 30)
 robot.arm.set_position(x=-602, y=-60.2, z=19, roll= 90, pitch= 90, yaw=0, speed=30, wait=True)
-robot.arm.set_position(x=-602, y=-142, z=19, roll= 90, pitch= 90, yaw=0, speed=20, wait=True)
-robot.arm.set_position(x=-602, y=-142, z=-30, roll= 90, pitch= 90, yaw=0, speed=20, wait=True)
+robot.arm.set_position(y=-81.8, relative=True, speed=20, wait=True)
+robot.arm.set_position(z=-49, relative=True, speed=20, wait=True)
 robot.arm.set_gripper_position(480, wait=False)
-robot.arm.set_position(x=-602, y=-30, z=19, roll= 90, pitch= 90, yaw=0, speed=30, wait=True)
+robot.arm.set_position(y=112, z=49, relative=True speed=30, wait=True)
 
 
 
@@ -264,7 +255,3 @@ fixed_points = {
     "MixerPoint": (-639.3, 0, 317.8, -107.4, 88.2, 163.9),  
        
 }
-
-
-
-#    "PipettePoint": (-370, -110, 193.2, -107.4, 90, 163.9),
