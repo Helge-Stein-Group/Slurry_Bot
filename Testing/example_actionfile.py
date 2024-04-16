@@ -11,9 +11,9 @@ from Drivers.pipette_driver import *
 #initializing and setting up all systems
 
 coms = {
-    scaleCom: "COM11",
-    motorsCom: "COM9",
-    pipetteCom: "COM6"
+    'scaleCom': 'COM11',
+    'motorsCom': 'COM9',
+    'pipetteCom': 'COM6'
 }
 
 #Robot Connection
