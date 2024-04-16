@@ -147,7 +147,7 @@ class Pipette():
         #     res = self.readFeedback()
         # return int(res[4:-2])
 
-    def initiate_rline(self):
+    def initialize(self):
         con_res = self.check_connection()
         if con_res == True:
             pass
