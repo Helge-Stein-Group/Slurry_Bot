@@ -40,6 +40,6 @@ homogenizer_motor.check_connection()
 
 #Pipette Connection
 pipette = Pipette(coms['pipetteCom'])
-pipette.initiate_rline()
+pipette.initialize()
 
 
