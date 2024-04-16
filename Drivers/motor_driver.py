@@ -33,6 +33,15 @@ class Motor:
         self.connection = connection
         self.num = num
 
+    def check_connection(self):
+        """ Checks if the motor is connected. """
+        self.connection.send_command(str(self.num) + "Q")
+        response = self.connection.read_response()
+        if response == 'MOTOR_CONNECTED':
+            return True
+        else:
+            return False
+
     def set_speed(self, speed):
         """ Sets the speed of the motor. """
         if 0 < speed < 1000:
@@ -65,7 +74,7 @@ class Motor:
                 break
     def moveUp(self, steps, wait_for_motor=True):
         """ Moves the motor clockwise at the current speed for a set number of steps. """
-                self.connection.send_command(str(self.num) + "F" + str(steps))
+        self.connection.send_command(str(self.num) + "F" + str(steps))
         if wait_for_motor:
             self.wait_for_motor()
 
