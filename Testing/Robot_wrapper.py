@@ -210,7 +210,7 @@ fixed_points = {
     "MixerPoint": (-600.7, -60.2, 19, 90, 90, 0),    
 }
 
-vials = {
+vials = {#this needs to be checked irst
     "1": (0, 0),
     "2": (-50, 0),
     "3": (-100, 0),
@@ -221,7 +221,7 @@ vials = {
     "8": (-150, -50),
 }
 
-tips = {
+tips = {#just random numbers, they have to be updated
     "1": (0, 0),
     "2": (-25, 0),
     "3": (-50, 0),
