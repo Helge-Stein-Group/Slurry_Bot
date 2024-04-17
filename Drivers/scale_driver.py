@@ -223,5 +223,3 @@ def _remove_calibration_note(raw_data):
     if "[" in raw_data:
         raw_data = raw_data.replace("[", "").replace("]", "  ")
     return raw_data
-
-
