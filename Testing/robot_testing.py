@@ -35,30 +35,3 @@ robot.GoTo_Point("MixerPoint", 10)
 
 
 
-
-
-#Test Dispensing
-from Drivers.scale_driver import *
-from Drivers.motor_driver import *
-from Testing.dispensing_wrapper import *
-
-coms = {
-    'scaleCom': 'COM7',
-    'motorsCom': 'COM5',
-    'pipetteCom': 'COM6'
-}
-
-motors = SerialConnection(coms['motorsCom'], 9600, 3)
-dispenser_motor = Motor(motors, 0)
-
-#Scale Connection
-scale = Scale(coms['scaleCom'], 9600, 3)
-scale.connect()
-scale.tare()
-
-my_calibration = Calibration(100,100,"Test","NA", "NA")
-my_calibration.calibrate([100,500], 2, dispenser_motor, scale, robot, "Vial1")
-
-
-#dispense
-dispense_precisely(0.1, 1,dispenser_motor,scale,robot, "Vial2")

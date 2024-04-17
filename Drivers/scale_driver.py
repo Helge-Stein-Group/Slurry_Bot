@@ -55,7 +55,7 @@ class Scale:
             self.ser = serial.Serial(conf, baud, timeout=timeout)
         except serial.SerialException:
             print('Unable to connect to the scale or scale is already connected. Check the com port and try again.')
-            sys.exit(1) #Exiting the program if the scale is not connected.
+            #sys.exit(1) #Exiting the program if the scale is not connected.
 
     def connect(self):
         """ establishes a new serial connection """
@@ -134,7 +134,9 @@ class Scale:
     def measure_stable(self):   
         while True:  
             measurement = self.measure() 
+            
             if measurement.stable: 
+                #print(str(measurement))
                 return measurement  
 
         

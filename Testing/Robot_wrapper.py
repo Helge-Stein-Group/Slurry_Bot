@@ -14,6 +14,10 @@ class Robot():
         self.arm.set_gripper_enable(True)
         self.arm.set_gripper_mode(0)
 
+    def hangle_err_warn_changed(item):
+        print('ErrorCode: {}, WarnCode: {}'.format(item['error_code'], item['warn_code']))
+
+
     def initialize(self):
         self.arm.motion_enable(enable=True)
         self.arm.set_mode(0)
@@ -21,7 +25,7 @@ class Robot():
         self.arm.set_gripper_enable(True)
         self.arm.set_gripper_mode(0)
         self.arm.set_initial_point([-228, 0, 133, 0, 90, 180])
-        self.arm.register_error_warn_changed_callback(hangle_err_warn_changed)
+        #self.arm.register_error_warn_changed_callback(self.hangle_err_warn_changed())
         self.arm.connect()
         self.arm.set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20, wait=True)
         self.arm.set_linear_track_back_origin(wait=True)
@@ -31,9 +35,6 @@ class Robot():
     def close(self):
         self.arm.disconnect()
     
-    def hangle_err_warn_changed(item):
-        print('ErrorCode: {}, WarnCode: {}'.format(item['error_code'], item['warn_code']))
-
     def GoTo_InitialPoint(self):
         self.arm.set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20, wait=True)
         self.arm.set_linear_track_pos(600, wait=True)

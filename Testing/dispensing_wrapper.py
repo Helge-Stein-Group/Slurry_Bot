@@ -49,6 +49,8 @@ class Calibration:
                 weights[idx, i] = scale.measure_stable().value
         # Move vial from scale to storage
         robot.ScaleToVialRestPoint()
+        robot.GoTo_Point("VialRestPoint", 20)
+        robot.GoTo_InitialPoint()
         # Fitting
         avg_weights = np.mean(weights, axis=1)
         steps_matrix = np.vstack((steps, np.ones_like(steps))).T  # Formatting steps properly
@@ -137,6 +139,7 @@ def dispense(weight:float, cal_id:int, motor, scale, robot):
     weight_dispensed = scale.measure_stable().value
     return weight_dispensed
 
+
 def dispense_precisely(desired_weight:float, cal_id:int, motor, scale, robot, vial_number):
     with open('Calibration_File.csv', 'r') as cal_file:
         reader = csv.DictReader(cal_file)
@@ -173,11 +176,13 @@ def dispense_precisely(desired_weight:float, cal_id:int, motor, scale, robot, vi
     while improvement_expected:
         weight -= weight_dispensed
         closest = AVG_weights[0]
+        closest_index = 0
         for i, AVG_weight in enumerate(AVG_weights):
             if abs (AVG_weight - weight) < abs(closest - weight):
                 closest_index = i
         weight_current_step = (1-3*STD_rel_weight[closest_index]) * weight #3-sigma criterion
-        weight_dispensed, first_cycle = dispense(weight=weight_current_step,cal_id=cal_id,motor=motor,scale=scale, robot=robot)
+        weight_dispensed = dispense(weight=weight_current_step,cal_id=cal_id,motor=motor,scale=scale, robot=robot)
+        #weight_dispensed, first_cycle = dispense(weight=weight_current_step,cal_id=cal_id,motor=motor,scale=scale, robot=robot)
         
         if weight - weight_dispensed < 3 * STD_weight[closest_index]:
             improvement_expected = False
