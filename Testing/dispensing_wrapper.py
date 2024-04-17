@@ -4,6 +4,8 @@ import time
 import os
 import csv
 
+from Testing.Robot_wrapper import *
+
 class Calibration:
     def __init__(self, acceleration, speed, material, version_inside, version_outside):
         self.acceleration = acceleration
@@ -24,26 +26,29 @@ class Calibration:
         self.repeat = None
         self.steps = None
 
-    def calibrate(self, steps, repeat, motor, scale):
+    def calibrate(self, steps, repeat, motor, scale, robot, vial_number):
         weights = np.zeros((len(steps), repeat))  # Initialize array to store weights
         first_action = True
         for i in range(repeat):
             for idx, step in enumerate(steps):
                 if first_action == True:
                     # Move vial from Storage on scale
-                    first_cycle = False
-                else:
-                    # Move vial from dispensing unit on scale
+                    robot.PickUpVial(vial_number)
+                    robot.VialToScale()
+                    first_action = False
                 time.sleep(2)
                 scale.tare()
                 # Move vial from scale under dispensing unit 
+                robot.ScaleToDispenser1()
                 time.sleep(2)
                 motor.move(step)
                 time.sleep(2)
                 # Move vial from dispensing unit on scale
+                robot.Dispenser1ToScale()
                 time.sleep(2)
                 weights[idx, i] = scale.measure_stable().value
         # Move vial from scale to storage
+        robot.ScaleToVialRestPoint()
         # Fitting
         avg_weights = np.mean(weights, axis=1)
         steps_matrix = np.vstack((steps, np.ones_like(steps))).T  # Formatting steps properly
@@ -105,7 +110,7 @@ class Calibration:
             for i in range(len(self.steps)):
                 writer.writerow([self.steps[i], self.avg_weights[i], self.std_error_weights[i], self.relative_std_error_weights[i]])
 
-def dispense(weight:float, cal_id:int, motor, scale):
+def dispense(weight:float, cal_id:int, motor, scale, robot):
     #assumes initial vial position on scale
     with open('Calibration_File.csv', 'r') as cal_file:
         reader = csv.DictReader(cal_file)
@@ -123,14 +128,16 @@ def dispense(weight:float, cal_id:int, motor, scale):
     scale.tare()
     time.sleep(2)
     # move vial from scale under dispensing unit
+    robot.ScaleToDispenser1()
+    time.sleep(2)
     motor.move(calc_steps)
     time.sleep(2)
-    # move vial from dispensing unit on scale
+    robot.Dispenser1ToScale()
     time.sleep(2)
     weight_dispensed = scale.measure_stable().value
     return weight_dispensed
 
-def dispense_precisely(desired_weight:float, cal_id:int, motor, scale):
+def dispense_precisely(desired_weight:float, cal_id:int, motor, scale, robot, vial_number):
     with open('Calibration_File.csv', 'r') as cal_file:
         reader = csv.DictReader(cal_file)
         for row in reader:
@@ -156,6 +163,8 @@ def dispense_precisely(desired_weight:float, cal_id:int, motor, scale):
     first_action = True
     time.sleep(2)
     # Move vial from storage on scale
+    robot.PickUpVial(vial_number)
+    robot.VialToScale()
     time.sleep(1)
     mass_netto = scale.measure_stable().value
     # Aprroximation
@@ -168,7 +177,7 @@ def dispense_precisely(desired_weight:float, cal_id:int, motor, scale):
             if abs (AVG_weight - weight) < abs(closest - weight):
                 closest_index = i
         weight_current_step = (1-3*STD_rel_weight[closest_index]) * weight #3-sigma criterion
-        weight_dispensed, first_cycle = dispense(weight=weight_current_step,cal_id=cal_id,motor=motor,scale=scale)
+        weight_dispensed, first_cycle = dispense(weight=weight_current_step,cal_id=cal_id,motor=motor,scale=scale, robot=robot)
         
         if weight - weight_dispensed < 3 * STD_weight[closest_index]:
             improvement_expected = False
@@ -180,13 +189,16 @@ def dispense_precisely(desired_weight:float, cal_id:int, motor, scale):
         weight_dispensed = dispense(weight=weight,cal_id=cal_id,motor=motor,scale=scale)
 
     # robot pickup vial from scale and keep it (maybe storage directly located next to scale)
+    robot.LiftVial()
     time.sleep(2)
     scale.tare()
     time.sleep(2)
     # robot place vial on scale again
+    robot.DropVial()
     mass_brutto = scale.measure_stable().value
     weight_dispensed = mass_brutto-mass_netto
     relative_weighing_error = (weight_dispensed-desired_weight)/desired_weight
     absolute_weighing_error = weight_dispensed - desired_weight
     # robot return vial in storage
+    robot.ScaleToVialRestPoint()
     return weight_dispensed, relative_weighing_error, absolute_weighing_error

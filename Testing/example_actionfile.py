@@ -7,6 +7,7 @@ from Robot_wrapper import *
 from Drivers.scale_driver import *
 from Drivers.motor_driver import *
 from Drivers.pipette_driver import *
+from dispensing_wrapper import *
 
 #initializing and setting up all systems
 
