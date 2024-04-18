@@ -206,4 +206,5 @@ def dispense_precisely(desired_weight:float, cal_id:int, motor, scale, robot, vi
     absolute_weighing_error = weight_dispensed - desired_weight
     # robot return vial in storage
     robot.ScaleToVialRestPoint()
+    robot.GoTo_Point("VialRestPoint", 30)
     return weight_dispensed, relative_weighing_error, absolute_weighing_error
