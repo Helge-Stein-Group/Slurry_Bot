@@ -47,11 +47,11 @@ my_calibration.calibrate([5, 15, 30, 70], 2, dispenser_motor, scale, robot, "Via
 my_calibration.save_calibration()
 
 #Dispensing
-dispense_precisely(0.9, 2,dispenser_motor,scale,robot, "Vial2")
+dispense_precisely(0.9, 2, "Vial2")
 
 #Pipetting
 Pipetting(3000, "1")
 
 #Mixing
-StartingMixing (10)
+StartingMixing(10)
 StoppingMixing()
