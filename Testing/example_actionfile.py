@@ -8,8 +8,9 @@ from Drivers.scale_driver import *
 from Drivers.motor_driver import *
 from Drivers.pipette_driver import *
 from dispensing_wrapper import *
+from Overall_wrapper import *
 
-#initializing and setting up all systems
+##Initializing and setting up all systems:
 
 coms = {
     'scaleCom': 'COM7',
@@ -30,17 +31,27 @@ scale.tare()
 #Motors Connection
 motors = SerialConnection(coms['motorsCom'], 9600, 3)
 homogenizer_motor = Motor(motors, 1)
+homogenizer_motor.check_connection()
 dispenser_motor = Motor(motors, 0)
 dispenser_motor.check_connection()
-print(motors.read_response())
-#dispenser_motor.move('200')
-homogenizer_motor.check_connection()
-#homogenizer_motor.moveDown('5700') #(ONLY RUN IF IT IS AT THE VERY TOP)The difference from the top to the bottom is about 5700 steps
-#homogenizer_motor.moveUp('5700')
-
 
 #Pipette Connection
 pipette = Pipette(coms['pipetteCom'])
 pipette.initialize()
 
 
+##Making  a Test slurry:
+#Calibration
+my_calibration = Calibration(100,100,"Test","NA", "NA")
+my_calibration.calibrate([5, 15, 30, 70], 2, dispenser_motor, scale, robot, "Vial1")
+my_calibration.save_calibration()
+
+#Dispensing
+dispense_precisely(0.9, 2,dispenser_motor,scale,robot, "Vial2")
+
+#Pipetting
+Pipetting(3000, "1")
+
+#Mixing
+StartingMixing (10)
+StoppingMixing()
