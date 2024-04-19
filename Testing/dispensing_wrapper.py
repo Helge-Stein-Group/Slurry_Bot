@@ -191,7 +191,7 @@ def dispense_precisely(desired_weight:float, cal_id:int, motor, scale, robot, vi
 
         #to pervent statistical understimation: addition of the missing part
     if weight > 0:
-        weight_dispensed = dispense(weight=weight,cal_id=cal_id,motor=motor,scale=scale)
+        weight_dispensed = dispense(weight=weight,cal_id=cal_id,motor=motor,scale=scale, robot=robot)
 
     # robot pickup vial from scale and keep it (maybe storage directly located next to scale)
     robot.LiftVial()
@@ -206,5 +206,4 @@ def dispense_precisely(desired_weight:float, cal_id:int, motor, scale, robot, vi
     absolute_weighing_error = weight_dispensed - desired_weight
     # robot return vial in storage
     robot.ScaleToVialRestPoint()
-    robot.GoTo_Point("VialRestPoint", 30)
     return weight_dispensed, relative_weighing_error, absolute_weighing_error

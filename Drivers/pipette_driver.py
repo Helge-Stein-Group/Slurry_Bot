@@ -165,7 +165,7 @@ class Pipette():
         return all([con_res, home_res[0], speed1_res[0], speed2_res[0]])
 
     def aspirate(self, volume):
-        print(round(volume/20))
+        #print(round(volume/20))
         return self.sendCmd("RUN_INWARDS", round(volume/10))
 
     def dispense(self, volume):
