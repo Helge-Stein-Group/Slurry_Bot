@@ -10,7 +10,8 @@ This driver gives you the ability to communicate with a NEMA 17 stepper motor, u
 
 Please wire the motor, arduino, and driver together using the diagram below.
 
-![wiring_diagram](https://github.com/Helge-Stein-Group/motor-driver/assets/148461262/08247575-c62b-4bf9-8f05-097b0b0588ec)
+![wiring_diagram](https://github.com/Helge-Stein-Group/Slurry_Bot/assets/148461262/1e0f1947-3164-45df-9854-c35ab379af1b)
+
 
 Insure that the switches on the A4988 driver are in the off position and the pins D3 and D2 are wired to the driver at D and S, respectively.
 
