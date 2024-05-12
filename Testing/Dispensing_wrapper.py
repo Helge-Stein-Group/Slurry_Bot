@@ -192,7 +192,7 @@ class Dispensing:
             weight_dispensed = dispense(weight=weight_current_step,cal_id=cal_id,motor=self.motor,scale=self.scale, robot=self.robot)
             #weight_dispensed, first_cycle = dispense(weight=weight_current_step,cal_id=cal_id,motor=motor,scale=scale, robot=robot)
             
-            if weight - weight_dispensed < 3 * STD_weight[closest_index]:
+            if abs(weight - weight_dispensed) < 3 * STD_weight[closest_index]:
                 improvement_expected = False
                 weight -= weight_dispensed
                 break
