@@ -1,3 +1,0 @@
-Calibration ID,Date,Acceleration,Speed,Material,Version Inside,Version Outside,Slope,Y-intercept,Goodness of Fit,Weight Range,Step Range,Repeat
-1,Wed Apr 17 14:58:37 2024,100,100,Test,NA,NA,0.007154124999999999,0.009387499999999714,1.0,"[0.7248, 3.58645]","[100, 500]",2
-2,Wed Apr 17 15:18:48 2024,100,100,Test,NA,NA,0.007192999999999998,-0.022299999999999914,1.0,"[0.6970000000000001, 3.5742]","[100, 500]",2
