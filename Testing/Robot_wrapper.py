@@ -114,6 +114,18 @@ class Robot():
         self.GripperAction("ReleasePipette")
         self.GoTo_Point("VialRestPoint", 80*speedfactor)
 
+    def VialRestPointToScale(self, speedfactor=1):
+        self.arm.set_linear_track_pos(200, wait=True)
+        self.GoTo_Point("VialRestPoint", 80*speedfactor)
+        self.arm.set_position(z=-127, relative=True, speed=80*speedfactor, wait=True)
+        self.GripperAction("GrabVial")
+        self.GoTo_Point("VialRestPoint", 80*speedfactor)
+        self.arm.set_linear_track_pos(600, wait=True)
+        self.GoTo_Point("Scale", 80*speedfactor)
+        self.arm.set_position(y=130, relative=True, speed=80*speedfactor, wait=True)#moving into the scale
+        self.arm.set_position(z=-39.5, relative=True, speed=50*speedfactor, wait=True)#moving down on the scale 
+        self.GripperAction("ReleaseVial")
+
     def PickUpPipette(self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
         self.GripperAction("ReleasePipette")

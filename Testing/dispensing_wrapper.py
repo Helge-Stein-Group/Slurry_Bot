@@ -47,9 +47,17 @@ class Calibration:
                 robot.Dispenser1ToScale()
                 time.sleep(2)
                 weights[idx, i] = scale.measure_stable().value
+            robot.ScaleToVialRestPoint()
+            print('Empty Vial')
+            time.sleep(1)
+            user_input = ''
+            while user_input.lower() != 'y':
+                user_input = input("Is the vial empty? (y/n)")
+            user_input = ''
+            time.sleep(2)
+            robot.VialRestPointToScale()
         # Move vial from scale to storage
         robot.ScaleToVialRestPoint()
-        robot.GoTo_Point("VialRestPoint", 20)
         robot.GoTo_InitialPoint()
         # Fitting
         avg_weights = np.mean(weights, axis=1)
