@@ -5,7 +5,6 @@ class Robot():
     def __init__(self):
         self.arm = XArmAPI('192.168.1.200')
         self.savedegree = 0
-        #self.vial_box = self.VialBox(self.arm)
 
     def restart(self):
         self.arm.disconnect()
@@ -18,7 +17,6 @@ class Robot():
 
     def hangle_err_warn_changed(item):
         print('ErrorCode: {}, WarnCode: {}'.format(item['error_code'], item['warn_code']))
-
 
     def initialize(self):
         self.arm.motion_enable(enable=True)
@@ -70,22 +68,26 @@ class Robot():
 
     def VialToScale(self, speedfactor=1):
         self.arm.set_linear_track_pos(600, wait=True)
-        self.arm.set_position(x=-280, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=230*speedfactor, wait=True)#inbetween point
-        self.GoTo_Point("Scale", 210*speedfactor)
+        self.GoTo_Point("VialStoragePoint", 80*speedfactor) #Start point 
+        self.arm.set_position(x=-280, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=180*speedfactor, wait=True)#inbetween point
+        self.GoTo_Point("Scale", 200*speedfactor)
         self.arm.set_position(y=130, relative=True, speed=80*speedfactor, wait=True)#moving into the scale
         self.arm.set_position(z=-39.5, relative=True, speed=50*speedfactor, wait=True)#moving down on the scale
         self.GripperAction("ReleaseVial")
 
     def LiftVial(self, speedfactor=1):
+        #self.arm.set_position(x=-287, y=250, z=52.5, roll=-90, pitch=90, yaw=0, speed=50*speedfactor, wait=True)#Start point, IN THE SCALE
         self.GripperAction("GrabVial")
         self.arm.set_position(z=20, relative=True, speed=50*speedfactor, wait=True)#moving up on the scale
 
     def DropVial(self, speedfactor=1):
+        #self.arm.set_position(x=-287, y=250, z=72.5, roll=-90, pitch=90, yaw=0, speed=50*speedfactor, wait=True)#Start point, IN THE SCALE
         self.arm.set_position(z=-20, relative=True, speed=50*speedfactor, wait=True)#moving up on the scale
         self.GripperAction("ReleaseVial")
 
     def ScaleToDispenser1(self, speedfactor=1):
         self.arm.set_linear_track_pos(600, wait=True)
+        self.arm.set_position(x=-287, y=250, z=52.5, roll=-90, pitch=90, yaw=0, speed=50*speedfactor, wait=True)#Start point, IN THE SCALE
         self.GripperAction("GrabVial")
         self.arm.set_position(z=39.5, relative=True, speed=50*speedfactor, wait=True)#moving up on the scale
         self.GoTo_Point("Scale", 80*speedfactor)#moving out of the scale 
@@ -95,7 +97,7 @@ class Robot():
         
     def Dispenser1ToScale(self, speedfactor=1):
         self.arm.set_linear_track_pos(600, wait=True)
-        self.GoTo_Point("Dispenser1", 20*speedfactor)
+        self.GoTo_Point("Dispenser1", 20*speedfactor)#Start point
         self.GoTo_Point("DispenserPoint", 30*speedfactor)
         self.GoTo_Point("Scale", 250*speedfactor)
         self.arm.set_position(y=130, relative=True, speed=80*speedfactor, wait=True)#moving into the scale
@@ -104,6 +106,7 @@ class Robot():
 
     def ScaleToVialRestPoint(self, speedfactor=1):
         self.arm.set_linear_track_pos(600, wait=True)
+        self.arm.set_position(x=-287, y=250, z=52.5, roll=-90, pitch=90, yaw=0, speed=50*speedfactor, wait=True)#Start point, IN THE SCALE
         self.GripperAction("GrabVial")
         self.arm.set_position(z=39.5, relative=True, speed=50*speedfactor, wait=True)#moving up on the scale 
         self.GoTo_Point("Scale", 80*speedfactor)#moving out of the scale
@@ -129,14 +132,14 @@ class Robot():
     def PickUpPipette(self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
         self.GripperAction("ReleasePipette")
-        self.GoTo_Point("PipettePoint", 150*speedfactor)
+        self.GoTo_Point("PipettePoint", 150*speedfactor)#Start point
         self.arm.set_position(x=-367, y=-212, z=193.2, roll= 90, pitch= 90, yaw=0, speed=100*speedfactor, wait=True) #grabbing pipette
         self.GripperAction("GrabPipette")
         self.arm.set_position(z=26.8, relative=True, speed=50*speedfactor, wait=True) #lifting pipette
                 
     def PickUpPipetteTip(self, tip_number, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
-        self.GoTo_Point("PipettePoint", 60*speedfactor)
+        self.GoTo_Point("PipettePoint", 60*speedfactor)#Start point
         self.GoTo_Point("PipetteTip1", 100*speedfactor)
         self.GoTo_Tip(tip_number,speedfactor)
         self.arm.set_position(z=-150, relative=True, speed=30*speedfactor, wait=True)
@@ -147,19 +150,21 @@ class Robot():
 
     def MoveToBinder(self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
+        self.arm.set_position(x=-263.5, y=-121, z=310, roll= 90, pitch= 91, yaw=0, speed=100*speedfactor, wait=True) #Start point
         self.arm.set_position(x=-9, y=-19, relative=True, speed=40*speedfactor, wait=True)
         self.arm.set_position(z=-35, relative=True, speed=40*speedfactor, wait=True)#still outside of vial
         self.arm.set_position(z=-66, relative=True, speed=10*speedfactor, wait=True)#going into the vial
        
     def BinderToVialRestPoint(self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
+        #self.arm.set_position(x=-272.5, y=-140, z=209, roll= 90, pitch= 91, yaw=0, speed=100*speedfactor, wait=True) #Start point INSIDE BINDER
         self.arm.set_position(z=140, relative=True, speed=40*speedfactor, wait=True)
         self.GoTo_Point("PipetteVialRest", 100*speedfactor)
         self.arm.set_position(z=-45, relative=True, speed=40*speedfactor, wait=True)   
     
     def VialRestPointToBinder(self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
-        self.GoTo_Point("PipetteVialRest", 40*speedfactor)
+        self.GoTo_Point("PipetteVialRest", 40*speedfactor)#Start point
         self.GoTo_Point("PipetteTip1", 120*speedfactor)
         self.arm.set_position(x=-9, y=-19, relative=True, speed=40*speedfactor, wait=True)
         self.arm.set_position(z=-95, relative=True, speed=40*speedfactor, wait=True)#still outside of vial
@@ -167,6 +172,7 @@ class Robot():
 
     def PuttingBackPipetteTip (self, tip_number, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
+        #self.arm.set_position(x=-337, y=-104.5, z=245, roll= 180, pitch= 90, yaw=0, speed=100*speedfactor, wait=True) #Start point INSIDE VIAL
         self.arm.set_position(z=60, relative=True, speed=40*speedfactor, wait=True)
         self.GoTo_Point("PipetteTip1", 120*speedfactor)
         self.GoTo_Tip(tip_number, speedfactor)
@@ -174,7 +180,7 @@ class Robot():
 
     def PuttingBackPipette (self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
-        self.GoTo_Point("PipettePoint", 100*speedfactor)
+        self.GoTo_Point("PipettePoint", 100*speedfactor)#Start point
         self.arm.set_position(x=-367, y=-212, z=250, roll= 90, pitch= 90, yaw=0, speed=60*speedfactor, wait=True) 
         self.arm.set_position(z=-56.8, relative=True, speed=30*speedfactor, wait=True)
         self.GripperAction("ReleasePipette")
@@ -183,7 +189,7 @@ class Robot():
     def VialToMixing (self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
         self.GripperAction("ReleasePipette")
-        self.GoTo_Point("VialRestPoint", 120*speedfactor)
+        self.GoTo_Point("VialRestPoint", 120*speedfactor)#Start point
         self.arm.set_position(z=-129, relative=True, speed=80*speedfactor, wait=True)#going down in the hole
         self.GripperAction("GrabVial")
         self.GoTo_Point("VialRestPoint", 80*speedfactor)
@@ -197,28 +203,29 @@ class Robot():
     def TurnOnHomogenizer (self, degree, speedfactor=1):#degree:10
         self.arm.set_linear_track_pos(200, wait=True)
         self.GripperAction("ReleaseHomogenizerDial")
+        self.GoTo_Point("MixerPoint", 100*speedfactor)#Start point
         self.arm.set_position(z=165, relative=True, speed=30*speedfactor, wait=True)
         self.arm.set_position(x=-10, y=-28, relative=True, speed=30*speedfactor, wait=True)
-        self.arm.set_gripper_position(510, wait=True)
+        self.GripperAction("GrabHomogenizerDial")
         self.arm.set_position(pitch=-degree, relative=True, speed=30*speedfactor, wait=True)
         self.savedegree = degree
-        self.arm.set_gripper_position(800, wait=True)
-        self.GoTo_Point("MixerPoint", 10*speedfactor)
+        self.GripperAction("ReleaseHomogenizerDial")
+        self.GoTo_Point("MixerPoint", 60*speedfactor)
 
     def TurnOffHomogenizer (self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
-        self.arm.set_gripper_position(800, wait=True)
-        self.GoTo_Point("MixerPoint", 10)
-        self.arm.set_position(z=165, pitch=-self.savedegree, relative=True, speed=30, wait=True)
-        self.arm.set_position(x=-10, y=-28, relative=True, speed=30, wait=True)
-        self.arm.set_gripper_position(510, wait=True)
-        self.arm.set_position(pitch=self.savedegree, relative=True, speed=30, wait=True)
-        self.arm.set_gripper_position(800, wait=True)
-        self.GoTo_Point("MixerPoint", 10)
+        self.GripperAction("ReleaseHomogenizerDial")
+        self.GoTo_Point("MixerPoint", 60*speedfactor)#Start point
+        self.arm.set_position(z=165, pitch=-self.savedegree, relative=True, speed=30*speedfactor, wait=True)
+        self.arm.set_position(x=-10, y=-28, relative=True, speed=30*speedfactor, wait=True)
+        self.GripperAction("GrabHomogenizerDial")
+        self.arm.set_position(pitch=self.savedegree, relative=True, speed=30*speedfactor, wait=True)
+        self.GripperAction("ReleaseHomogenizerDial")
+        self.GoTo_Point("MixerPoint", 60*speedfactor)
+        self.GoTo_InitialPoint()
 
 
     
-
 fixed_points = {
     "InitialPoint": (-228, 0, 133, 180, 90, 0),
     "VialStoragePoint": (-273, -100.5, 125, 90, 90, 0),
@@ -259,5 +266,5 @@ gripper_position = {
     "ReleasePipette": (800, True),
     "GrabPipette": (380, True),
     "ReleaseHomogenizerDial": (800, True),
-
+    "GrabHomogenizerDial": (510, True),
 }
