@@ -3,12 +3,12 @@ import sys
 import time
 
 from xarm.wrapper import XArmAPI
-from Robot_wrapper import *
+from Testing.Robot_wrapper import *
 from Drivers.scale_driver import *
 from Drivers.motor_driver import *
 from Drivers.pipette_driver import *
 from PaperTest.Dispensing_wrapper_robot import *
-from Overall_wrapper import *
+#from Testing.Overall_wrapper import *
 
 ##Initializing and setting up all systems:
 
@@ -36,7 +36,7 @@ dispenser_motor = Motor(motors, 0)
 dispenser_motor.check_connection()
 
 time.sleep(10)
-dispenser_motor.move(5000)
+dispenser_motor.move(100)
 
 
 #Pipette Connection
@@ -50,12 +50,17 @@ my_calibration = Calibration(100,100,"Test","NA", "NA")
 my_calibration.calibrate([5, 15, 30, 70], 2, dispenser_motor, scale, robot, "Vial1")
 my_calibration.save_calibration()
 
-#Dispensing
-dispense_precisely(0.9, 2, "Vial2")
 
-#Pipetting
-Pipetting(3000, "1")
+robot.GoTo_Point("DispenserPoint", 20)
 
-#Mixing
-StartingMixing(10)
-StoppingMixing()
+robot.GoTo_Point("Dispenser1", 10)
+
+robot.GripperAction("ReleaseVial")
+
+
+
+robot.PickUpVial("Vial1")
+robot.VialToScale()
+robot.ScaleToDispenser2()
+robot.Dispenser2ToScale()
+robot.ScaleToVialRestPoint()
