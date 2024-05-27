@@ -7,15 +7,15 @@ from Robot_wrapper import *
 from Drivers.scale_driver import *
 from Drivers.motor_driver import *
 from Drivers.pipette_driver import *
-from dispensing_wrapper import *
+from PaperTest.Dispensing_wrapper_robot import *
 from Overall_wrapper import *
 
 ##Initializing and setting up all systems:
 
 coms = {
     'scaleCom': 'COM7',
-    'motorsCom': 'COM5',
-    'pipetteCom': 'COM6'
+    'motorsCom': 'COM9',
+    #'pipetteCom': 'COM6'
 }
 
 #Robot Connection
@@ -34,6 +34,10 @@ homogenizer_motor = Motor(motors, 1)
 homogenizer_motor.check_connection()
 dispenser_motor = Motor(motors, 0)
 dispenser_motor.check_connection()
+
+time.sleep(10)
+dispenser_motor.move(5000)
+
 
 #Pipette Connection
 pipette = Pipette(coms['pipetteCom'])
