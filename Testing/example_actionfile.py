@@ -64,3 +64,5 @@ robot.VialToScale()
 robot.ScaleToDispenser2()
 robot.Dispenser2ToScale()
 robot.ScaleToVialRestPoint()
+
+robot.GoTo_Point("Dispenser1", 20)

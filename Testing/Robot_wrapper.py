@@ -251,8 +251,8 @@ fixed_points = {
     "Vial0": (-273, -100.5, -33, 90, 90, 0),
     "Scale":(-287, 120, 92, -90, 90, 0),
     "DispenserPoint": (-400, 50, 92, 180, 90, 0),
-    "Dispenser1": (-537, -98, 40, 180, 90, 0),
-    "Dispenser2": (-537, 52, 40, 180, 90, 0),
+    #"Dispenser1": (-537, -98, 40, 180, 90, 0) #the one on the right
+    "Dispenser1": (-537, 52, 40, 180, 90, 0),#the one on the left
     "VialRestPoint": (-367.5, -102.5, 92, 180, 90, 0),
     "PipettePoint": (-370, -110, 250, 90, 91, 0),
     "PipetteTip1": (-263.5, -121, 370, 90, 91, 0),
