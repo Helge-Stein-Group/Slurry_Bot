@@ -31,10 +31,7 @@ class Calibration:
 
     def test_function(self):
         print("Test successful")
-        print("Somthing else")
-        print("Another thing")
-        print("Nothing")
-        print("Test successful")
+    
 
     def calibrate(self, steps, repeat, vial_number):
         weights = np.zeros((len(steps), repeat))  # Initialize array to store weights
