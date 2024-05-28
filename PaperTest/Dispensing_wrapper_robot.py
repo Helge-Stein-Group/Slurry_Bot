@@ -29,6 +29,13 @@ class Calibration:
         self.scale = scale
         self.robot = robot
 
+    def test_function(self):
+        print("Test successful")
+        print("Somthing else")
+        print("Another thing")
+        print("Nothing")
+        print("Test successful")
+
     def calibrate(self, steps, repeat, vial_number):
         weights = np.zeros((len(steps), repeat))  # Initialize array to store weights
         first_action = True
@@ -128,7 +135,7 @@ class Dispensing:
         self.scale = scale
         self.robot = robot
 
-    def dispense(weight:float, cal_id:int):
+    def dispense(self, weight:float, cal_id:int):
         #assumes initial vial position on scale
         with open('Calibration_File.csv', 'r') as cal_file:
             reader = csv.DictReader(cal_file)
