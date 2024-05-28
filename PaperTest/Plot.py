@@ -27,8 +27,8 @@ line = slope * np.array(steps) + intercept
 # R2-Score berechnen
 r2_score = r_value**2
 
-# Plot
-plt.figure(figsize=(3.5, 3.5))  # figsize als 3.5 inches setzen
+# Plot1
+plt.figure(figsize=(3.5, 3.5)) 
 plt.errorbar(steps, avg_weights, yerr=std_weight, fmt='o', capsize=5, label='Measured Data')  # Fehlerbalken hinzufügen
 plt.plot(steps, line, color='red', label=f'Linear Fit (R2 Score: {r2_score:.2f})')  # Linearen Fit hinzufügen
 plt.xlabel('Steps [ ]')  # x-Achse mit Einheit
@@ -38,11 +38,23 @@ plt.legend()  # Legende hinzufügen
 plt.grid(True)  # Gitter hinzufügen
 plt.tight_layout()  # Layout anpassen, um Überlappungen zu vermeiden
 
-# Plot als SVG exportieren
-plt.savefig('plot.svg', format='svg')
+# Export Plot
+plt.savefig('CalibrationCurve_plot.svg', format='svg')
+plt.savefig('CalibrationCurve_plot.png', format='png')
 
-# Plot als PNG exportieren
-plt.savefig('plot.png', format='png')
+# Plot2
+plt.figure(figsize=(3.5, 3.5))
+plt.plot(steps, std_weight, fmt='o', capsize=5, label='Standard error for amount of steps')
+plt.xlabel('Steps [ ]')  # x-Achse mit Einheit
+plt.ylabel('Standard error [g]')  # y-Achse mit Einheit
+plt.title('Measurements with Error Bars')  # Titel des Plots
+plt.legend()  # Legende hinzufügen
+plt.grid(True)  # Gitter hinzufügen
+plt.tight_layout()  # Layout anpassen, um Überlappungen zu vermeiden
+
+# Export Plot
+plt.savefig('Error_plot.svg', format='svg')
+plt.savefig('Error_plot.png', format='png')
 
 # Anzeigen
 plt.show()
