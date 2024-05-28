@@ -52,16 +52,18 @@ class Scale:
         self.conf = conf
         self.baud = baud
         self.timeout = timeout
-        try: 
-            self.ser = serial.Serial(conf, baud, timeout=timeout)
-        except serial.SerialException:
-            print('Unable to connect to the scale or scale is already connected. Check the com port and try again.')
-            #sys.exit(1) #Exiting the program if the scale is not connected.
+        self.ser = None
+        #try: 
+        #    self.ser = serial.Serial(conf, baud, timeout=timeout)
+       # except serial.SerialException:
+        #    print('Unable to connect to the scale or scale is already connected. Check the com port and try again.')
+        #    #sys.exit(1) #Exiting the program if the scale is not connected.
 
     def connect(self):
         """ establishes a new serial connection """
         if self.ser is None:
-            self.ser = serial.Serial(*self._serial_args, **self._serial_kargs)
+            #self.ser = serial.Serial(*self._serial_args, **self._serial_kargs)
+            self.ser = serial.Serial(self.conf, self.baud, timeout=self.timeout)
 
     def open(self):
         """ establishes a new serial connection
