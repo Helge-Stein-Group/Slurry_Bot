@@ -39,6 +39,13 @@ class Calibration:
     def calibrate(self, steps, repeat, vial_number):
         weights = np.zeros((len(steps), repeat))  # Initialize array to store weights
         first_action = True
+
+        # Create a file to save raw data
+        raw_data_filename = f'raw_calibration_data_{self.material}_{self.version_inside}.csv'
+        with open(raw_data_filename, 'w', newline='') as raw_file:
+            writer = csv.writer(raw_file)
+            writer.writerow(["Step", "Weight"])
+            
         for i in range(repeat):
             print(f"Repeat: {i+1}")
             for idx, step in enumerate(steps):
@@ -57,12 +64,15 @@ class Calibration:
                 # Move vial from dispensing unit on scale
                 self.robot.Dispenser2ToScale()
                 time.sleep(2)
-                weights[idx, i] = self.scale.measure_stable().value
+                weight = self.scale.measure_stable().value
+                weights[idx, i] = weight
+                #weights[idx, i] = self.scale.measure_stable().value
                 print(f"Step: {step}, Weight: {weights[idx, i]}")
-                #print("Empty vial if neccessary")
-                #while user_input.lower() != "y":
-                 #   user_input = input("Press 'y' to continue:")
-                #user_input = " "
+
+                # Save the raw data immediately after each measurement
+                with open(raw_data_filename, 'a', newline='') as raw_file:
+                    writer = csv.writer(raw_file)
+                    writer.writerow([step, weight])
 
         # Move vial from scale to storage
         self.robot.ScaleToVialRestPoint()
