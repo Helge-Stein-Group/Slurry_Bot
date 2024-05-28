@@ -46,6 +46,7 @@ class Calibration:
         for i in range(repeat):
             print(f"Repeat: {i+1}")
             for idx, step in enumerate(steps):
+                self.scale.open()
                 if first_action == True:
                     # Move vial from Storage on scale
                     self.robot.PickUpVial(vial_number)
@@ -70,6 +71,10 @@ class Calibration:
                 with open(raw_data_filename, 'a', newline='') as raw_file:
                     writer = csv.writer(raw_file)
                     writer.writerow([step, weight])
+
+                self.scale.close()
+                print("Scale closed")
+                time.sleep(5)
 
         # Move vial from scale to storage
         self.robot.ScaleToVialRestPoint()

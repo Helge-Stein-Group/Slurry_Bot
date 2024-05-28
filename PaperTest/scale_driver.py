@@ -128,9 +128,6 @@ class Scale:
         if raw_data_lines:
             raw_data = raw_data_lines[0]
             return parse_measurement(raw_data)
-            self.close()
-            time.sleep(1)
-            self.open()
         else:
             # propably serial connection timeout
             return Measurement(None, None, None, None, "Connection Timeout")
