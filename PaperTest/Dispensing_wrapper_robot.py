@@ -4,7 +4,7 @@ import time
 import os
 import csv
 
-from Testing.Robot_wrapper import *
+from Robot_wrapper import *
 
 class Calibration:
     def __init__(self, acceleration, speed, material, version_inside, version_outside, motor, scale, robot):
@@ -33,6 +33,7 @@ class Calibration:
         weights = np.zeros((len(steps), repeat))  # Initialize array to store weights
         first_action = True
         for i in range(repeat):
+            print(f"Repeat: {i+1}")
             for idx, step in enumerate(steps):
                 if first_action == True:
                     # Move vial from Storage on scale
@@ -42,14 +43,20 @@ class Calibration:
                 time.sleep(2)
                 self.scale.tare()
                 # Move vial from scale under dispensing unit 
-                self.robot.ScaleToDispenser1()
+                self.robot.ScaleToDispenser2()
                 time.sleep(2)
                 self.motor.move(step)
                 time.sleep(2)
                 # Move vial from dispensing unit on scale
-                self.robot.Dispenser1ToScale()
+                self.robot.Dispenser2ToScale()
                 time.sleep(2)
                 weights[idx, i] = self.scale.measure_stable().value
+                print(f"Step: {step}, Weight: {weights[idx, i]}")
+                #print("Empty vial if neccessary")
+                #while user_input.lower() != "y":
+                 #   user_input = input("Press 'y' to continue:")
+                #user_input = " "
+
         # Move vial from scale to storage
         self.robot.ScaleToVialRestPoint()
         self.robot.GoTo_Point("VialRestPoint", 20)

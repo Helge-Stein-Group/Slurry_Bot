@@ -4,10 +4,10 @@ import time
 
 from xarm.wrapper import XArmAPI
 from Testing.Robot_wrapper import *
-from Drivers.scale_driver import *
+#from Drivers.scale_driver import *
 from Drivers.motor_driver import *
-from Drivers.pipette_driver import *
-from PaperTest.Dispensing_wrapper_robot import *
+#from Drivers.pipette_driver import *
+#from PaperTest.Dispensing_wrapper_robot import *
 #from Testing.Overall_wrapper import *
 
 ##Initializing and setting up all systems:
@@ -65,4 +65,4 @@ robot.ScaleToDispenser2()
 robot.Dispenser2ToScale()
 robot.ScaleToVialRestPoint()
 
-robot.GoTo_Point("Dispenser1", 20)
+

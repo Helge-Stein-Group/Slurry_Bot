@@ -102,7 +102,7 @@ class Robot():
         self.arm.set_position(z=39.5, relative=True, speed=50*speedfactor, wait=True)#moving up on the scale
         self.GoTo_Point("Scale", 80*speedfactor)#moving out of the scale 
         self.GoTo_Point("DispenserPoint", 250*speedfactor)
-        self.GoTo_Point("Dispenser2", 60*speedfactor)
+        self.arm.set_position(x=-537, y=52, z=40, roll=180, pitch=90, yaw=0, speed=50*speedfactor, wait=True)#Dispenser2
         self.arm.set_position(z=35, relative=True, speed=20*speedfactor, wait=True)#closing the dispenser with the vial, needs adjustemnt as soon as the new piece is printed 
         
     def Dispenser1ToScale(self, speedfactor=1):
@@ -116,7 +116,7 @@ class Robot():
 
     def Dispenser2ToScale(self, speedfactor=1):
         self.arm.set_linear_track_pos(600, wait=True)
-        self.GoTo_Point("Dispenser2", 20*speedfactor)#Start point
+        self.arm.set_position(x=-537, y=52, z=40, roll=180, pitch=90, yaw=0, speed=50*speedfactor, wait=True)#Dispenser2
         self.GoTo_Point("DispenserPoint", 30*speedfactor)
         self.GoTo_Point("Scale", 250*speedfactor)
         self.arm.set_position(y=130, relative=True, speed=80*speedfactor, wait=True)#moving into the scale
