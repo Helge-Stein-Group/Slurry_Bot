@@ -102,7 +102,7 @@ class Robot():
         self.arm.set_position(z=39.5, relative=True, speed=50*speedfactor, wait=True)#moving up on the scale
         self.GoTo_Point("Scale", 80*speedfactor)#moving out of the scale 
         self.GoTo_Point("DispenserPoint", 250*speedfactor)
-        self.arm.set_position(x=-537, y=52, z=40, roll=180, pitch=90, yaw=0, speed=50*speedfactor, wait=True)#Dispenser2
+        self.GoTo_Point("Dispenser2", 60*speedfactor)#Start point#Dispenser2
         self.arm.set_position(z=35, relative=True, speed=20*speedfactor, wait=True)#closing the dispenser with the vial, needs adjustemnt as soon as the new piece is printed 
         
     def Dispenser1ToScale(self, speedfactor=1):
@@ -116,7 +116,7 @@ class Robot():
 
     def Dispenser2ToScale(self, speedfactor=1):
         self.arm.set_linear_track_pos(600, wait=True)
-        self.arm.set_position(x=-537, y=52, z=40, roll=180, pitch=90, yaw=0, speed=50*speedfactor, wait=True)#Dispenser2
+        self.GoTo_Point("Dispenser2", 20*speedfactor)#Start point
         self.GoTo_Point("DispenserPoint", 30*speedfactor)
         self.GoTo_Point("Scale", 250*speedfactor)
         self.arm.set_position(y=130, relative=True, speed=80*speedfactor, wait=True)#moving into the scale
@@ -251,8 +251,8 @@ fixed_points = {
     "Vial0": (-273, -100.5, -33, 90, 90, 0),
     "Scale":(-287, 120, 92, -90, 90, 0),
     "DispenserPoint": (-400, 50, 92, 180, 90, 0),
-    #"Dispenser1": (-537, -98, 40, 180, 90, 0) #the one on the right
-    "Dispenser1": (-537, 52, 40, 180, 90, 0),#the one on the left
+    "Dispenser1": (-537, -98, 40, 180, 90, 0) #the one on the right
+    "Dispenser2": (-537, 52, 40, 180, 90, 0),#the one on the left
     "VialRestPoint": (-367.5, -102.5, 92, 180, 90, 0),
     "PipettePoint": (-370, -110, 250, 90, 91, 0),
     "PipetteTip1": (-263.5, -121, 370, 90, 91, 0),
