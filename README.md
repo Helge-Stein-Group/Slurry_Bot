@@ -1,4 +1,4 @@
-# SlurryBot
+# SlurryBot 
 
 The SlurryBot system automates the dispensing, weighing, and mixing of electrode slurries for battery production. It forms a component of a larger automated pouch cell assembly system currently under development by the Digital Catalysis Group at the Technical University of Munich, under the supervision of Prof. Helge Stein. This document serves as a comprehensive guide for constructing and operating the SlurryBot system.
 
@@ -13,6 +13,9 @@ The SlurryBot system automates the dispensing, weighing, and mixing of electrode
 ## Motors and Wiring
 ## Scale Setup for a Sartorius Secura 
 ## Pipette Control for a Sartorius rLINE
+
+
+
 
 ## Motor Driver for Stepper Motor
 
