@@ -2,7 +2,7 @@
 
 ##### Table of Contents  
 [XArm Robot](#XArm Robot)  
-<a name="XArm Robot"/>
+<a name="xarm robot"/>
 ## XArm Robot
 
 ## Motor Driver for Stepper Motor
