@@ -1,12 +1,17 @@
 # SlurryBot
 
-# Motor Driver for Stepper Motor
+##### Table of Contents  
+[XArm Robot](#XArm Robot)  
+<a name="XArm Robot"/>
+## XArm Robot
+
+## Motor Driver for Stepper Motor
 
 This driver gives you the ability to communicate with a NEMA 17 stepper motor, using an arduino nano, and A4988 motor driver through a serial port USB connection.
 
-## Getting Started
+### Getting Started
 
-### Wiring
+#### Wiring
 
 Please wire the motor, arduino, and driver together using the diagram below.
 
