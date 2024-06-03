@@ -17,35 +17,35 @@ This setup and driver give you the ability to communicate with a Sartorius brand
 
 The manual for this scale can be found [here](https://www.ricelake.com/media/nwmbmkzb/m_sartorius_user_manual_secura_quintix_practum.pdf).
 
-## Getting Started
+### Getting Started
 
-### Scale Settings
+#### Scale Settings
 
 1. Insure that under "USB Port" setting the device protocol is set to PC-SBI. 
 2. Set the "Printout" status to manual with stability.
 3. Confirm that in the "Calibration/Adjustment" settings section isoCAL is set to "Info, manual start."
 
-### Setup
+#### Setup
 
 1. Turn on scale and manually level.
 2. Connect the scale via a USB cable.
 
-## Features
+### Features
 
 - Communicate with the scale to get weight measurements
 - Process scale responses and raw data
 - Configure the scale settings
 - Error handling for scale communication
 
-### Tare and Calibration
+#### Tare and Calibration
 
 To tare the scale use `tare()` and to preform an internal callibration use `intCal()`.
 
-### Measuring
+#### Measuring
 
 To get a simple weight measurement use the `measure()` or `measure_stable()` functions. 
 
-## Example
+### Example
 
 ```python
 
