@@ -1,9 +1,13 @@
 # SlurryBot
 
 ##### Table of Contents  
-([#XArm Robot](https://github.com/Helge-Stein-Group/Slurry_Bot/blob/main/README.md#xarm-robot))
+[XArm Robot](https://github.com/Helge-Stein-Group/Slurry_Bot/blob/main/README.md#xarm-robot)
+
 
 ## XArm Robot
+## Motors and Wiring
+## Scale Setup for a Sartorius Secura 
+## Pipette Control for a Sartorius rLINE
 
 ## Motor Driver for Stepper Motor
 
