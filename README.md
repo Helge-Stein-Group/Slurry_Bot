@@ -1,8 +1,8 @@
 # SlurryBot
 
 ##### Table of Contents  
-[XArm Robot](#XArm Robot)  
-<https://github.com/Helge-Stein-Group/Slurry_Bot/blob/main/README.md#xarm-robot name="xarm robot"/>
+([#XArm Robot](https://github.com/Helge-Stein-Group/Slurry_Bot/blob/main/README.md#xarm-robot))
+
 ## XArm Robot
 
 ## Motor Driver for Stepper Motor
