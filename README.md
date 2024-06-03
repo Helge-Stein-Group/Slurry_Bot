@@ -1,4 +1,4 @@
-# SlurryBot 🔋🤖
+# SlurryBot 🔋🤖🧪
 
 The SlurryBot system automates the dispensing, weighing, and mixing of electrode slurries for battery production. It forms a component of a larger automated pouch cell assembly system currently under development by the Digital Catalysis Group at the Technical University of Munich, under the supervision of Prof. Helge Stein. This document serves as a comprehensive guide for constructing and operating the SlurryBot system.
 
@@ -12,6 +12,51 @@ The SlurryBot system automates the dispensing, weighing, and mixing of electrode
 ## XArm Robot
 ## Motors and Wiring
 ## Scale Setup for a Sartorius Secura 
+
+This setup and driver give you the ability to communicate with a Sartorius brand Secura scale through a serial port USB connection.
+
+The manual for this scale can be found [here](https://www.ricelake.com/media/nwmbmkzb/m_sartorius_user_manual_secura_quintix_practum.pdf).
+
+## Getting Started
+
+### Scale Settings
+
+1. Insure that under "USB Port" setting the device protocol is set to PC-SBI. 
+2. Set the "Printout" status to manual with stability.
+3. Confirm that in the "Calibration/Adjustment" settings section isoCAL is set to "Info, manual start."
+
+### Setup
+
+1. Turn on scale and manually level.
+2. Connect the scale via a USB cable.
+
+## Features
+
+- Communicate with the scale to get weight measurements
+- Process scale responses and raw data
+- Configure the scale settings
+- Error handling for scale communication
+
+### Tare and Calibration
+
+To tare the scale use `tare()` and to preform an internal callibration use `intCal()`.
+
+### Measuring
+
+To get a simple weight measurement use the `measure()` or `measure_stable()` functions. 
+
+## Example
+
+```python
+
+from scale_driver import Scale
+
+my_scale = Scale('COM7',9600,timeout=3) # Adjust these to your specific system
+my_scale.tare()
+my_scale.measure()
+
+```
+
 ## Pipette Control for a Sartorius rLINE
 
 
@@ -73,54 +118,9 @@ motor.close()
 ```
 
 
-# Scale Driver for a Sartorius Secura 
-
-This driver gives you the ability to communicate with a Sartorius brand Secura scale through a serial port USB connection.
-
-## Getting Started
-
-### Scale Settings
-
-1. Insure that the device protocol is set to PC-SBI. 
-2. The print function should be set to manual without stability. 
-
-### Setup
-
-1. Clone the repository.
-2. Turn on scale and manually level.
-3. Connect the scale via a USB cable.
-4. Open example.py and adapt it to fit your application.
-
-
-## Features
-
-- Communicate with the scale to get weight measurements
-- Process scale responses and raw data
-- Configure the scale settings
-- Error handling for scale communication
-
-### Tare and Calibration
-
-To tare the scale use `tare()` and to preform an internal callibration use `isocal()`.
-
-### Measuring
-
-To get a simple weight measurement use the `getWeight()`. If you would like to take a longer measurement over a given time period use the `collectWeightTillTime()`. If you would like to take a meaurement till a given weight is reached then use the `collectWeightTillMix()`.
-
-## Example
-
-```python
-
-from scale_driver import Scale
-
-my_scale = Scale('COM7',9600,timeout=3)
-my_scale.tare()
-my_scale.getWeight()
-
-```
-
 ## Contact
 
+Leah Nuss - leah.nuss@tum.de or
 Danika Heaney - danika.heaney@tum.de or 
 Helge Stein - helge.stein@tum.de
 
