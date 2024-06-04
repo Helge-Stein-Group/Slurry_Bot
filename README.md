@@ -24,22 +24,30 @@ The NEMA 17 motor can be operated using an A4988 driver and a 9-volt power suppl
 
 #### Wiring of NEMA 23
 
+The NEMA 23 is a larger and more powerful motor which is operated with a TB6600 motor driver and a 12 volt power supply. (ADD WIRING DIAGRAM HERE AND DISCRIBE)
 
 ### Arduino Setup
 
 1. Plug your Arduino Nano into your computer.
 2. Download the [Arduino IDE software](https://www.arduino.cc/en/software).
 3. In the Library Manager make sure to install the AccelStepper.h library. 
-4. Copy the code in the file [arduino_motor_code.ino](arduino_motor_code.ino) into the Arduino IDE editor and compile and upload the code to your arduino.
+4. Copy the code in the file [arduino_motor_code.ino](https://github.com/Helge-Stein-Group/Slurry_Bot/blob/14724c3a567890dc80b1c11155cd3a25eb4a3e9f/Drivers/arduino_motor_code.ino) into the Arduino IDE editor and compile and upload the code to your arduino.
 5. **If the code will not upload, try going to the Tools tab ans switching the Processor to the Old Bootloader.**
 6. Once your code has properly compiled and uploaded to your arduino then you are ready to run the python driver.
 
 ### Python Setup
 
-1. Clone this repository.
-2. Connect your computer to the Arduino via a USB cable. (If it is not already connected.)
-3. Confirm the COM Port of your connection using the device manager.
-5. Open example.py and run it to check the connetion to the motor.
+1. Connect your computer to the Arduino via a USB cable. (If it is not already connected.)
+2. Confirm the COM Port of your connection using the device manager.
+3. Open a file and run this testing code:
+
+```
+motors = SerialConnection('COM1', 9600, 10)
+motor_1 = Motor(motors, 0)
+motor_2 = Motor(motors, 1)
+motor_1.check_connection()
+motor_2.check_connection()
+```
 
 ## Features
 
@@ -49,7 +57,7 @@ You can set the max speed using `setSpeed()` and I would recommend a speed aroun
 
 ### Moving the Motor
 
-To get a simple movement of the motor use `move()`. The integer value that you give this function will determine the number of steps the motor takes. For example, if you would like it to make a full circle use `move(200)`.
+To get a simple movement of the motor use `move()`. The integer value that you give this function will determine the number of steps the motor takes. For example, if you would like it to make a full circle use `move(200)`. When opperating the linear rail you can use the functions `moveUp()` and `moveDown()`.
 
 ## Example
 
