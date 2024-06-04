@@ -18,14 +18,14 @@ This section provides an overview of the wiring and motor control within the sys
 
 #### Wiring of NEMA 17
 
-The NEMA 17 motor can be run using a A
-Please wire the motor, arduino, and driver together using the diagram below.
+The NEMA 17 motor can be operated using an A4988 driver and a 9-volt power supply. Ensure that the switches on the A4988 driver are in the off position, then wire the motor, Arduino, and driver together according to the diagram below. In this diagram, the Arduino pins D2 and D3 are connected to the driver's S and D pins, respectively, meaning in the Python code, this motor would be referred to as motor 0. Motor 1 would be wired to pins D4 and D5, Motor 2 to pins D6 and D7, and so on.
 
+<img src="https://github.com/Helge-Stein-Group/Slurry_Bot/assets/148461262/1e0f1947-3164-45df-9854-c35ab379af1b" width="100" height="100"/>
+Old one:
 ![wiring_diagram](https://github.com/Helge-Stein-Group/Slurry_Bot/assets/148461262/1e0f1947-3164-45df-9854-c35ab379af1b)
 
 #### Wiring of NEMA 23
 
-Insure that the switches on the A4988 driver are in the off position and the pins D3 and D2 are wired to the driver at D and S, respectively.
 
 ### Arduino Setup
 
