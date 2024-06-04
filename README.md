@@ -30,7 +30,7 @@ The NEMA 17 motor can be operated using an A4988 driver and a 9-volt power suppl
 1. Plug your Arduino Nano into your computer.
 2. Download the [Arduino IDE software](https://www.arduino.cc/en/software).
 3. In the Library Manager make sure to install the AccelStepper.h library. 
-4. Copy the code in the file [arduino_motor.ino](arduino_motor.ino) into the Arduino IDE editor and compile and upload the code to your arduino.
+4. Copy the code in the file [arduino_motor_code.ino](arduino_motor_code.ino) into the Arduino IDE editor and compile and upload the code to your arduino.
 5. **If the code will not upload, try going to the Tools tab ans switching the Processor to the Old Bootloader.**
 6. Once your code has properly compiled and uploaded to your arduino then you are ready to run the python driver.
 
@@ -119,8 +119,8 @@ my_scale.measure()
 
 ## Contact
 
-Leah Nuss - leah.nuss@tum.de or
-Danika Heaney - danika.heaney@tum.de or 
+Leah Nuss - leah.nuss@tum.de <br/>
+Danika Heaney - danika.heaney@tum.de <br/>
 Helge Stein - helge.stein@tum.de
 
 ## Acknowledgements
