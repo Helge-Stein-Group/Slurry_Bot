@@ -99,6 +99,10 @@ class Scale:
             else:
                 continue
 
+    def IntCal(self):
+        self.send(CMD_ADJUST_INTERNAL)
+
+
     def readline(self):
         """ reads bytes from the serial connection until a newline """
         return self.ser.readline()
