@@ -44,7 +44,7 @@ class Calibration:
             writer.writerow(["Step", "Weight"])
             
         for i in range(repeat):
-            if i == 5:
+            if i in [3, 6]:
                 time.sleep(20)
             print(f"Repeat: {i+1}")
             for idx, step in enumerate(steps):
@@ -66,6 +66,7 @@ class Calibration:
                 self.robot.Dispenser1ToScale()
                 time.sleep(2)
                 weight = self.scale.measure_stable().value
+
                 weights[idx, i] = weight
                 #weights[idx, i] = self.scale.measure_stable().value
                 print(f"Step: {step}, Weight: {weights[idx, i]}")

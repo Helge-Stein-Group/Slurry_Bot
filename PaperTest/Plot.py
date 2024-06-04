@@ -6,13 +6,14 @@ from scipy.stats import linregress
 
 # Style auf 'science' mit dem Stil 'Nature' und 'No Latex' setzen
 style.use(['science', 'nature', 'no-latex'])
+style.available
 
 # Daten aus der Kalibrierungsdatei lesen
 steps = []
 avg_weights = []
 std_weight = []
 std_rel_weight = []
-with open('report_cal_id_1_Wed_May_15_150151_2024.csv', 'r') as file:
+with open('PaperTest/report_cal_id_5_Tue_Jun__4_142036_2024.csv', 'r') as file:
     reader = csv.DictReader(file)
     for row in reader:
         steps.append(float(row['Steps']))

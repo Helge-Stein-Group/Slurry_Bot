@@ -138,13 +138,17 @@ class Scale:
             # propably serial connection timeout
             return Measurement(None, None, None, None, "Connection Timeout")
     
-    def measure_stable(self):   
-        while True:  
-            measurement = self.measure() 
+    #def measure_stable(self):   
+        #while True:  
+            #measurement = self.measure() 
             
-            if measurement.stable: 
+            #if measurement.stable: 
                 #print(str(measurement))
-                return measurement  
+                #return measurement  
+
+    def measure_stable(self):
+        measurement = self.measure() 
+        return measurement 
 
         
     def __enter__(self):
