@@ -10,6 +10,14 @@ The SlurryBot system automates the dispensing, weighing, and mixing of electrode
 [Dispensing Model Assembly](https://github.com/Helge-Stein-Group/Slurry_Bot/blob/main/README.md#dispensing-model-assembly)
 
 ## XArm Robot
+
+The six axis XArm robot is responsable for the movment of vials, pipetting, and other physical tasks...
+
+### Getting Started 
+
+`pip install xArm-Python-SDK`
+
+
 ## Motors and Wiring
 
 This section provides an overview of the wiring and motor control within the system. The motor driver enables communication via a serial port USB connection, allowing control of up to six NEMA 17 or 23 stepper motors, all connected to a single Arduino Nano.
@@ -117,6 +125,22 @@ my_scale.measure()
 
 ## Pipette Control for a Sartorius rLINE
 
+EDIT THIS! This is the driver to the pippeting robot rLINE® 1-ch 200 µl dispensing module from Sartorius. The hardware is connected to your PC via USB-B
+
+For a quick start, refer to the script "rLine.py", you will first need to correctlly configure the port of your setup and put it into the script.
+
+The hardware need to initiate a connection with your PC everytime it starts up. Use the initiate_rline function to establisch the connection, usually it will take a couple of seconds.
+
+The most useful functions you would use are:
+
+aspirate
+dispense
+clear_and_reset
+reset
+blowout
+eject
+disconnect_pipette
+After usage, you need to run disconnect_pipette function to properly disconnect the pipette.
 
 ## Dispensing Model Assembly
 
