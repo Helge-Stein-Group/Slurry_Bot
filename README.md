@@ -40,15 +40,8 @@ The NEMA 23 is a larger and more powerful motor which is operated with a TB6600 
 
 1. Connect your computer to the Arduino via a USB cable. (If it is not already connected.)
 2. Confirm the COM Port of your connection using the device manager.
-3. Open a file and run this testing code:
+3. To test the setup you should open a file and run the testing code in the example section below.
 
-```
-motors = SerialConnection('COM1', 9600, 10)
-motor_1 = Motor(motors, 0)
-motor_2 = Motor(motors, 1)
-motor_1.check_connection()
-motor_2.check_connection()
-```
 
 ## Features
 
@@ -66,11 +59,13 @@ To get a simple movement of the motor use `move()`. The integer value that you g
 
 from motor_driver import Motor
 
-motor = Motor('COM11', 9600, timeout=3) #add your specific com port here
-motor.setAcceleration(10)
-motor.setSpeed(100)
-motor.move(100)
-motor.close()
+motors = SerialConnection('COM1', 9600, 10) #add your specific com port here
+motor_1 = Motor(motors, 0)
+motor_1.check_connection()
+motor_1.setAcceleration(10)
+motor_1.setSpeed(100)
+motor_1.move(100)
+motor_1.close()
 
 ```
 
