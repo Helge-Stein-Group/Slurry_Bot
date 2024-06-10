@@ -2,7 +2,7 @@
 
 The SlurryBot system automates the dispensing, weighing, and mixing of electrode slurries for battery production. It forms a component of a larger automated pouch cell assembly system currently under development by the Digital Catalysis Group at the Technical University of Munich, under the supervision of Prof. Helge Stein. This document serves as a comprehensive guide for constructing and operating the SlurryBot system.
 
-<img src="https://github.com/Helge-Stein-Group/Slurry_Bot/blob/3c1a557d6fe76c7eba93cc6abedd6eded894a3c7/slurry_robot_system.png" width="500" height="500"/>
+<img src="https://github.com/Helge-Stein-Group/Slurry_Bot/blob/3c1a557d6fe76c7eba93cc6abedd6eded894a3c7/slurry_robot_system.png" width="500"/>
 
 #### Table of Contents  
 [XArm Robot](https://github.com/Helge-Stein-Group/Slurry_Bot/blob/main/README.md#xarm-robot)<br />
