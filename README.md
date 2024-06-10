@@ -13,7 +13,7 @@ The SlurryBot system automates the dispensing, weighing, and mixing of electrode
 
 ## XArm Robot
 
-The six-axis XArm robot is responsible for the movement of vials, pipetting, and other physical tasks within the automated system. The robot can be controlled using the Python driver provided by the manufacturer.
+The six-axis XArm robot is responsible for the movement of vials, pipetting, and other physical tasks within the automated system. A manual for the xArm 6 can be found [here](https://www.ufactory.cc/wp-content/uploads/2023/05/xArm-User-Manual-V2.0.0.pdf). The robot can be controlled using the Python driver provided by the manufacturer.
 
 ### Getting Started 
 
