@@ -20,7 +20,7 @@ The six-axis XArm robot is responsible for the movement of vials, pipetting, and
 #### Setup
 
 1. In your terminal run `pip install xArm-Python-SDK`
-2. 1. Follow the setup directions provided in the manual. A manual for the xArm 6 can be found [here](https://www.ufactory.cc/wp-content/uploads/2023/05/xArm-User-Manual-V2.0.0.pdf).
+2. Follow the setup directions provided in the manual. A manual for the xArm 6 can be found [here](https://www.ufactory.cc/wp-content/uploads/2023/05/xArm-User-Manual-V2.0.0.pdf).
 3. Ensure that your IP address is set correctly to 192.168.1.*.
 4. Clone this whole repository and run the robot testing code in the testing_ground.py file. 
 
