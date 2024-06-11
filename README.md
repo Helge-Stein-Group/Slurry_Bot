@@ -40,6 +40,8 @@ The NEMA 17 motor can be operated using an A4988 driver and a 9-volt power suppl
 
 The NEMA 23 is a larger and more powerful motor which is operated with a TB6600 motor driver and a 12 volt power supply. (ADD WIRING DIAGRAM HERE AND DISCRIBE)
 
+<img src="https://github.com/Helge-Stein-Group/Slurry_Bot/blob/35829d3e5a5cdf57512fba0788122d6e9e0ffcd1/wiring_diagram_2.jpeg" width="500" height="500"/>
+
 ### Arduino Setup
 
 1. Download the file [motor_driver.py](https://github.com/Helge-Stein-Group/Slurry_Bot/blob/14724c3a567890dc80b1c11155cd3a25eb4a3e9f/Drivers/motor_driver.py).
