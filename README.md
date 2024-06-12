@@ -22,7 +22,7 @@ The six-axis XArm robot is responsible for the movement of vials, pipetting, and
 1. Follow the hardware setup directions provided in the manual. A manual for the xArm 6 can be found [here](https://www.ufactory.cc/wp-content/uploads/2023/05/xArm-User-Manual-V2.0.0.pdf).
 2. Ensure that your IP address is set correctly to 192.168.1.*.
 3. In your terminal run `pip install xArm-Python-SDK`
-4. Clone this whole repository and run the robot testing code in the begining of the testing_ground.ipynb file.
+4. Clone this whole repository and run the robot testing code in the begining of the `testing_ground.ipynb` file.
 
 ## Motors and Wiring
 
@@ -38,7 +38,7 @@ The NEMA 17 motor can be operated using an A4988 driver and a 9-volt power suppl
 
 #### Wiring of NEMA 23
 
-The NEMA 23 is a larger and more powerful motor which is operated with a TB6600 motor driver and a 12 volt power supply. (ADD WIRING DIAGRAM HERE AND DISCRIBE)
+The NEMA 23 is a larger and more powerful motor, operated using a TB6600 motor driver and a 12-volt power supply. Ensure that the switches are in the correct positions as shown in the diagram. In this example, the motor is wired to pins D4 and D5, so in the Python code, it would be referred to as motor 1. This configuration is detailed in the code found in the file `testing_ground.ipynb`.
 
 <img src="https://github.com/Helge-Stein-Group/Slurry_Bot/blob/35829d3e5a5cdf57512fba0788122d6e9e0ffcd1/wiring_diagram_2.jpeg" width="500" height="500"/>
 
