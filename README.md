@@ -138,3 +138,4 @@ Helge Stein - helge.stein@tum.de
 ## Acknowledgements
 
 The scale driver code was modeled after [sartoriususb](https://github.com/holgi/sartoriusb).
+The pipette driver code was provided by [Bojing Zhang](https://github.com/Bojing4313).
