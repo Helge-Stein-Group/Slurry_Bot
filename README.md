@@ -9,7 +9,6 @@ The SlurryBot system automates the dispensing, weighing, and mixing of electrode
 [Motors and Wiring](https://github.com/Helge-Stein-Group/Slurry_Bot/blob/main/README.md#motors-and-wiring)<br />
 [Scale Setup for a Sartorius Secura](https://github.com/Helge-Stein-Group/Slurry_Bot/blob/main/README.md#scale-setup-for-a-sartorius-secura)<br />
 [Pipette Control for a Sartorius rLINE](https://github.com/Helge-Stein-Group/Slurry_Bot/blob/main/README.md#pipette-control-for-a-sartorius-rline)<br />
-[Dispensing Model Assembly](https://github.com/Helge-Stein-Group/Slurry_Bot/blob/main/README.md#dispensing-model-assembly)
 
 ## XArm Robot
 
