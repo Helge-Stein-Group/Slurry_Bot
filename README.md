@@ -22,7 +22,7 @@ The six-axis XArm robot is responsible for the movement of vials, pipetting, and
 1. Follow the hardware setup directions provided in the manual. A manual for the xArm 6 can be found [here](https://www.ufactory.cc/wp-content/uploads/2023/05/xArm-User-Manual-V2.0.0.pdf).
 2. Ensure that your IP address is set correctly to 192.168.1.*.
 3. In your terminal run `pip install xArm-Python-SDK`
-4. Clone this whole repository and run the robot testing code in the begining of the `testing_ground.ipynb` file.
+4. Clone this whole repository and run the robot testing code in the begining of the `examples.ipynb` file.
 
 ## Motors and Wiring
 
@@ -38,7 +38,7 @@ The NEMA 17 motor can be operated using an A4988 driver and a 9-volt power suppl
 
 #### Wiring of NEMA 23
 
-The NEMA 23 is a larger and more powerful motor, operated using a TB6600 motor driver and a 12-volt power supply. Ensure that the switches are in the correct positions as shown in the diagram. In this example, the motor is wired to pins D4 and D5, so in the Python code, it would be referred to as motor 1. This configuration is detailed in the code found in the file `testing_ground.ipynb`.
+The NEMA 23 is a larger and more powerful motor, operated using a TB6600 motor driver and a 12-volt power supply. Ensure that the switches are set to the correct positions as shown in the diagram. In this example, the motor is wired to pins D4 and D5, so in the Python code, it is referred to as motor 1. This configuration is detailed and can be tested by cloning the repository and running the motor lines in the file `examples.ipynb`.
 
 <img src="https://github.com/Helge-Stein-Group/Slurry_Bot/blob/35829d3e5a5cdf57512fba0788122d6e9e0ffcd1/wiring_diagram_2.jpeg" width="500" height="500"/>
 
@@ -55,8 +55,9 @@ The NEMA 23 is a larger and more powerful motor, operated using a TB6600 motor d
 ### Python Setup
 
 1. Connect your computer to the Arduino via a USB cable. (If it is not already connected.)
-2. Confirm the COM Port of your connection using the device manager.
-3. To test the setup you should open a file and run the testing code in the example section below.
+2. Insure you cloned the repository.
+3. Confirm the COM Port of your connection using the device manager.
+4. To test the setup you should open a file and run the motor testing code in `examples.ipynb`.
 
 
 ## Features
@@ -67,23 +68,8 @@ You can set the max speed using `setSpeed()` and I would recommend a speed aroun
 
 ### Moving the Motor
 
-To get a simple movement of the motor use `move()`. The integer value that you give this function will determine the number of steps the motor takes. For example, if you would like it to make a full circle use `move(200)`. When opperating the linear rail you can use the functions `moveUp()` and `moveDown()`. The motor can be stopped using the `stop()` function.
+To get a simple movement of the motor use `move()`. The integer value that you give this function will determine the number of steps the motor takes. For example, if you would like it to make a full circle use `move(200)`. When opperating the linear rail you can use the functions `moveUp()` and `moveDown()`. The motor can be stopped using the `stop()` function. Any updates or additional methods can be added to the `motor_driver.py` file.
 
-## Example
-
-```python
-
-from motor_driver import Motor
-
-motors = SerialConnection('COM1', 9600, 10) #add your specific com port here
-motor_1 = Motor(motors, 0)
-motor_1.check_connection()
-motor_1.setAcceleration(10)
-motor_1.setSpeed(100)
-motor_1.move(100)
-motor_1.close()
-
-```
 
 ## Scale Setup for a Sartorius Secura 
 
@@ -103,6 +89,9 @@ The manual for this scale can be found [here](https://www.ricelake.com/media/nwm
 
 1. Turn on scale and manually level.
 2. Connect the scale via a USB cable.
+3. Insure you cloned the repository.
+4. Confirm the COM Port of your connection using the device manager.
+5. To test the setup you should open a file and run the scale testing code in `examples.ipynb`.
 
 ### Features
 
@@ -119,39 +108,26 @@ To tare the scale use `tare()` and to preform an internal callibration use `intC
 
 To get a simple weight measurement use the `measure()` or `measure_stable()` functions. 
 
-### Example
-
-```python
-
-from scale_driver import Scale
-
-my_scale = Scale('COM7',9600,timeout=3) # Adjust these to your specific system
-my_scale.tare()
-my_scale.measure()
-
-```
 
 ## Pipette Control for a Sartorius rLINE
 
-EDIT THIS! This is the driver to the pippeting robot rLINE® 1-ch 200 µl dispensing module from Sartorius. The hardware is connected to your PC via USB-B
+Here you can find information on operating the automated pipette rLINE® 1-channel 5000 µl dispensing module from Sartorius. This device is integrated into our system for liquid and slurry dispensing.
 
-For a quick start, refer to the script "rLine.py", you will first need to correctlly configure the port of your setup and put it into the script.
+The manual for this pipette can be found [here](https://shop.sartorius.com/medias/rLINE-dispensing-module-user-manual.pdf?context=bWFzdGVyfGRvY3VtZW50c3wxMDQ1NjEzfGFwcGxpY2F0aW9uL3BkZnxhRFJsTDJneFlpODVNelkyTXpnME5UUXhOekkyfDMyMTFlYjlkNGRhMjdmNjc1ZTJhMGRmOWQ0NTgwZmNmNzkyNmZhNjliYzg3MmJjYTE4MzcyNTBlODIwM2UzYjY).
 
-The hardware need to initiate a connection with your PC everytime it starts up. Use the initiate_rline function to establisch the connection, usually it will take a couple of seconds.
+### Getting Started 
 
-The most useful functions you would use are:
+#### Setup
 
-aspirate
-dispense
-clear_and_reset
-reset
-blowout
-eject
-disconnect_pipette
-After usage, you need to run disconnect_pipette function to properly disconnect the pipette.
+1. Connect the pipette to your PC via the USB-B cable included in the kit.
+2. Check your COM port connection and ensure its configuration matches the settings in the `pipette_driver.py` file.
+3. Run the testing code for the pipette, which can be found at the bottom of the `examples.ipynb` file. The `initiate_rline` function must be used to establish the connection with the module, which usually takes a few seconds.
 
-## Dispensing Model Assembly
+### Features
 
+#### Functions Avalible
+
+To draw liquid into the pipette tip, use the `aspirate()` function, and to dispense it, use the `dispense()` function. If some liquid remains in the tip, you can use either the `blowout()` or `clear_and_reset()` functions. Ensure that you run `reset()` (which will eject the tip) after `blowout()` before performing another `aspirate()`. The `eject()` function will eject the tip, and after usage, you need to run the `disconnect_pipette()` function to properly close the serial port.
 
 ## Contact
 
