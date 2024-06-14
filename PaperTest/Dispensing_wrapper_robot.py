@@ -63,7 +63,7 @@ class Calibration:
                 self.motor.move(step)
                 time.sleep(2)
                 # Move vial from dispensing unit on scale
-                self.robot.Dispenser1ToScale()
+                self.robot.Dispenser3ToScale()
                 time.sleep(2)
                 weight = self.scale.measure_stable().value
 
@@ -173,7 +173,7 @@ class Dispensing:
         time.sleep(2)
         self.motor.move(calc_steps)
         time.sleep(2)
-        self.robot.Dispenser1ToScale()
+        self.robot.Dispenser3ToScale()
         time.sleep(2)
         weight_dispensed = self.scale.measure_stable().value
         return weight_dispensed

@@ -115,7 +115,7 @@ class Robot():
         self.GoTo_Point("DispenserPoint", 250*speedfactor)
         print("Dispenser3")
         self.GoTo_Point("Dispenser3", 60*speedfactor)#Dispenser3
-        self.arm.set_position(z=35, relative=True, speed=20*speedfactor, wait=True)#closing the dispenser with the vial, needs adjustemnt as soon as the new piece is printed 
+        self.arm.set_position(z=20, relative=True, speed=20*speedfactor, wait=True)#closing the dispenser with the vial, needs adjustemnt as soon as the new piece is printed 
         
     def Dispenser1ToScale(self, speedfactor=1):
         self.arm.set_linear_track_pos(600, wait=True)
@@ -274,7 +274,7 @@ fixed_points = {
     "DispenserPoint": (-400, 50, 92, 180, 90, 0),
     "Dispenser1": (-535, -97, 40, 180, 90, 0), #the one on the right
     "Dispenser2": (-537, 52, 40, 180, 90, 0),#the one in the middle
-    "Dispenser3": (-537, 300, 40, 180, 90, 0), #the one on the left
+    "Dispenser3": (-532, 248, 40, 180, 90, 0), #the one on the left
     "VialRestPoint": (-367.5, -102.5, 92, 180, 90, 0),
     "PipettePoint": (-370, -110, 250, 90, 91, 0),
     "PipetteTip1": (-263.5, -121, 370, 90, 91, 0),
