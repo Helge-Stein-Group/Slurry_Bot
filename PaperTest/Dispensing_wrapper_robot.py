@@ -58,7 +58,7 @@ class Calibration:
                 time.sleep(2)
                 self.scale.tare()
                 # Move vial from scale under dispensing unit 
-                self.robot.ScaleToDispenser1()
+                self.robot.ScaleToDispenser3()
                 time.sleep(2)
                 self.motor.move(step)
                 time.sleep(2)
@@ -169,7 +169,7 @@ class Dispensing:
         self.scale.tare()
         time.sleep(2)
         # move vial from scale under dispensing unit
-        self.robot.ScaleToDispenser1()
+        self.robot.ScaleToDispenser3()
         time.sleep(2)
         self.motor.move(calc_steps)
         time.sleep(2)
