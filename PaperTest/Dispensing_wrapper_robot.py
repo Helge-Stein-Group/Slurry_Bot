@@ -44,7 +44,7 @@ class Calibration:
             writer.writerow(["Step", "Weight"])
             
         for i in range(repeat):
-            if i in [3, 6]:
+            if i in [2, 4]:
                 time.sleep(20)
             print(f"Repeat: {i+1}")
             for idx, step in enumerate(steps):
