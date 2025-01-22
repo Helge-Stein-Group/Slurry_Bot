@@ -148,7 +148,7 @@ class Robot():
         self.arm.set_position(z=-39.5, relative=True, speed=50*speedfactor, wait=True)#moving down on the scale 
         self.GripperAction("ReleaseVial")
 
-'''
+    '''
     def ScaleToLiquidRestPoint (self, speedfactor=1):
         self.GripperAction('GrabVial')
         self.arm.set_position(z=26, relative=True, speed=80, wait=True)
@@ -201,7 +201,7 @@ class Robot():
         self.arm.set_position(x=-9, y=-19, relative=True, speed=40*speedfactor, wait=True)
         self.arm.set_position(z=-95, relative=True, speed=40*speedfactor, wait=True)#still outside of vial
         self.arm.set_position(z=-66, relative=True, speed=10*speedfactor, wait=True)#going into the vial
-'''
+    '''
     #Hier fehlt Binder to LiquidsRestPoint
     #Hier fehlt LiquidsRestPoint To Binder
 
@@ -222,7 +222,7 @@ class Robot():
         self.GoTo_Point("PipettePoint", 100*speedfactor)
     
     #Hier fehlt: LiquidsRestPoint to Mixing
-'''
+    '''
     def VialToMixing (self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
         self.GripperAction("ReleasePipette")
@@ -237,7 +237,8 @@ class Robot():
         self.GripperAction("ReleaseVial")
         self.GoTo_Point("MixerPoint", 100*speedfactor)
 
-'''
+    '''
+
     def TurnOnHomogenizer (self, degree, speedfactor=1):#degree:10
         self.arm.set_linear_track_pos(200, wait=True)
         self.GripperAction("ReleaseHomogenizerDial")
