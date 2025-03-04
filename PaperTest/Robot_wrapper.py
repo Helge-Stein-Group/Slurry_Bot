@@ -24,10 +24,12 @@ class Robot():
         self.arm.set_state(state=0)
         self.arm.set_gripper_enable(True)
         self.arm.set_gripper_mode(0)
-        self.arm.set_initial_point([-228, 0, 133, 0, 90, 180])
+        #self.arm.set_initial_point([-228, 0, 133, 0, 90, 180]) old
+        self.arm.set_initial_point([-400, 0, 129.4, 0, 90, 180])
         #self.arm.register_error_warn_changed_callback(self.hangle_err_warn_changed())
         self.arm.connect()
-        self.arm.set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20, wait=True)
+        #self.arm.set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20, wait=True)
+        self.arm.set_position(x=-400, y=0, z=129.4, roll=0, pitch=90, yaw=180, speed=20, wait=True)
         self.arm.set_linear_track_back_origin(wait=True)
         self.arm.set_linear_track_enable(True)
         self.arm.set_linear_track_speed(200)
@@ -36,7 +38,8 @@ class Robot():
         self.arm.disconnect()
     
     def GoTo_InitialPoint(self,speedfactor=1):
-        self.arm.set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20*speedfactor, wait=True)
+        self.arm.set_position(x=-400, y=0, z=129.4, roll=0, pitch=90, yaw=180, speed=20*speedfactor, wait=True)
+        #self.arm.set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20*speedfactor, wait=True)
         self.arm.set_linear_track_pos(600, wait=True)
         self.arm.set_gripper_position(400, wait=True)
 
@@ -267,7 +270,8 @@ class Robot():
 
     
 fixed_points = {
-    "InitialPoint": (-228, 0, 133, 180, 90, 0),
+    #"InitialPoint": (-228, 0, 133, 180, 90, 0), #old TCP
+    "InitialPoint": (-400, 0, 129.4, 180, 90, 0),
     "VialStoragePoint": (-273, -100.5, 125, 90, 90, 0),
     "Vial0": (-273, -100.5, -33, 90, 90, 0),
     "Scale":(-287, 120, 92, -90, 90, 0),

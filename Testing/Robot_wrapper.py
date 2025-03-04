@@ -24,10 +24,12 @@ class Robot():
         self.arm.set_state(state=0)
         self.arm.set_gripper_enable(True)
         self.arm.set_gripper_mode(0)
-        self.arm.set_initial_point([-228, 0, 133, 0, 90, 180])
+        #self.arm.set_initial_point([-228, 0, 133, 0, 90, 180])#TCP No Gripper
+        self.arm.set_initial_point([-400, 0, 133, 0, 90, 180])#TCP Gripper
         #self.arm.register_error_warn_changed_callback(self.hangle_err_warn_changed())
         self.arm.connect()
-        self.arm.set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20, wait=True)
+        #self.arm.set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20, wait=True)#TCP No Gripper
+        self.arm.set_position(x=-400, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20, wait=True)#TCP Gripper
         self.arm.set_linear_track_back_origin(wait=True)
         self.arm.set_linear_track_enable(True)
         self.arm.set_linear_track_speed(200)
@@ -36,7 +38,8 @@ class Robot():
         self.arm.disconnect()
     
     def GoTo_InitialPoint(self,speedfactor=1):
-        self.arm.set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20*speedfactor, wait=True)
+        #self.arm.set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20*speedfactor, wait=True)#TCP No Gripper
+        self.arm.set_position(x=-400, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20*speedfactor, wait=True)#TCP Gripper
         self.arm.set_linear_track_pos(600, wait=True)
         self.arm.set_gripper_position(400, wait=True)
 
@@ -59,7 +62,7 @@ class Robot():
     def PickUpVial(self, vial_number, speedfactor=1):
         self.arm.set_linear_track_pos(600, wait=True)
         self.GripperAction("ReleaseVial")
-        self.GoTo_Point("VialStoragePoint", 200*speedfactor)
+        self.GoTo_Point("VialStoragePoint", 100*speedfactor)
         self.GoTo_Vial(vial_number,80*speedfactor)
         self.arm.set_position(z=-129, relative=True, speed=60*speedfactor, wait=True)
         self.GripperAction("GrabVial")
@@ -69,7 +72,8 @@ class Robot():
     def VialToScale(self, speedfactor=1):
         self.arm.set_linear_track_pos(600, wait=True)
         self.GoTo_Point("VialStoragePoint", 80*speedfactor) #Start point 
-        self.arm.set_position(x=-280, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=180*speedfactor, wait=True)#inbetween point
+        #self.arm.set_position(x=-280, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=180*speedfactor, wait=True)#inbetween point#TCP No Gripper
+        self.arm.set_position(x=-452, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=180*speedfactor, wait=True)#TCP Gripper
         self.GoTo_Point("Scale", 200*speedfactor)
         self.arm.set_position(y=140, relative=True, speed=80*speedfactor, wait=True)#moving into the scale
         self.arm.set_position(z=-26, relative=True, speed=50*speedfactor, wait=True)#moving down on the scale
@@ -153,7 +157,8 @@ class Robot():
         self.GripperAction('GrabVial')
         self.arm.set_position(z=26, relative=True, speed=80, wait=True)
         self.GoTo_Point("Scale", 60)
-        self.arm.set_position(x=-280, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=180, wait=True)#inbetween point
+        #self.arm.set_position(x=-280, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=180, wait=True)#inbetween point #TCP No Gripper
+        self.arm.set_position(x=-452, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=180, wait=True)#inbetween point #TCP Gripper
         self.GoTo_Point("PipettePoint", 40)
         self.arm.set_linear_track_pos(200, wait=True)
         self.arm.set_position(x=148.5, y=-8, relative=True, speed=30, wait=True)
@@ -164,7 +169,8 @@ class Robot():
         self.arm.set_linear_track_pos(200, wait=True)
         self.GripperAction("ReleasePipette")
         self.GoTo_Point("PipettePoint", 150*speedfactor)#Start point
-        self.arm.set_position(x=-367, y=-212, z=193.2, roll= 90, pitch= 90, yaw=0, speed=100*speedfactor, wait=True) #grabbing pipette
+        #self.arm.set_position(x=-367, y=-212, z=193.2, roll= 90, pitch= 90, yaw=0, speed=100*speedfactor, wait=True) #grabbing pipette #TCP No Gripper
+        self.arm.set_position(x=-539, y=-212, z=193.2, roll= 90, pitch= 90, yaw=0, speed=100*speedfactor, wait=True) #grabbing pipette #TCP Gripper
         self.GripperAction("GrabPipette")
         self.arm.set_position(z=26.8, relative=True, speed=50*speedfactor, wait=True) #lifting pipette
                 
@@ -181,7 +187,8 @@ class Robot():
 
     def MoveToBinder(self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
-        self.arm.set_position(x=-263.5, y=-121, z=310, roll= 90, pitch= 91, yaw=0, speed=100*speedfactor, wait=True) #Start point
+        #self.arm.set_position(x=-263.5, y=-121, z=310, roll= 90, pitch= 91, yaw=0, speed=100*speedfactor, wait=True) #Start point # TCP No gripper
+        self.arm.set_position(x=-435.5, y=-121, z=310, roll= 90, pitch= 91, yaw=0, speed=100*speedfactor, wait=True) #Start point # TCP Gripper
         self.arm.set_position(x=-9, y=-19, relative=True, speed=40*speedfactor, wait=True)
         self.arm.set_position(z=-35, relative=True, speed=40*speedfactor, wait=True)#still outside of vial
         self.arm.set_position(z=-66, relative=True, speed=10*speedfactor, wait=True)#going into the vial
@@ -216,7 +223,8 @@ class Robot():
     def PuttingBackPipette (self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
         self.GoTo_Point("PipettePoint", 100*speedfactor)#Start point
-        self.arm.set_position(x=-367, y=-212, z=250, roll= 90, pitch= 90, yaw=0, speed=60*speedfactor, wait=True) 
+        #self.arm.set_position(x=-367, y=-212, z=250, roll= 90, pitch= 90, yaw=0, speed=60*speedfactor, wait=True) #TCP No Gripper
+        self.arm.set_position(x=-539, y=-212, z=250, roll= 90, pitch= 90, yaw=0, speed=60*speedfactor, wait=True) #TCP Gripper
         self.arm.set_position(z=-56.8, relative=True, speed=30*speedfactor, wait=True)
         self.GripperAction("ReleasePipette")
         self.GoTo_Point("PipettePoint", 100*speedfactor)
@@ -264,7 +272,8 @@ class Robot():
         self.GoTo_InitialPoint()
 
 
-    
+ '''   
+ #TCP NO gripper
 fixed_points = {
     "InitialPoint": (-228, 0, 133, 180, 90, 0),
     "VialStoragePoint": (-271, -98.5, 125, 90, 90, 0),
@@ -277,6 +286,22 @@ fixed_points = {
     "PipetteTip1": (-263.5, -121, 370, 90, 91, 0),
     "PipetteVialRest": (-337, -104.5, 290, 180, 90, 0),
     "MixerPoint": (-600.7, -60.2, 190, 90, 90, 0),    
+}
+'''
+    
+fixed_points = {
+    "InitialPoint": (-400, 0, 133, 180, 90, 0),
+   # "VialStoragePoint": (-443, -98.5, 125, 90, 90, 0),
+   "VialStoragePoint": (-271, 73.5, 125, 90, 90, 0),
+    "Vial0": (-445, -272.5, -33, 90, 90, 0),
+    "Scale":(-460, 120, 102, -90, 90, 0),
+    "DispenserPoint": (-572, 50, 92, 180, 90, 0),
+    "Dispenser1": (-709, -98, 40, 180, 90, 0), #the one on the right
+    "VialRestPoint": (-539,5, -102.5, 92, 180, 90, 0),
+    "PipettePoint": (-542, -110, 250, 90, 91, 0),
+    "PipetteTip1": (-435.5, -121, 370, 90, 91, 0),
+    "PipetteVialRest": (-509, -104.5, 290, 180, 90, 0),
+    "MixerPoint": (-772.7, -60.2, 190, 90, 90, 0),    
 }
 
 vials = { 
