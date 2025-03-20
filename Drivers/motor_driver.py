@@ -47,7 +47,7 @@ class Motor:
         if 0 < speed < 1000:
             self.connection.send_command(str(self.num) + "V" + str(speed))
         else:
-            raise Error('Speed must be between 0 and 1000')
+            raise ValueError('Speed must be between 0 and 1000')
 
     def stop(self):
         """ Stops the motor. """
