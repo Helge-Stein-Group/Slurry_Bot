@@ -10,6 +10,7 @@ class SerialConnection:
         self.timeout = timeout
         try:
             self.ser = serial.Serial(port, baudrate, timeout=timeout)
+            time.sleep(2)  # Wait for Arduino to reset
         except serial.SerialException:
             print('Unable to connect to the motor or motor is already connected. Check the com port and try again.')
             sys.exit(1)  # Exiting the program if the motor is not connected.
@@ -29,57 +30,70 @@ class SerialConnection:
 
 class Motor:
     def __init__(self, connection, num):
-        """ Initializes a motor with a given serial connection and motor number. """
         self.connection = connection
         self.num = num
 
     def check_connection(self):
-        """ Checks if the motor is connected. """
-        self.connection.send_command(str(self.num) + "Q")
-        response = self.connection.read_response()
-        if response == 'MOTOR_CONNECTED':
-            return True
-        else:
-            return False
-
-    def set_speed(self, speed):
-        """ Sets the speed of the motor. """
-        if 0 < speed < 1000:
-            self.connection.send_command(str(self.num) + "V" + str(speed))
-        else:
-            raise ValueError('Speed must be between 0 and 1000')
+        # Check if the motor responds to a connection test
+        self.connection.send_command(f"{self.num:02}Q")
+        return self.connection.read_response() == 'MOTOR_CONNECTED'
 
     def stop(self):
-        """ Stops the motor. """
-        self.connection.send_command(str(self.num) + "S")
+        # Immediately stop the motor
+        self.connection.send_command(f"{self.num:02}S")
+        self._wait_for_motor()
 
-    def set_acceleration(self, acceleration):
-        """ Sets the acceleration of the motor. """
-        if 0 < acceleration < 1000:
-            self.connection.send_command(str(self.num) + "A" + str(acceleration))
+    def set_speed(self, speed):
+        # Set motor speed (1 to 1000)
+        if 0 < speed <= 1000:
+            self.connection.send_command(f"{self.num:02}V{speed}")
+            self._wait_for_motor()
         else:
-            raise motorError('Acceleration must be between 0 and 1000')
+            raise ValueError("Speed must be between 1 and 1000")
 
-    def move(self, steps, wait_for_motor=True):
-        """ Moves the motor clockwise at the current speed for a set number of steps. """
-        self.connection.send_command(str(self.num) + "F" + str(steps))
-        if wait_for_motor:
-            self.wait_for_motor()
+    def move_relative(self, steps):
+        # Move the motor relative to its current position
+        self.connection.send_command(f"{self.num:02}M{steps}")
+        self._wait_for_motor()
 
-    def wait_for_motor(self):
-        """ Wait for acknowledgment from the motor that task is finished """
+    def move_down(self, steps):
+        # Move motor up (positive direction)
+        self.move_relative(abs(steps))
+
+    def move_up(self, steps):
+        # Move motor down (negative direction)
+        self.move_relative(-abs(steps))
+
+    def move_absolute(self, target):
+        # Move motor to an absolute position
+        self.connection.send_command(f"{self.num:02}A{target}")
+        self._wait_for_motor()
+
+    def move_to_top(self):
+        # Move motor to its top position (maxPosition in Arduino)
+        self.connection.send_command(f"{self.num:02}A0")  # Arduino constrains to maxPosition
+        self._wait_for_motor()
+
+    def move_to_bottom(self):
+        # Move motor to the bottom (position 0)
+        self.connection.send_command(f"{self.num:02}A999999")
+        self._wait_for_motor()
+
+    def set_home(self):
+        # Set the current position as the new home (zero)
+        self.connection.send_command(f"{self.num:02}H")
+        response = self.connection.read_response()
+        if response == "HOME_SET":
+            print("Home position set.")
+
+    def _wait_for_motor(self):
+        # Wait until the motor has finished its task
         while True:
             response = self.connection.read_response()
             if response == 'MOTOR_FINISHED':
                 break
-    def moveUp(self, steps, wait_for_motor=True):
-        """ Moves the motor clockwise at the current speed for a set number of steps. """
-        self.connection.send_command(str(self.num) + "F" + str(steps))
-        if wait_for_motor:
-            self.wait_for_motor()
-
-    def moveDown(self, steps, wait_for_motor=True):
-        """ Moves the motor clockwise at the current speed for a set number of steps. """
-        self.connection.send_command(str(self.num) + "F-" + str(steps))
-        if wait_for_motor:
-            self.wait_for_motor()
+            elif "ERROR" in response:
+                print(response)
+            elif "WARNING" in response:
+                print(response)
+                break
