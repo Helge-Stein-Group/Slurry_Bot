@@ -1,127 +1,113 @@
 // Include the AccelStepper Library
 #include <AccelStepper.h>
+#include <EEPROM.h>  // For storing position
 
 //Defining the amount of steppers
 const int stepperAmount = 6;
 
 // Define pin connections
-const int dirPin0 = 2;
-const int stepPin0 = 3;
-const int dirPin1 = 4;
-const int stepPin1 = 5;
-const int dirPin2 = 6;
-const int stepPin2 = 7;
-const int dirPin3 = 8;
-const int stepPin3 = 9;
-const int dirPin4 = 10;
-const int stepPin4 = 11;
-const int dirPin5 = 12;
-const int stepPin5 = 13;
+const int dirPins[stepperAmount] = {2, 4, 6, 8, 10, 12};
+const int stepPins[stepperAmount] = {3, 5, 7, 9, 11, 13};
 
 String inputString = "";
 boolean stringComplete = false;
 int stepNum = 1;
 
-
-// Define motor interface type
 #define motorInterfaceType 1
 
+// Stepper motor instances
+AccelStepper* steppers[stepperAmount];
 
-// Creates an instance
-
-AccelStepper stepper0(motorInterfaceType, stepPin0, dirPin0);
-AccelStepper stepper1(motorInterfaceType, stepPin1, dirPin1);
-AccelStepper stepper2(motorInterfaceType, stepPin2, dirPin2);
-AccelStepper stepper3(motorInterfaceType, stepPin3, dirPin3);
-AccelStepper stepper4(motorInterfaceType, stepPin4, dirPin4);
-AccelStepper stepper5(motorInterfaceType, stepPin5, dirPin5);
-
-
-AccelStepper* steppers[stepperAmount] ={
-    
-    &stepper0,
-    &stepper1,
-    &stepper2,
-    &stepper3,
-    &stepper4,
-    &stepper5
-};
+// Motor configuration
+int currentPosition[stepperAmount];
+int maxPosition[stepperAmount] = {6000, 0, 0, 0, 0, 0}; // 0 = no limit
 
 void setup() {
-	// set the maximum speed, acceleration factor,
-	// initial speed and the target position
-      for(int stepperNumber = 0; stepperNumber < stepperAmount; stepperNumber++){
-
-        steppers[stepperNumber]->setMaxSpeed(100);
-        steppers[stepperNumber]->setAcceleration(100);
-        steppers[stepperNumber]->setSpeed(100);
-        steppers[stepperNumber]->setCurrentPosition(0);
-    }
-
   Serial.begin(9600);
 
+  // Initialize steppers
+  for (int i = 0; i < stepperAmount; i++) {
+    steppers[i] = new AccelStepper(motorInterfaceType, stepPins[i], dirPins[i]);
+    steppers[i]->setMaxSpeed(100);
+    steppers[i]->setAcceleration(100);
+    steppers[i]->setSpeed(100);
 
+    // Load position from EEPROM
+    EEPROM.get(i * sizeof(int), currentPosition[i]);
+    steppers[i]->setCurrentPosition(currentPosition[i]);
+  }
 }
 
 void loop() {
-//I commented out all the print statments we used for testing.
-//steppers[0]->moveTo(100);
-
-while (Serial.available() > 0 ) {
+  while (Serial.available() > 0) {
     char command = Serial.read();
     inputString += command;
-    //Serial.print(command);
+    
     if (command == '\n') {
       stringComplete = true;
-      //Serial.print("Complete\n");
+  
     }
     delay(10);
   }
 
   if (stringComplete) {
-    //Serial.print("InsideComplete!\n");
-    //Serial.print("first in"+inputString+"\n");
-    stepNum = inputString.substring(0,2).toInt();
-    //Serial.print("stepNum" + String(stepNum)+ "\n");
-    //Serial.println(String(steppers[stepNum]->acceleration()));
+    stepNum = inputString.substring(0, 2).toInt();
     inputString = inputString.substring(1);
-    //Serial.print("second in"+inputString+"\n");
-    if (inputString.startsWith("F")) {
-      //Serial.print("InsideF\n");
-      int stepsToMove = inputString.substring(1).toInt();
-      //Serial.print(String(stepsToMove)+ "\n");
-      //Serial.println(String(steppers[stepNum]->acceleration()));
-      steppers[stepNum]->moveTo(stepsToMove);
-      steppers[stepNum]->runToPosition();
-      steppers[stepNum]->setCurrentPosition(0);
-      Serial.println("MOTOR_FINISHED");
 
-    } else if (inputString.startsWith("S")) {
+    if (inputString.startsWith("S")) {
       steppers[stepNum]->stop();
-      Serial.println("MOTOR_FINISHED");
-
-    } else if (inputString.startsWith("R")) {
-      //Serial.print("InsideR");
-      steppers[stepNum]->moveTo(200);
-      steppers[stepNum]->runToPosition();
-      steppers[stepNum]->setCurrentPosition(0);
-      Serial.println("MOTOR_FINISHED");
-
-    } else if (inputString.startsWith("V")) {
-      int speedStepper = inputString.substring(1).toInt();
-      steppers[stepNum]->setSpeed(speedStepper);
-      steppers[stepNum]->setMaxSpeed(speedStepper);
-	    steppers[stepNum]->setAcceleration(speedStepper);
       Serial.println("MOTOR_FINISHED");
 
     } else if (inputString.startsWith("Q")) {
       Serial.print("MOTOR_CONNECTED");
 
-    }
+    } else if (inputString.startsWith("V")) {
+      int speedStepper = inputString.substring(1).toInt();
+      steppers[stepNum]->setSpeed(speedStepper);
+      steppers[stepNum]->setMaxSpeed(speedStepper);
+      steppers[stepNum]->setAcceleration(speedStepper);
+      Serial.println("MOTOR_FINISHED");
     
+    } else if (inputString.startsWith("M")) {
+      int relativeOffset = inputString.substring(1).toInt();
+      int relativeTarget = currentPosition[stepNum] + relativeOffset;
+      moveMotor(stepNum, relativeTarget);
+
+    } else if (inputString.startsWith("A")) {
+      int absoluteTarget = inputString.substring(1).toInt();
+      moveMotor(stepNum, absoluteTarget);
+
+    } else if (inputString.startsWith("H")) {  // Manually set home position
+      setHome(stepNum);
+    }
+
     inputString = "";
     stringComplete = false;
   }
-  inputString = "";
-  stringComplete = false;
 }
+
+void moveMotor(int motorIndex, int target) {
+  if (maxPosition[motorIndex] > 0) {
+    if (target > maxPosition[motorIndex]) {
+      Serial.println("WARNING: Target above maxPosition. Moving to maxPosition instead.");
+      target = maxPosition[motorIndex];
+    } else if (target < 0) {
+      Serial.println("WARNING: Target below 0. Moving to position 0 instead.");
+      target = 0;
+    }
+  }
+
+  steppers[motorIndex]->moveTo(target);
+  steppers[motorIndex]->runToPosition();
+  currentPosition[motorIndex] = target;
+  EEPROM.put(motorIndex * sizeof(int), target);
+  Serial.println("MOTOR_FINISHED");
+}
+
+void setHome(int motorIndex) {
+  steppers[motorIndex]->setCurrentPosition(0);
+  currentPosition[motorIndex] = 0;
+  EEPROM.put(motorIndex * sizeof(int), 0);
+  Serial.println("HOME_SET");
+}
+
