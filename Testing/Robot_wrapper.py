@@ -24,11 +24,8 @@ class Robot():
         self.arm.set_state(state=0)
         self.arm.set_gripper_enable(True)
         self.arm.set_gripper_mode(0)
-        #self.arm.set_initial_point([-228, 0, 133, 0, 90, 180])#TCP No Gripper
         self.arm.set_initial_point([-400, 0, 133, 0, 90, 180])#TCP Gripper
-        #self.arm.register_error_warn_changed_callback(self.hangle_err_warn_changed())
         self.arm.connect()
-        #self.arm.set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20, wait=True)#TCP No Gripper
         self.arm.set_position(x=-400, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20, wait=True)#TCP Gripper
         self.arm.set_linear_track_back_origin(wait=True)
         self.arm.set_linear_track_enable(True)
@@ -38,7 +35,6 @@ class Robot():
         self.arm.disconnect()
     
     def GoTo_InitialPoint(self,speedfactor=1):
-        #self.arm.set_position(x=-228, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20*speedfactor, wait=True)#TCP No Gripper
         self.arm.set_position(x=-400, y=0, z=133, roll=0, pitch=90, yaw=180, speed=20*speedfactor, wait=True)#TCP Gripper
         self.arm.set_linear_track_pos(600, wait=True)
         self.arm.set_gripper_position(400, wait=True)
@@ -62,7 +58,7 @@ class Robot():
     def PickUpVial(self, vial_number, speedfactor=1):
         self.arm.set_linear_track_pos(600, wait=True)
         self.GripperAction("ReleaseVial")
-        self.GoTo_Point("VialStoragePoint", 40*speedfactor)
+        self.GoTo_Point("VialStoragePoint", 60*speedfactor)
         self.GoTo_Vial(vial_number,80*speedfactor)
         self.arm.set_position(z=-129, relative=True, speed=60*speedfactor, wait=True)
         self.GripperAction("GrabVial")
@@ -72,9 +68,8 @@ class Robot():
     def VialToScale(self, speedfactor=1):
         self.arm.set_linear_track_pos(600, wait=True)
         self.GoTo_Point("VialStoragePoint", 80*speedfactor) #Start point 
-        #self.arm.set_position(x=-280, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=180*speedfactor, wait=True)#inbetween point#TCP No Gripper
-        self.arm.set_position(x=-452, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=180*speedfactor, wait=True)#TCP Gripper
-        self.GoTo_Point("Scale", 200*speedfactor)
+        self.arm.set_position(x=-452, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=120*speedfactor, wait=True)#TCP Gripper
+        self.GoTo_Point("Scale", 120*speedfactor)
         self.arm.set_position(y=140, relative=True, speed=80*speedfactor, wait=True)#moving into the scale
         self.arm.set_position(z=-26, relative=True, speed=50*speedfactor, wait=True)#moving down on the scale
         self.GripperAction("ReleaseVial")
@@ -91,26 +86,24 @@ class Robot():
 
     def ScaleToLiquidRestPoint (self, speedfactor=1):
         self.GripperAction('GrabVial')
-        self.arm.set_position(z=26, relative=True, speed=80, wait=True)
-        self.GoTo_Point("Scale", 60)
-        #self.arm.set_position(x=-280, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=180, wait=True)#inbetween point #TCP No Gripper
-        self.arm.set_position(x=-452, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=180, wait=True)#inbetween point #TCP Gripper
-        self.GoTo_Point("PipettePoint", 40)
+        self.arm.set_position(z=26, relative=True, speed=60*speedfactor, wait=True)
+        self.GoTo_Point("Scale", 80*speedfactor)
+        self.arm.set_position(x=-452, y=-100, z=125, roll=-160, pitch=90, yaw=0, speed=120*speedfactor, wait=True)#inbetween point #TCP Gripper
+        self.GoTo_Point("PipettePoint", 100*speedfactor)
         self.arm.set_linear_track_pos(200, wait=True)
-        self.arm.set_position(x=148.5, y=-8, relative=True, speed=30, wait=True)
-        self.arm.set_position(z=-224, relative=True, speed=30, wait=True)
+        self.arm.set_position(x=145.5, y=-8, relative=True, speed=80*speedfactor, wait=True)
+        self.arm.set_position(z=-224, relative=True, speed=30*speedfactor, wait=True)
         self.GripperAction('ReleaseVial')
 
     def PickUpPipette(self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
         self.GripperAction("ReleasePipette")
         self.GoTo_Point("PipettePoint", 50*speedfactor)#Start point
-        #self.arm.set_position(x=-367, y=-212, z=193.2, roll= 90, pitch= 90, yaw=0, speed=100*speedfactor, wait=True) #grabbing pipette #TCP No Gripper
-        self.arm.set_position(x=-367, y=-384, z=193.2, roll= 90, pitch= 90, yaw=0, speed=50*speedfactor, wait=True) #grabbing pipette #TCP Gripper
+        self.arm.set_position(y=-102, z=-56.8, relative=True, speed=50*speedfactor, wait=True) #grabbing pipette #TCP Gripper
         self.GripperAction("GrabPipette")
         self.arm.set_position(z=26.8, relative=True, speed=50*speedfactor, wait=True) #lifting pipette
                 
-    def PickUpPipetteTip(self, tip_number, speedfactor=1):
+    def PickUpPipetteTip(self, tip_number, speedfactor=1): #Muss angepasst werden
         self.arm.set_linear_track_pos(200, wait=True)
         self.GoTo_Point("PipettePoint", 60*speedfactor)#Start point
         self.GoTo_Point("PipetteTip1", 100*speedfactor)
@@ -121,7 +114,7 @@ class Robot():
         self.arm.set_position(z=-10, relative=True, speed=6*speedfactor, wait=True)
         self.arm.set_position(z=120, relative=True, speed=50*speedfactor, wait=True)
 
-    def MoveToBinder(self, speedfactor=1):
+    def MoveToBinder(self, speedfactor=1): #Muss angepasst werden 
         self.arm.set_linear_track_pos(200, wait=True)
         #self.arm.set_position(x=-263.5, y=-121, z=310, roll= 90, pitch= 91, yaw=0, speed=100*speedfactor, wait=True) #Start point # TCP No gripper
         self.arm.set_position(x=-435.5, y=-121, z=310, roll= 90, pitch= 91, yaw=0, speed=100*speedfactor, wait=True) #Start point # TCP Gripper
@@ -143,8 +136,7 @@ class Robot():
     def PuttingBackPipette (self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
         self.GoTo_Point("PipettePoint", 100*speedfactor)#Start point
-        #self.arm.set_position(x=-367, y=-212, z=250, roll= 90, pitch= 90, yaw=0, speed=60*speedfactor, wait=True) #TCP No Gripper
-        self.arm.set_position(x=-539, y=-212, z=250, roll= 90, pitch= 90, yaw=0, speed=60*speedfactor, wait=True) #TCP Gripper
+        self.arm.set_position(y=-102, relative=True, speed=50*speedfactor, wait=True) #grabbing pipette #TCP Gripper
         self.arm.set_position(z=-56.8, relative=True, speed=30*speedfactor, wait=True)
         self.GripperAction("ReleasePipette")
         self.GoTo_Point("PipettePoint", 100*speedfactor)
@@ -152,38 +144,89 @@ class Robot():
     def LiquidsToMixingPoint (self, speedfactor=1):
         self.GripperAction('ReleaseVial')
         self.GoTo_Point("PipettePoint", 40*speedfactor)
-        self.arm.set_position(x=148.5, y=-8, relative=True, speed=30*speedfactor, wait=True)
-        self.arm.set_position(z=-224, relative=True, speed=30*speedfactor, wait=True)
+        self.arm.set_position(x=145.5, y=-8, relative=True, speed=30*speedfactor, wait=True)
+        self.arm.set_position(z=-224, relative=True, speed=60*speedfactor, wait=True)
         self.GripperAction('GrabVial')
-        self.arm.set_position(z=224, relative=True, speed=30*speedfactor, wait=True)
-        self.GoTo_Point('MixerPoint', 30*speedfactor)
-        self.arm.set_position(y=-95, relative=True, speed=20*speedfactor, wait=True)
-        self.arm.set_position(z=-45, relative=True, speed=20*speedfactor, wait=True)
+        self.arm.set_position(z=224, relative=True, speed=60*speedfactor, wait=True)
+        self.GoTo_Point('MixerPoint', 60*speedfactor)
+        self.arm.set_position(y=-95, relative=True, speed=40*speedfactor, wait=True)
+        self.arm.set_position(z=-45, relative=True, speed=40*speedfactor, wait=True)
         self.GripperAction('ReleaseVial')
+        self.GoTo_Point('MixerPoint', 30*speedfactor)
 
     def TurnOnHomogenizer (self, degree, speedfactor=1):#degree:10
         self.arm.set_linear_track_pos(200, wait=True)
         self.GripperAction("ReleaseHomogenizerDial")
         self.GoTo_Point("MixerPoint", 100*speedfactor)#Start point
-        self.arm.set_position(z=165, relative=True, speed=30*speedfactor, wait=True)
-        self.arm.set_position(x=-10, y=-28, relative=True, speed=30*speedfactor, wait=True)
+        self.arm.set_position(z=308, relative=True, speed=80*speedfactor, wait=True)
+        self.arm.set_position(x=-2, y=-39, relative=True, speed=30*speedfactor, wait=True)
         self.GripperAction("GrabHomogenizerDial")
         self.arm.set_position(pitch=-degree, relative=True, speed=30*speedfactor, wait=True)
         self.savedegree = degree
         self.GripperAction("ReleaseHomogenizerDial")
-        self.GoTo_Point("MixerPoint", 60*speedfactor)
+        self.arm.set_position(y=39, relative=True, speed=30*speedfactor, wait=True)
+        self.GoTo_Point("MixerPoint", 60*speedfactor)#Start point
 
     def TurnOffHomogenizer (self, speedfactor=1):
         self.arm.set_linear_track_pos(200, wait=True)
         self.GripperAction("ReleaseHomogenizerDial")
         self.GoTo_Point("MixerPoint", 60*speedfactor)#Start point
-        self.arm.set_position(z=165, pitch=-self.savedegree, relative=True, speed=30*speedfactor, wait=True)
-        self.arm.set_position(x=-10, y=-28, relative=True, speed=30*speedfactor, wait=True)
+        self.arm.set_position(z=308, pitch=-self.savedegree, relative=True, speed=80*speedfactor, wait=True)
+        self.arm.set_position(x=-2, y=-39, relative=True, speed=30*speedfactor, wait=True)
         self.GripperAction("GrabHomogenizerDial")
         self.arm.set_position(pitch=self.savedegree, relative=True, speed=30*speedfactor, wait=True)
         self.GripperAction("ReleaseHomogenizerDial")
+        self.arm.set_position(y=39, relative=True, speed=30*speedfactor, wait=True)
         self.GoTo_Point("MixerPoint", 60*speedfactor)
-        self.GoTo_InitialPoint()
+
+    def MixingPointToLiquids (self, speedfactor=1):
+        self.GripperAction('ReleaseVial')
+        self.GoTo_Point('MixerPoint', 30*speedfactor)
+        self.arm.set_position(y=-95, relative=True, speed=20*speedfactor, wait=True)
+        self.arm.set_position(z=-45, relative=True, speed=20*speedfactor, wait=True)
+        self.GripperAction('GrabVial')
+        self.arm.set_position(z=45, relative=True, speed=20*speedfactor, wait=True)
+        self.arm.set_position(y=95, relative=True, speed=20*speedfactor, wait=True)
+        self.GoTo_Point("PipettePoint", 40*speedfactor)
+        self.arm.set_position(x=145.5, y=-8, relative=True, speed=30*speedfactor, wait=True)
+        self.arm.set_position(z=-224, relative=True, speed=30*speedfactor, wait=True)
+        self.GripperAction('ReleaseVial')
+        self.arm.set_position(z=224, relative=True, speed=30*speedfactor, wait=True)
+        self.GoTo_Point('MixerPoint', 30*speedfactor)
+
+    def CleaningLiquidsToMixer (self, liquid, speedfactor=1):
+        self.GoTo_Point('MixerPoint', 30*speedfactor)
+        self.arm.set_position(x=-700, y=-174.7, z=54, roll=180, pitch=90, yaw=0, speed=40*speedfactor, wait=True)
+        liquid_position = cleaningliquids[liquid]
+        self.arm.set_position(x=liquid_position[0], y=liquid_position[1], relative= True, speed=20*speedfactor, wait=True)
+        self.arm.set_position(x=-44, relative=True, speed=10*speedfactor, wait=True)
+        self.arm.set_position(z=-58, relative=True, speed=10*speedfactor, wait=True)
+        self.GripperAction('GrabVial')
+        self.arm.set_position(z=58, relative=True, speed=10*speedfactor, wait=True)
+        self.arm.set_position(x=44, relative=True, speed=10*speedfactor, wait=True)
+        self.GoTo_Point('MixerPoint', 30*speedfactor)
+        self.arm.set_position(y=-95, relative=True, speed=20*speedfactor, wait=True)
+        self.arm.set_position(z=-45, relative=True, speed=20*speedfactor, wait=True)
+        self.GripperAction('ReleaseVial')
+        self.GoTo_Point('MixerPoint', 30*speedfactor)
+
+    def CleaningLiquidsToStorage (self, liquid, speedfactor=1):
+        self.GoTo_Point('MixerPoint', 30*speedfactor)
+        self.GripperAction('ReleaseVial')
+        self.arm.set_position(y=-95, relative=True, speed=20*speedfactor, wait=True)
+        self.arm.set_position(z=-45, relative=True, speed=20*speedfactor, wait=True)
+        self.GripperAction('GrabVial')
+        self.arm.set_position(z=45, relative=True, speed=20*speedfactor, wait=True)
+        self.arm.set_position(y=95, relative=True, speed=20*speedfactor, wait=True)
+        self.arm.set_position(x=-700, y=-174.7, z=54, roll=180, pitch=90, yaw=0, speed=40*speedfactor, wait=True)
+        liquid_position = cleaningliquids[liquid]
+        self.arm.set_position(x=liquid_position[0], y=liquid_position[1], relative= True, speed=20*speedfactor, wait=True)
+        self.arm.set_position(x=-44, relative=True, speed=10*speedfactor, wait=True)
+        self.arm.set_position(z=-58, relative=True, speed=10*speedfactor, wait=True)
+        self.GripperAction('ReleaseVial')
+        self.arm.set_position(z=58, relative=True, speed=10*speedfactor, wait=True)
+        self.arm.set_position(x=44, relative=True, speed=10*speedfactor, wait=True)
+        self.GoTo_Point('MixerPoint', 30*speedfactor)
 
 
 '''   
@@ -213,7 +256,7 @@ fixed_points = {
     "DispenserPoint": (-572, 50, 92, 180, 90, 0),
     "Dispenser1": (-709, -98, 40, 180, 90, 0), #the one on the right
     "VialRestPoint": (-539,5, -102.5, 92, 180, 90, 0),
-    "PipettePoint": (-370, -282, 250, 90, 90, 0),
+    "PipettePoint": (-367, -282, 250, 90, 90, 0),
     "PipetteTip1": (-263.5, -293, 370, 90, 90, 0),
     "PipetteVialRest": (-509, -104.5, 290, 180, 90, 0),
     "MixerPoint": (-585.5, -276.2, 54, 90, 90, 0),    
@@ -239,11 +282,16 @@ tips = {#needs to be checked
     "6": (100, -50),
 }
 
+cleaningliquids = {
+    "Water": (0, 0),
+    "Isopropanol": (0, 41),
+}
+
 gripper_position = {
     "GrabVial": (260, True),
-    "ReleaseVial": (450, True),
+    "ReleaseVial": (500, True),
     "ReleasePipette": (850, True),
-    "GrabPipette": (380, True),#needs testing
-    "ReleaseHomogenizerDial": (800, True),
-    "GrabHomogenizerDial": (510, True),
+    "GrabPipette": (560, True),
+    "ReleaseHomogenizerDial": (850, True),
+    "GrabHomogenizerDial": (570, True),
 }

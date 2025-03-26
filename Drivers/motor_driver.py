@@ -35,25 +35,25 @@ class Motor:
 
     def check_connection(self):
         # Check if the motor responds to a connection test
-        self.connection.send_command(f"{self.num:02}Q")
+        self.connection.send_command(f"{self.num}Q")
         return self.connection.read_response() == 'MOTOR_CONNECTED'
 
     def stop(self):
         # Immediately stop the motor
-        self.connection.send_command(f"{self.num:02}S")
+        self.connection.send_command(f"{self.num}S")
         self._wait_for_motor()
 
     def set_speed(self, speed):
         # Set motor speed (1 to 1000)
         if 0 < speed <= 1000:
-            self.connection.send_command(f"{self.num:02}V{speed}")
+            self.connection.send_command(f"{self.num}V{speed}")
             self._wait_for_motor()
         else:
             raise ValueError("Speed must be between 1 and 1000")
 
     def move_relative(self, steps):
         # Move the motor relative to its current position
-        self.connection.send_command(f"{self.num:02}M{steps}")
+        self.connection.send_command(f"{self.num}M{steps}")
         self._wait_for_motor()
 
     def move_down(self, steps):
@@ -66,22 +66,22 @@ class Motor:
 
     def move_absolute(self, target):
         # Move motor to an absolute position
-        self.connection.send_command(f"{self.num:02}A{target}")
+        self.connection.send_command(f"{self.num}A{target}")
         self._wait_for_motor()
 
     def move_to_top(self):
         # Move motor to its top position (maxPosition in Arduino)
-        self.connection.send_command(f"{self.num:02}A0")  # Arduino constrains to maxPosition
+        self.connection.send_command(f"{self.num}A0")  # Arduino constrains to maxPosition
         self._wait_for_motor()
 
     def move_to_bottom(self):
         # Move motor to the bottom (position 0)
-        self.connection.send_command(f"{self.num:02}A999999")
+        self.connection.send_command(f"{self.num}A999999")
         self._wait_for_motor()
 
     def set_home(self):
         # Set the current position as the new home (zero)
-        self.connection.send_command(f"{self.num:02}H")
+        self.connection.send_command(f"{self.num}H")
         response = self.connection.read_response()
         if response == "HOME_SET":
             print("Home position set.")
