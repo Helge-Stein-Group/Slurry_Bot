@@ -29,9 +29,22 @@ class SerialConnection:
 
 
 class Motor:
-    def __init__(self, connection, num):
+    def __init__(self, connection, num, max_position=None):
         self.connection = connection
         self.num = num
+        self.max_position = max_position  # Optional: max steps
+
+    def _wait_for_motor(self):
+        # Wait until the motor has finished its task
+        while True:
+            response = self.connection.read_response()
+            if response == 'MOTOR_FINISHED':
+                break
+            elif "ERROR" in response:
+                print(response)
+            elif "WARNING" in response:
+                print(response)
+                break
 
     def check_connection(self):
         # Check if the motor responds to a connection test
@@ -51,49 +64,41 @@ class Motor:
         else:
             raise ValueError("Speed must be between 1 and 1000")
 
+    def set_home(self):
+        """Sets the current position as home (0)."""
+        self.connection.send_command(f"{self.num:02}H")
+        self._wait_for_motor()
+
     def move_relative(self, steps):
-        # Move the motor relative to its current position
-        self.connection.send_command(f"{self.num}M{steps}")
+        """Moves the motor by a relative number of steps (positive or negative)."""
+        if self.max_position is not None and abs(steps) > self.max_position:
+            print(f"⚠️ Movement of {steps} steps exceeds allowed limit of {self.max_position}. Skipped.")
+            return
+        self.connection.send_command(f"{self.num:02}M{steps}")
         self._wait_for_motor()
 
     def move_down(self, steps):
         # Move motor up (positive direction)
-        self.move_relative(abs(steps))
+        self.move_relative(-abs(steps))
 
     def move_up(self, steps):
         # Move motor down (negative direction)
-        self.move_relative(-abs(steps))
-
-    def move_absolute(self, target):
-        # Move motor to an absolute position
-        self.connection.send_command(f"{self.num}A{target}")
-        self._wait_for_motor()
+        self.move_relative(abs(steps))
 
     def move_to_top(self):
-        # Move motor to its top position (maxPosition in Arduino)
-        self.connection.send_command(f"{self.num}A0")  # Arduino constrains to maxPosition
-        self._wait_for_motor()
+        """Moves to the maximum defined steps (upward)."""
+        if self.max_position is not None:
+            self.move_relative(self.max_position)
+        else:
+            print("No max_position defined for move_to_top().")
 
     def move_to_bottom(self):
-        # Move motor to the bottom (position 0)
-        self.connection.send_command(f"{self.num}A999999")
-        self._wait_for_motor()
+        """Moves to bottom by going down the max_position steps."""
+        if self.max_position is not None:
+            self.move_relative(-self.max_position)
+        else:
+            print("No max_position defined for move_to_bottom().")
 
-    def set_home(self):
-        # Set the current position as the new home (zero)
-        self.connection.send_command(f"{self.num}H")
-        response = self.connection.read_response()
-        if response == "HOME_SET":
-            print("Home position set.")
+    
 
-    def _wait_for_motor(self):
-        # Wait until the motor has finished its task
-        while True:
-            response = self.connection.read_response()
-            if response == 'MOTOR_FINISHED':
-                break
-            elif "ERROR" in response:
-                print(response)
-            elif "WARNING" in response:
-                print(response)
-                break
+    
