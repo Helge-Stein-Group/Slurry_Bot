@@ -66,7 +66,7 @@ class Motor:
 
     def set_home(self):
         """Sets the current position as home (0)."""
-        self.connection.send_command(f"{self.num:02}H")
+        self.connection.send_command(f"{self.num}H")
         self._wait_for_motor()
 
     def move_relative(self, steps):
@@ -74,7 +74,7 @@ class Motor:
         if self.max_position is not None and abs(steps) > self.max_position:
             print(f"Movement of {steps} steps exceeds allowed limit of {self.max_position}. Skipped.")
             return
-        self.connection.send_command(f"{self.num:02}M{steps}")
+        self.connection.send_command(f"{self.num}M{steps}")
         self._wait_for_motor()
 
     def move_down(self, steps):
