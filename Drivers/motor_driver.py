@@ -72,7 +72,7 @@ class Motor:
     def move_relative(self, steps):
         """Moves the motor by a relative number of steps (positive or negative)."""
         if self.max_position is not None and abs(steps) > self.max_position:
-            print(f"⚠️ Movement of {steps} steps exceeds allowed limit of {self.max_position}. Skipped.")
+            print(f"Movement of {steps} steps exceeds allowed limit of {self.max_position}. Skipped.")
             return
         self.connection.send_command(f"{self.num:02}M{steps}")
         self._wait_for_motor()
