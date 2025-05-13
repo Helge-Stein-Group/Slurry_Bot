@@ -148,9 +148,8 @@ class Scale:
 
     def measure_stable(self):
         measurement = self.measure() 
-        return measurement 
+        return measurement
 
-        
     def __enter__(self):
         """ Context manager: establishes connection """
         self.connect()
