@@ -11,6 +11,8 @@ RACK VialRackBack    -428      10    133  -90   90   0   75.3   0   3
 # ── Vial z Heights ───────────────────────────────────────────
 # Fixed to floor – only change if vials are replaced!
 FIXED vial_grab_z    -4
+FIXED vial_above_z   125
+
 
 # ── Tip Rack ─────────────────────────────────────────────────
 RACK_CUSTOM TipRack
