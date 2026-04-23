@@ -97,54 +97,6 @@ def save_point(point_type: str) -> None:
     print(f"✓ '{point_name}' saved ({point_type.upper()}) | "
           f"track: {current_track}mm | gripper: {gripper_position}")
 
-def save_rack_ref_to_config(position) -> None:
-    """
-    Saves current position as RACK reference point in config.txt.
-    Updates the first 6 values of the matching RACK line.
-    """
-    config_path = os.path.join(BASE_DIR, "Config", "config.txt")
-
-    if not os.path.exists(config_path):
-        print(f"Config file not found: {config_path}")
-        return
-
-    print("Enter RACK name to update (e.g. VialRackFront):")
-    rack_name = input("> ").strip()
-
-    if rack_name == "":
-        print("Cancelled")
-        return
-
-    with open(config_path, "r") as f:
-        lines = f.readlines()
-
-    found = False
-    for i, line in enumerate(lines):
-        stripped = line.strip()
-        if stripped.startswith(f"RACK {rack_name}"):
-            parts     = stripped.split()
-            spacing_x = parts[8]
-            spacing_y = parts[9]
-            count     = parts[10]
-            lines[i]  = (
-                f"RACK {rack_name:<20} "
-                f"{position[0]:<8.1f} {position[1]:<8.1f} "
-                f"{position[2]:<8.1f} "
-                f"{position[3]:<8.1f} {position[4]:<8.1f} "
-                f"{position[5]:<8.1f} "
-                f"{spacing_x} {spacing_y} {count}\n"
-            )
-            found = True
-            print(f"✓ Updated RACK {rack_name} in config.txt")
-            break
-
-    if not found:
-        print(f"RACK '{rack_name}' not found in config.txt!")
-        return
-
-    with open(config_path, "w") as f:
-        f.writelines(lines)
-
 def reversal() -> None:
     """Reverses all moves since last saved point."""
     if not movestack:
@@ -252,11 +204,6 @@ def on_press(key):
         # ── Position anzeigen p ──────────────────────────────
         elif key.char == "p":
             print_current_position()
-
-        # ── Rack-Referenz in config.txt speichern c ──────────
-        elif key.char == "c":
-            _, position = arm.get_position()
-            save_rack_ref_to_config(position)
 
         # ── Greifer g ────────────────────────────────────────
         elif key.char == "g":
@@ -423,7 +370,6 @@ Save & Navigate:
   j                   save point as ANGULAR
   r                   revert to last saved point
   p                   print current position
-  c                   save pos as RACK ref in config.txt
 
   ESC                 emergency stop + exit
 ─────────────────────────────────────────────────
