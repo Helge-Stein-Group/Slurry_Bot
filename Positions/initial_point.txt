@@ -1,0 +1,5 @@
+initial_position cartesian: [-400, 0, 133, 0, 90, 180]
+initial_position angular: [0, 0, 0, 0, 0, 0]
+Gripper: 400
+Track: 600
+Type: linear
