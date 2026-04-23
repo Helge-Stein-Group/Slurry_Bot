@@ -1,0 +1,29 @@
+release_gripper cartesian: [-421.4, -270.5, 125, 90, 90, 0]
+release_gripper angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 600
+Type: linear
+
+above_vial1 cartesian: [-421.4, -270.5, 125, 90, 90, 0]
+above_vial1 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 600
+Type: linear
+
+grab_vial1 cartesian: [-421.4, -270.5, -4, 90, 90, 0]
+grab_vial1 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 250
+Track: 600
+Type: linear
+
+lift_vial1 cartesian: [-421.4, -270.5, 125, 90, 90, 0]
+lift_vial1 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 250
+Track: 600
+Type: linear
+
+return_storage cartesian: [-421.4, -270.5, 125, 90, 90, 0]
+return_storage angular: [0, 0, 0, 0, 0, 0]
+Gripper: 250
+Track: 600
+Type: linear
