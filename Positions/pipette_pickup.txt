@@ -1,0 +1,35 @@
+vial_rest_up cartesian: [-223.5, -296, 250, 90, 90, 0]
+vial_rest_up angular: [0, 0, 0, 0, 0, 0]
+Gripper: 850
+Track: 200
+Type: linear
+
+pipette_point cartesian: [-367, -282, 250, 90, 90, 0]
+pipette_point angular: [0, 0, 0, 0, 0, 0]
+Gripper: 850
+Track: 200
+Type: linear
+
+pipette_grab_approach cartesian: [-367, -384, 193.2, 90, 90, 0]
+pipette_grab_approach angular: [0, 0, 0, 0, 0, 0]
+Gripper: 850
+Track: 200
+Type: linear
+
+pipette_grab cartesian: [-367, -384, 193.2, 90, 90, 0]
+pipette_grab angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 200
+Type: linear
+
+pipette_lift cartesian: [-367, -384, 220, 90, 90, 0]
+pipette_lift angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 200
+Type: linear
+
+pipette_point_return cartesian: [-367, -282, 250, 90, 90, 0]
+pipette_point_return angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 200
+Type: linear
