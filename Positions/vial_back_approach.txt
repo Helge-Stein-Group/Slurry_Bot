@@ -3,15 +3,3 @@ vial_back_storage angular: [0, 0, 0, 0, 0, 0]
 Gripper: 500
 Track: 310
 Type: linear
-
-vial_back_gripper cartesian: [-428, 10, 133, -90, 90, 0]
-vial_back_gripper angular: [0, 0, 0, 0, 0, 0]
-Gripper: 500
-Track: 310
-Type: gripper_only
-
-vial_back_track cartesian: [-428, 10, 133, -90, 90, 0]
-vial_back_track angular: [0, 0, 0, 0, 0, 0]
-Gripper: 500
-Track: 310
-Type: track_only
