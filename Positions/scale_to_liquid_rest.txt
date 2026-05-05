@@ -1,0 +1,47 @@
+grab_on_scale cartesian: [-288, 432, 76, -90, 90, 0]
+grab_on_scale angular: [0, 0, 0, 0, 0, 0]
+Gripper: 250
+Track: 600
+Type: linear
+
+scale_up cartesian: [-288, 432, 102, -90, 90, 0]
+scale_up angular: [0, 0, 0, 0, 0, 0]
+Gripper: 250
+Track: 600
+Type: linear
+
+scale_back cartesian: [-288, 292, 102, -90, 90, 0]
+scale_back angular: [0, 0, 0, 0, 0, 0]
+Gripper: 250
+Track: 600
+Type: linear
+
+inbetween_point cartesian: [-452, -100, 125, -160, 90, 0]
+inbetween_point angular: [0, 0, 0, 0, 0, 0]
+Gripper: 250
+Track: 600
+Type: linear
+
+pipette_point cartesian: [-367, -282, 250, 90, 90, 0]
+pipette_point angular: [0, 0, 0, 0, 0, 0]
+Gripper: 250
+Track: 200
+Type: linear
+
+vial_rest_approach cartesian: [-223.5, -296, 250, 90, 90, 0]
+vial_rest_approach angular: [0, 0, 0, 0, 0, 0]
+Gripper: 250
+Track: 200
+Type: linear
+
+vial_rest_down cartesian: [-223.5, -296, 68, 90, 90, 0]
+vial_rest_down angular: [0, 0, 0, 0, 0, 0]
+Gripper: 250
+Track: 200
+Type: linear
+
+vial_rest_release cartesian: [-223.5, -296, 68, 90, 90, 0]
+vial_rest_release angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 200
+Type: linear
