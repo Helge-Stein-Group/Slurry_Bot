@@ -3,3 +3,15 @@ initial_position angular: [0, 0, 0, 0, 0, 0]
 Gripper: 400
 Track: 600
 Type: linear
+
+initial_gripper cartesian: [-400, 0, 133, 0, 90, 180]
+initial_gripper angular: [0, 0, 0, 0, 0, 0]
+Gripper: 400
+Track: 600
+Type: gripper_only
+
+initial_track cartesian: [-400, 0, 133, 0, 90, 180]
+initial_track angular: [0, 0, 0, 0, 0, 0]
+Gripper: 400
+Track: 600
+Type: track_only
