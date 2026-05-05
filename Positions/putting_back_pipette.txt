@@ -1,0 +1,29 @@
+pipette_point cartesian: [-367, -282, 250, 90, 90, 0]
+pipette_point angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 200
+Type: linear
+
+pipette_lower cartesian: [-367, -384, 250, 90, 90, 0]
+pipette_lower angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 200
+Type: linear
+
+pipette_down cartesian: [-367, -384, 193.2, 90, 90, 0]
+pipette_down angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 200
+Type: linear
+
+pipette_release cartesian: [-367, -384, 193.2, 90, 90, 0]
+pipette_release angular: [0, 0, 0, 0, 0, 0]
+Gripper: 850
+Track: 200
+Type: linear
+
+pipette_point_return cartesian: [-367, -282, 250, 90, 90, 0]
+pipette_point_return angular: [0, 0, 0, 0, 0, 0]
+Gripper: 850
+Track: 200
+Type: linear
