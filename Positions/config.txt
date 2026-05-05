@@ -20,3 +20,9 @@ RACK_CUSTOM_POS tip1   -285.5   -293    400    90    90    0
 RACK_CUSTOM_POS tip2   -240.5   -293    400    90    90    0
 RACK_CUSTOM_POS tip3   -285.5   -338    400    90    90    0
 RACK_CUSTOM_POS tip4   -240     -338    400    90    90    0
+
+# ── Tip z Heights ────────────────────────────────────────────
+# tip_press_z1 = tip_z (400) - 165 = 235
+# tip_press_z2 = tip_press_z1 - 33 = 202
+FIXED tip_press_z1    235
+FIXED tip_press_z2    202
