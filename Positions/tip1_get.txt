@@ -1,0 +1,23 @@
+above_tip1 cartesian: [-285.5, -293, 400, 90, 90, 0]
+above_tip1 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 200
+Type: linear
+
+tip1_slow_down cartesian: [-285.5, -293, 235, 90, 90, 0]
+tip1_slow_down angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 200
+Type: linear
+
+tip1_press cartesian: [-285.5, -293, 202, 90, 90, 0]
+tip1_press angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 200
+Type: linear
+
+tip1_lift cartesian: [-285.5, -293, 400, 90, 90, 0]
+tip1_lift angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 200
+Type: linear
