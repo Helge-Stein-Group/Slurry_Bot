@@ -1,0 +1,68 @@
+# Starts from scoop position
+# Re-gripping sequence to align spatula correctly before returning to shelf
+
+intermediate cartesian: [-497.8, 314.4, -43.8, 169.5, 71.8, -104.6]
+intermediate angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+regrip_open cartesian: [-497.8, 314.4, -43.8, 169.5, 71.8, -104.6]
+regrip_open angular: [0, 0, 0, 0, 0, 0]
+Gripper: 290
+Track: 600
+Type: linear
+
+regrip_close cartesian: [-497.8, 314.4, -43.8, 169.5, 71.8, -104.6]
+regrip_close angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+regrip_open2 cartesian: [-497.8, 314.4, -43.8, 169.5, 71.8, -104.6]
+regrip_open2 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 290
+Track: 600
+Type: linear
+
+regrip_close2 cartesian: [-497.8, 314.4, -43.8, 169.5, 71.8, -104.6]
+regrip_close2 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+shelf_approach cartesian: [-505.5, 79.5, 277.8, 180, 90, 0]
+shelf_approach angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+shelf_above cartesian: [-652.9, 82.5, 272.6, 180, 90, 0]
+shelf_above angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+shelf_lower1 cartesian: [-651.9, 84.5, 253.6, 180, 90, 0]
+shelf_lower1 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+shelf_lower2 cartesian: [-648.9, 84.5, 249.6, 180, 90, 0]
+shelf_lower2 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+shelf_release cartesian: [-648.9, 84.5, 249.6, 180, 90, 0]
+shelf_release angular: [0, 0, 0, 0, 0, 0]
+Gripper: 800
+Track: 600
+Type: linear
+
+shelf_clear cartesian: [-548.9, 84.5, 249.6, 180, 90, 0]
+shelf_clear angular: [0, 0, 0, 0, 0, 0]
+Gripper: 800
+Track: 600
+Type: linear

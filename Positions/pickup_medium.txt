@@ -1,0 +1,41 @@
+spatula_open_gripper cartesian: [-505.8, 79.5, 180.7, 180, 90, 0]
+spatula_open_gripper angular: [0, 0, 0, 0, 0, 0]
+Gripper: 800
+Track: 600
+Type: linear
+
+spatula_approach cartesian: [-505.8, 79.5, 180.7, 180, 90, 0]
+spatula_approach angular: [0, 0, 0, 0, 0, 0]
+Gripper: 800
+Track: 600
+Type: linear
+
+spatula_above cartesian: [-651.9, 81.5, 112.7, -116.4, 87.8, 63.5]
+spatula_above angular: [0, 0, 0, 0, 0, 0]
+Gripper: 800
+Track: 600
+Type: linear
+
+spatula_pregrip cartesian: [-651.9, 81.5, 112.7, -116.4, 87.8, 63.5]
+spatula_pregrip angular: [0, 0, 0, 0, 0, 0]
+Gripper: 290
+Track: 600
+Type: linear
+
+spatula_lift cartesian: [-651.9, 81.5, 140.7, -116.4, 87.8, 63.5]
+spatula_lift angular: [0, 0, 0, 0, 0, 0]
+Gripper: 290
+Track: 600
+Type: linear
+
+spatula_clear cartesian: [-551.9, 81.5, 140.7, -116.4, 87.8, 63.5]
+spatula_clear angular: [0, 0, 0, 0, 0, 0]
+Gripper: 290
+Track: 600
+Type: linear
+
+spatula_firm_grip cartesian: [-551.9, 81.5, 140.7, -116.4, 87.8, 63.5]
+spatula_firm_grip angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear

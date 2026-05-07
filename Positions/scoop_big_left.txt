@@ -1,0 +1,113 @@
+container_approach cartesian: [-493.4, 271.3, -42.1, 177.8, 67, -92.1]
+container_approach angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+scoop_enter cartesian: [-497.8, 312.4, -50.7, 174.5, 60.9, -98.5]
+scoop_enter angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+scoop_angle cartesian: [-489.8, 339.4, -60.1, -132.1, 58.1, -48.5]
+scoop_angle angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+scoop_motion cartesian: [-497.8, 314.4, -63.8, 169.5, 71.8, -104.6]
+scoop_motion angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+shake_open cartesian: [-497.8, 314.4, -63.8, 169.5, 71.8, -104.6]
+shake_open angular: [0, 0, 0, 0, 0, 0]
+Gripper: 290
+Track: 600
+Type: linear
+
+shake_close cartesian: [-497.8, 314.4, -63.8, 169.5, 71.8, -104.6]
+shake_close angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+lift cartesian: [-497.8, 314.4, -35.8, 169.5, 71.8, -104.6]
+lift angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+path1 cartesian: [-300.2, 183.7, 58.7, 165.1, 76, -107.3]
+path1 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+path2 cartesian: [-300.2, 245.9, 160.4, 165.1, 76, -107.3]
+path2 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+path3 cartesian: [-300.2, 310.7, 148.8, 165.1, 76, -107.3]
+path3 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+funnel_approach cartesian: [-293.4, 326.1, 186.2, -176.5, 52.2, -85.9]
+funnel_approach angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+funnel_tilt cartesian: [-293.4, 343.3, 218.8, -177.9, 36.2, -86.9]
+funnel_tilt angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+funnel_shake_open cartesian: [-293.4, 343.3, 218.8, -177.9, 36.2, -86.9]
+funnel_shake_open angular: [0, 0, 0, 0, 0, 0]
+Gripper: 290
+Track: 600
+Type: linear
+
+funnel_shake1 cartesian: [-293.4, 343.3, 218.8, -164.6, 34.9, -79.2]
+funnel_shake1 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 290
+Track: 600
+Type: linear
+
+funnel_shake2 cartesian: [-293.4, 343.3, 218.8, 170.7, 36.2, -93.7]
+funnel_shake2 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 290
+Track: 600
+Type: linear
+
+funnel_shake3 cartesian: [-293.4, 343.3, 218.8, -177.9, 36.2, -86.9]
+funnel_shake3 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 290
+Track: 600
+Type: linear
+
+funnel_shake_close cartesian: [-293.4, 343.3, 218.8, -177.9, 36.2, -86.9]
+funnel_shake_close angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+return1 cartesian: [-282.4, 137.9, 285.5, -179.2, 36.3, -87.7]
+return1 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear
+
+return2 cartesian: [-443.2, 89.2, 285.5, -144.6, 85.6, -55]
+return2 angular: [0, 0, 0, 0, 0, 0]
+Gripper: 275
+Track: 600
+Type: linear

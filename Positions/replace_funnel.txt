@@ -1,0 +1,59 @@
+funnel_above_vial cartesian: [-292.3, 433.3, 150.8, -80.9, 89.1, 9.3]
+funnel_above_vial angular: [0, 0, 0, 0, 0, 0]
+Gripper: 800
+Track: 600
+Type: linear
+
+funnel_grab_position cartesian: [-292.3, 433.3, 82.3, -80.9, 89.1, 9.3]
+funnel_grab_position angular: [0, 0, 0, 0, 0, 0]
+Gripper: 800
+Track: 600
+Type: linear
+
+funnel_grip cartesian: [-292.3, 433.3, 82.3, -80.9, 89.1, 9.3]
+funnel_grip angular: [0, 0, 0, 0, 0, 0]
+Gripper: 503
+Track: 600
+Type: linear
+
+funnel_lift cartesian: [-292.3, 433.3, 148, -80.9, 89.1, 9.3]
+funnel_lift angular: [0, 0, 0, 0, 0, 0]
+Gripper: 503
+Track: 600
+Type: linear
+
+funnel_back cartesian: [-292.3, 252.3, 148, -80.9, 89.1, 9.3]
+funnel_back angular: [0, 0, 0, 0, 0, 0]
+Gripper: 503
+Track: 600
+Type: linear
+
+funnel_shelf_approach cartesian: [-504.1, 63, 36, 180, 90, 0]
+funnel_shelf_approach angular: [0, 0, 0, 0, 0, 0]
+Gripper: 503
+Track: 600
+Type: linear
+
+funnel_above_shelf cartesian: [-660.2, 59, 36, 180, 90, 0]
+funnel_above_shelf angular: [0, 0, 0, 0, 0, 0]
+Gripper: 503
+Track: 600
+Type: linear
+
+funnel_place cartesian: [-660.2, 60.5, -28.7, 180, 90, 0]
+funnel_place angular: [0, 0, 0, 0, 0, 0]
+Gripper: 503
+Track: 600
+Type: linear
+
+funnel_release cartesian: [-660.2, 60.5, -28.7, 180, 90, 0]
+funnel_release angular: [0, 0, 0, 0, 0, 0]
+Gripper: 800
+Track: 600
+Type: linear
+
+funnel_clear cartesian: [-605.2, 60.5, -28.7, 180, 90, 0]
+funnel_clear angular: [0, 0, 0, 0, 0, 0]
+Gripper: 800
+Track: 600
+Type: linear
