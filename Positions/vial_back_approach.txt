@@ -1,5 +1,23 @@
-vial_back_storage cartesian: [-428, 10, 133, -90, 90, 0]
-vial_back_storage angular: [0, 0, 0, 0, 0, 0]
+approach cartesian: [-428, 10, 133, -90, 90, 0]
+approach angular: [0, 0, 0, 0, 0, 0]
 Gripper: 500
+Track: 310
+Type: linear
+
+grab_position cartesian: [-428, 10, -4, -90, 90, 0]
+grab_position angular: [0, 0, 0, 0, 0, 0]
+Gripper: 500
+Track: 310
+Type: linear
+
+grabbing_position cartesian: [-428, 10, -4, -90, 90, 0]
+grab_position angular: [0, 0, 0, 0, 0, 0]
+Gripper: 250
+Track: 310
+Type: linear
+
+lift_position cartesian: [-428, 10, 133, -90, 90, 0]
+lift_position angular: [0, 0, 0, 0, 0, 0]
+Gripper: 250
 Track: 310
 Type: linear
