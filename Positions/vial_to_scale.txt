@@ -22,8 +22,8 @@ Gripper: 250
 Track: 600
 Type: linear
 
-scale_down cartesian: [-288, 432, 76, -90, 90, 0]
-scale_down angular: [0, 0, 0, 0, 0, 0]
+let_go cartesian: [-288, 432, 76, -90, 90, 0]
+let_go angular: [0, 0, 0, 0, 0, 0]
 Gripper: 500
 Track: 600
 Type: linear
