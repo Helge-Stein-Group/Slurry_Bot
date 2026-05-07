@@ -5,10 +5,9 @@
 # Lines starting with # are comments and are ignored
 #
 # Sections:
-#   GRIPPER  → gripper values (0=closed, 850=open)
-#   RACK     → position arrays with reference file + spacing
-#              Format: RACK <name> <ref_file> <spacing_x> <spacing_y> <count>
-#   FIXED    → single values that are physical constants
+#   GRIPPER → gripper values (0=closed, 850=open)
+#   RACK    → position arrays with reference file + spacing
+#             Format: RACK <name> <ref_file> <spacing_x> <spacing_y> <count>
 # ============================================================
 
 
@@ -16,12 +15,10 @@
 # Format: GRIPPER <name> <value>
 # 0 = fully closed, 850 = fully open
 
-GRIPPER GrabVial                250
-GRIPPER ReleaseVial             500
-GRIPPER ReleasePipette          850
-GRIPPER GrabPipette             500
-GRIPPER ReleaseHomogenizerDial  850
-GRIPPER GrabHomogenizerDial     570
+GRIPPER GrabVial        250
+GRIPPER ReleaseVial     500
+GRIPPER ReleasePipette  850
+GRIPPER GrabPipette     500
 
 
 # ── Racks ────────────────────────────────────────────────────
@@ -31,39 +28,20 @@ GRIPPER GrabHomogenizerDial     570
 # spacing_x = offset in x per step in mm
 # spacing_y = offset in y per step in mm
 # count     = total number of positions in this rack
-#
-# Example: VialRackFront has 3 vials, 75.3mm apart in x
-#          Vial1 = ref_file (index 0, offset 0)
-#          Vial2 = ref_file + 75.3mm in x (index 1)
-#          Vial3 = ref_file + 150.6mm in x (index 2)
 
 # Vial racks
-RACK VialRackFront      vial1_pickup.txt          75.3    0     3
-RACK VialRackBack       vial4_pickup.txt          75.3    0     3
+# Vial1/Vial4 = reference position (index 0, no offset)
+# spacing_x = 75.3mm (physical distance between vials – do not change!)
+RACK VialRackFront   vial1_pickup.txt          75.3    0    3
+RACK VialRackBack    vial4_pickup.txt          75.3    0    3
 
-# Tip racks – one rack per action
-# Tips are arranged in 2x2 grid: spacing 45mm in x and y
-# tip1 = top left (index 0)
-# tip2 = top right (index 1, +45mm in x)
-# tip3 = bottom left (index 2, +45mm in y)
-# tip4 = bottom right (index 3, +45mm in x and y)
-RACK TipGet             tip1_get.txt              45     45     4
-RACK TipPutback         tip1_putback.txt          45     45     4
-RACK TipTakeLiquid      tip1_take_liquid.txt      45     45     4
-RACK TipLiquidToVial    tip1_liquid_to_vial.txt   45     45     4
-
-
-# ── Fixed Values ─────────────────────────────────────────────
-# Format: FIXED <name> <value>
-# Physical constants – only change if hardware is replaced!
-
-# Tip pressing heights (absolute z)
-# tip_press_z1 = tip_z (400) - 165 = 235
-# tip_press_z2 = tip_press_z1 - 33 = 202
-FIXED tip_press_z1    235
-FIXED tip_press_z2    202
-
-# Liquid taking offsets from tip position
-FIXED liquid_offset_x    15
-FIXED liquid_offset_y   -19
-FIXED liquid_dip_z      280
+# Tip racks – one rack per action type
+# Tips arranged in 2x2 grid:
+#   tip1 = top left  (index 0, offset 0/0)
+#   tip2 = top right (index 1, +45mm in x)
+#   tip3 = bottom left  (index 2, +45mm in y)
+#   tip4 = bottom right (index 3, +45mm in x and y)
+RACK TipGet          tip1_get.txt              45     45    4
+RACK TipPutback      tip1_putback.txt          45     45    4
+RACK TipTakeLiquid   tip1_take_liquid.txt      45     45    4
+RACK TipLiquidToVial tip1_liquid_to_vial.txt   45     45    4
