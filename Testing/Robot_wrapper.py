@@ -13,7 +13,7 @@ def load_config(filename="config.txt"):
     gripper_positions = {}
     racks             = {}
 
-    filepath = os.path.join(BASE_DIR, "Config", filename)
+    filepath = os.path.join(BASE_DIR, "Positions", filename)
 
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"Config file not found: {filepath}")
