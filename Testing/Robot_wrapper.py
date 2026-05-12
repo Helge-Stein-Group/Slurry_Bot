@@ -13,7 +13,7 @@ def load_config(filename="config.txt"):
     gripper_positions = {}
     racks             = {}
 
-    filepath = os.path.join(BASE_DIR, "Positions", filename)
+    filepath = os.path.join(BASE_DIR, "..", "Positions", filename)
 
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"Config file not found: {filepath}")
@@ -78,7 +78,7 @@ class Robot():
         Execution order per point: move → gripper → track
         Only sets gripper/track if value changed from previous point.
         """
-        filepath = os.path.join(BASE_DIR, "Positions", filename)
+        filepath = os.path.join(BASE_DIR, "..","Positions", filename)
 
         if not os.path.exists(filepath):
             raise FileNotFoundError(f"Position file not found: {filepath}")
@@ -115,7 +115,12 @@ class Robot():
                 cartesian[1] += offset_y
                 cartesian[2] += offset_z
 
-                # 1. Bewegen
+                # 1. Schiene – nur wenn geändert
+                if track != prev_track:
+                    self.arm.set_linear_track_pos(track, wait=True)
+                    prev_track = track
+
+                # 2. Bewegen
                 if point_type == "linear":
                     self.arm.set_position(
                         *cartesian,
@@ -127,15 +132,12 @@ class Robot():
                         speed=speed, wait=True
                     )
 
-                # 2. Greifer – nur wenn geändert
+                # 3. Greifer – nur wenn geändert
                 if gripper != prev_gripper:
                     self.arm.set_gripper_position(gripper, wait=True)
                     prev_gripper = gripper
 
-                # 3. Schiene – nur wenn geändert
-                if track != prev_track:
-                    self.arm.set_linear_track_pos(track, wait=True)
-                    prev_track = track
+                
 
                 i += 5
 
@@ -189,6 +191,12 @@ class Robot():
         if vial_number in ["Vial1", "Vial2", "Vial3"]:
             rack  = racks["VialRackFront"]
             index = int(vial_number[-1]) - 1
+
+            if vial_number == "Vial3":
+                self.arm.set_position(
+                    x=-421.4, y=-270.5, z=125, roll=90, pitch=90, yaw=0)
+                
+
         elif vial_number in ["Vial4", "Vial5", "Vial6"]:
             rack  = racks["VialRackBack"]
             index = int(vial_number[-1]) - 4
@@ -259,7 +267,7 @@ class Robot():
         )
 
     def PlaceFunnel(self, speedfactor=1):
-        self.move_from_file("place_funnel.txt", speed=70*speedfactor)
+        self.move_from_file("get_funnel.txt", speed=30*speedfactor)
 
     def ReplaceFunnel(self, speedfactor=1):
         self.move_from_file("replace_funnel.txt", speed=70*speedfactor)

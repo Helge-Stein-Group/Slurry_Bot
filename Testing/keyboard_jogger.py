@@ -43,8 +43,8 @@ controls = {
     "gripper_step":  25,
     "track_step":    10,
     "x": 0,
-    "y": 2,
-    "z": 1,
+    "y": 1,
+    "z": 2,
     "1": 0,
     "2": 1,
     "3": 2,
@@ -217,7 +217,7 @@ def on_press(key):
                     gripper_position - controls["gripper_step"],
                     GRIPPER_MIN
                 )
-            arm.set_gripper_position(gripper_position, wait=True)
+            arm.set_gripper_position(gripper_position, wait=False)
             print(f"Gripper: {gripper_position}")
 
         # ── Greifer komplett auf/zu h/f ──────────────────────
@@ -275,6 +275,10 @@ def on_release(key):
             time.sleep(0.1)
             _, actual_angles = arm.get_servo_angle()
             movestack.append(actual_angles)
+
+        elif key.char == "g":
+            active_key = None
+            
     except AttributeError:
         pass
 
@@ -286,7 +290,7 @@ def main():
     print("\n=== Slurrybot Keyboard Jogger ===\n")
 
     # Positions-Ordner erstellen
-    positions_dir = os.path.join(BASE_DIR, "Positions")
+    positions_dir = os.path.join(BASE_DIR, "..", "Positions")
     os.makedirs(positions_dir, exist_ok=True)
 
     # Dateiname

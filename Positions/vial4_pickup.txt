@@ -4,13 +4,13 @@ Gripper: 500
 Track: 310
 Type: linear
 
-grab_position cartesian: [-428, 10, -4, -90, 90, 0]
+grab_position cartesian: [-428, 10, -8, -90, 90, 0]
 grab_position angular: [0, 0, 0, 0, 0, 0]
 Gripper: 500
 Track: 310
 Type: linear
 
-grabbing_position cartesian: [-428, 10, -4, -90, 90, 0]
+grabbing_position cartesian: [-428, 10, -8, -90, 90, 0]
 grabbing_position angular: [0, 0, 0, 0, 0, 0]
 Gripper: 250
 Track: 310
