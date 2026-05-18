@@ -40,10 +40,11 @@ TRACK_MIN   = 0
 TRACK_MAX   = 1000
 
 controls = {
-    "stepsize":      5,
-    "step_angle":    1,
-    "gripper_step":  25,
-    "track_step":    10,
+    "stepsize":      5,     # mm for x/y/z
+    "step_joint":    1,     # degrees for joints 1-6
+    "step_rpy":      45,    # degrees for roll/pitch/yaw
+    "gripper_step":  25,    # gripper step size
+    "track_step":    10,    # mm for linear track
     "x": 0,
     "y": 1,
     "z": 2,
@@ -71,7 +72,6 @@ def save_point(point_type: str) -> None:
     current_track = get_current_track_pos()
     movestack.clear()
 
-    # Automatisch nummerieren
     point_name = f"point_{len(saved_points) + 1}"
 
     with open(txtfile, "a") as f:
@@ -96,26 +96,22 @@ def save_point(point_type: str) -> None:
           f"track: {current_track}mm | gripper: {gripper_position}")
 
 def go_to_saved_point(index):
-    """Moves robot to a saved point by index."""
     target = saved_points[index]
     print(f"Going to: '{target['name']}' "
           f"({index + 1}/{len(saved_points)})")
-    arm.set_linear_track_pos(target["track"], wait=True)
-    arm.set_servo_angle(angle=target["angles"], speed=20,
-                        mvacc=50, wait=True)
-    arm.set_gripper_position(target["gripper"], wait=False)
-    print(f"✓ At point '{target['name']}'")
-
-def reversal() -> None:
-    if not movestack:
-        print("Nothing to reverse!")
-        return
-    print(f"Reversing {len(movestack)} moves...")
-    while movestack:
-        target_angles = movestack.pop()
-        arm.set_servo_angle(angle=target_angles, speed=10,
-                            mvacc=50, wait=True)
-    print("Reversal complete")
+    try:
+        arm.set_linear_track_pos(target["track"], wait=True, timeout=5)
+        arm.set_servo_angle(
+            angle=target["angles"],
+            speed=20, mvacc=50,
+            wait=True, timeout=10
+        )
+        arm.set_gripper_position(target["gripper"], wait=False)
+        print(f"✓ At point '{target['name']}'")
+    except Exception as e:
+        print(f"⚠️ Could not reach point: {e}")
+        arm.set_state(4)
+        arm.set_state(0)
 
 def print_current_position() -> None:
     _, position   = arm.get_position()
@@ -125,7 +121,9 @@ def print_current_position() -> None:
     print(f"Angular:   {[round(a,1) for a in angles]}")
     print(f"Gripper:   {gripper_position}")
     print(f"Track:     {current_track}mm")
-    print(f"Stepsize:  {controls['stepsize']}mm | "
+    print(f"\nStepsize:    {controls['stepsize']}mm | "
+          f"Joint step: {controls['step_joint']}° | "
+          f"RPY step: {controls['step_rpy']}° | "
           f"Track step: {controls['track_step']}mm | "
           f"Gripper step: {controls['gripper_step']}")
     if saved_points:
@@ -162,7 +160,7 @@ def on_press(key):
             arm.disconnect()
             return False
 
-        # ── Kartesische Bewegung ─────────────────────────────
+        # ── Kartesische Bewegung x/y/z ───────────────────────
         if key.char in "xyz":
             if space_held:
                 current_pos[controls[key.char]] -= controls["stepsize"]
@@ -170,19 +168,41 @@ def on_press(key):
                 current_pos[controls[key.char]] += controls["stepsize"]
             arm.set_position(*current_pos, speed=20, wait=False)
 
-        # ── Gelenke ──────────────────────────────────────────
+        # ── Gelenke 1-6 ──────────────────────────────────────
         elif key.char in "123456":
             if space_held:
-                current_angles[controls[key.char]] -= controls["step_angle"]
+                current_angles[controls[key.char]] -= controls["step_joint"]
             else:
-                current_angles[controls[key.char]] += controls["step_angle"]
+                current_angles[controls[key.char]] += controls["step_joint"]
             arm.set_servo_angle(
                 int(key.char),
                 current_angles[controls[key.char]],
                 speed=5, wait=False
             )
 
-        # ── Schiene ──────────────────────────────────────────
+        # ── Roll / Pitch / Yaw ───────────────────────────────
+        elif key.char == "r":
+            if space_held:
+                current_pos[3] -= controls["step_rpy"]
+            else:
+                current_pos[3] += controls["step_rpy"]
+            arm.set_position(*current_pos, speed=20, wait=False)
+
+        elif key.char == "p":
+            if space_held:
+                current_pos[4] -= controls["step_rpy"]
+            else:
+                current_pos[4] += controls["step_rpy"]
+            arm.set_position(*current_pos, speed=20, wait=False)
+
+        elif key.char == "y":
+            if space_held:
+                current_pos[5] -= controls["step_rpy"]
+            else:
+                current_pos[5] += controls["step_rpy"]
+            arm.set_position(*current_pos, speed=20, wait=False)
+
+        # ── Schiene t ────────────────────────────────────────
         elif key.char == "t":
             track_position = get_current_track_pos()
             if space_held:
@@ -198,22 +218,14 @@ def on_press(key):
             arm.set_linear_track_pos(track_position, wait=True)
             print(f"Track: {track_position}mm")
 
-        # ── Punkte speichern ─────────────────────────────────
+        # ── Punkte speichern l/j ─────────────────────────────
         elif key.char == "l":
             save_point("linear")
 
         elif key.char == "j":
             save_point("angular")
 
-        # ── Reversal ─────────────────────────────────────────
-        elif key.char == "r":
-            reversal()
-
-        # ── Position anzeigen ────────────────────────────────
-        elif key.char == "p":
-            print_current_position()
-
-        # ── Navigation zwischen gespeicherten Punkten ────────
+        # ── Navigation b/n ───────────────────────────────────
         elif key.char == "b":
             if not saved_points:
                 print("No saved points yet!")
@@ -232,7 +244,11 @@ def on_press(key):
                 current_saved_index += 1
                 go_to_saved_point(current_saved_index)
 
-        # ── Greifer ──────────────────────────────────────────
+        # ── Position anzeigen i ──────────────────────────────
+        elif key.char == "i":
+            print_current_position()
+
+        # ── Greifer g/c/o ────────────────────────────────────
         elif key.char == "g":
             if space_held:
                 gripper_position = min(
@@ -247,17 +263,17 @@ def on_press(key):
             arm.set_gripper_position(gripper_position, wait=False)
             print(f"Gripper: {gripper_position}")
 
-        elif key.char == "h":
-            gripper_position = GRIPPER_MAX
-            arm.set_gripper_position(gripper_position, wait=False)
-            print(f"Gripper: FULL OPEN ({GRIPPER_MAX})")
-
-        elif key.char == "f":
+        elif key.char == "c":
             gripper_position = GRIPPER_MIN
             arm.set_gripper_position(gripper_position, wait=False)
             print(f"Gripper: FULL CLOSED ({GRIPPER_MIN})")
 
-        # ── Schrittgröße ─────────────────────────────────────
+        elif key.char == "o":
+            gripper_position = GRIPPER_MAX
+            arm.set_gripper_position(gripper_position, wait=False)
+            print(f"Gripper: FULL OPEN ({GRIPPER_MAX})")
+
+        # ── Schrittgröße +/- ─────────────────────────────────
         elif key.char == "+":
             if space_held:
                 controls["track_step"] = min(
@@ -288,7 +304,8 @@ def on_release(key):
         space_held = False
         return
     try:
-        if key.char in "xyz123456":
+        # Bewegungstasten – stop/start nötig
+        if key.char in "xyz123456rpy":
             active_key = None
             arm.set_state(4)
             arm.set_state(0)
@@ -296,7 +313,8 @@ def on_release(key):
             _, actual_angles = arm.get_servo_angle()
             movestack.append(actual_angles)
 
-        elif key.char == "g":
+        # Andere Tasten – nur active_key zurücksetzen
+        elif key.char in "gcobnij":
             active_key = None
 
     except AttributeError:
@@ -329,7 +347,8 @@ def main():
     else:
         print(f"Creating: {txtfile} ✓")
 
-    print(f"\nStep size in mm (default {controls['stepsize']}, Enter to skip):")
+    print(f"\nCartesian step size in mm "
+          f"(default {controls['stepsize']}, Enter to skip):")
     step_input = input("> ").strip()
     if step_input != "":
         try:
@@ -337,7 +356,26 @@ def main():
         except ValueError:
             print("Invalid – using default")
 
-    print(f"Track step size in mm (default {controls['track_step']}, Enter to skip):")
+    print(f"Joint step size in degrees (1-6) "
+          f"(default {controls['step_joint']}, Enter to skip):")
+    joint_input = input("> ").strip()
+    if joint_input != "":
+        try:
+            controls["step_joint"] = float(joint_input)
+        except ValueError:
+            print("Invalid – using default")
+
+    print(f"RPY step size in degrees (r/p/y) "
+          f"(default {controls['step_rpy']}, Enter to skip):")
+    rpy_input = input("> ").strip()
+    if rpy_input != "":
+        try:
+            controls["step_rpy"] = float(rpy_input)
+        except ValueError:
+            print("Invalid – using default")
+
+    print(f"Track step size in mm "
+          f"(default {controls['track_step']}, Enter to skip):")
     track_input = input("> ").strip()
     if track_input != "":
         try:
@@ -345,7 +383,8 @@ def main():
         except ValueError:
             print("Invalid – using default")
 
-    print(f"Gripper step size (default {controls['gripper_step']}, Enter to skip):")
+    print(f"Gripper step size "
+          f"(default {controls['gripper_step']}, Enter to skip):")
     grip_input = input("> ").strip()
     if grip_input != "":
         try:
@@ -355,40 +394,50 @@ def main():
 
     print(f"\nSettings:")
     print(f"  File:         {txtfile}")
-    print(f"  Step size:    {controls['stepsize']}mm")
-    print(f"  Track step:   {controls['track_step']}mm")
-    print(f"  Gripper step: {controls['gripper_step']}")
+    print(f"  Cartesian:    {controls['stepsize']}mm")
+    print(f"  Joint:        {controls['step_joint']}°")
+    print(f"  RPY:          {controls['step_rpy']}°")
+    print(f"  Track:        {controls['track_step']}mm")
+    print(f"  Gripper:      {controls['gripper_step']}")
 
     print("""
 Controls:
 ─────────────────────────────────────────────────
-Movement:
-  x / y / z           move cartesian (+)
-  Space + x/y/z       move cartesian (-)
+Cartesian Movement:
+  x / y / z           move (+)
+  Space + x/y/z       move (-)
+
+Joint Control:
   1-6                 rotate joint (+)
   Space + 1-6         rotate joint (-)
-  + / -               double/halve step size
+
+Rotation:
+  r / Space+r         roll (+/-)
+  p / Space+p         pitch (+/-)
+  y / Space+y         yaw (+/-)
 
 Linear Track:
-  t                   track forward (+)
-  Space + t           track backward (-)
-  Space + +/-         double/halve track step size
+  t                   track forward
+  Space + t           track backward
 
 Gripper:
-  g                   close gripper (one step)
-  Space + g           open gripper (one step)
-  f                   gripper fully closed (0)
-  h                   gripper fully open (850)
+  g                   close one step
+  Space + g           open one step
+  c                   fully closed
+  o                   fully open
+
+Step Size:
+  + / -               double/halve cartesian step
+  Space + +/-         double/halve track step
 
 Save & Navigate:
-  l                   save point as LINEAR
-  j                   save point as ANGULAR
-  r                   revert to last saved point
-  b                   go back to previous saved point
-  n                   go forward to next saved point
-  p                   print current position
+  l                   save point (linear)
+  j                   save point (angular)
+  b                   previous saved point
+  n                   next saved point
+  i                   show current position
 
-  ESC                 emergency stop + exit
+  ESC                 emergency stop
 ─────────────────────────────────────────────────
     """)
 
@@ -400,4 +449,3 @@ Save & Navigate:
 
 if __name__ == "__main__":
     main()
-       
