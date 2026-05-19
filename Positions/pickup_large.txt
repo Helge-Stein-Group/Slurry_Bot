@@ -1,41 +1,83 @@
-spatula_open_gripper cartesian: [-505.5, 79.5, 247.8, 180, 90, 0]
-spatula_open_gripper angular: [0, 0, 0, 0, 0, 0]
-Gripper: 800
+point_1 cartesian: [-287.0, 121.38, 88.84, -90.0, 90.0, 0.0]
+point_1 angular: [-151.910936, 28.807688, -37.707842, -62.198236, 94.177474, -7.865851]
+Gripper: 705
 Track: 600
 Type: linear
 
-spatula_approach cartesian: [-505.5, 79.5, 247.8, 180, 90, 0]
-spatula_approach angular: [0, 0, 0, 0, 0, 0]
-Gripper: 800
+point_2 cartesian: [-377.0, 121.38, 88.84, -90.0, 90.0, 0.0]
+point_2 angular: [-157.48295, 35.885092, -53.095655, -68.396436, 96.506261, -15.96799]
+Gripper: 705
 Track: 600
 Type: linear
 
-spatula_above cartesian: [-652.9, 82.5, 242.6, 180, 90, 0]
-spatula_above angular: [0, 0, 0, 0, 0, 0]
-Gripper: 800
+point_3 cartesian: [-425.99, 121.38, 88.84, -135.0, 90.0, 0.0]
+point_3 angular: [-163.823416, 23.59635, -24.342513, -118.821305, 89.640278, -0.653745]
+Gripper: 705
 Track: 600
 Type: linear
 
-spatula_pregrip cartesian: [-652.9, 82.5, 242.6, 180, 90, 0]
-spatula_pregrip angular: [0, 0, 0, 0, 0, 0]
-Gripper: 292
+point_4 cartesian: [-425.99, 121.38, 88.84, -180.0, 90.0, 0.0]
+point_4 angular: [-218.631699, 21.3028, -16.370951, -218.735347, 93.850773, -3.083659]
+Gripper: 705
 Track: 600
 Type: linear
 
-spatula_lift cartesian: [-652.9, 82.5, 273.6, 180, 90, 0]
-spatula_lift angular: [0, 0, 0, 0, 0, 0]
-Gripper: 292
+point_5 cartesian: [-525.99, 61.38, 238.84, -180.0, 90.0, 0.0]
+point_5 angular: [-191.336219, -9.101377, -24.544767, -193.540158, 57.094671, 7.453436]
+Gripper: 705
 Track: 600
 Type: linear
 
-spatula_clear cartesian: [-522.9, 82.5, 273.6, 180, 90, 0]
-spatula_clear angular: [0, 0, 0, 0, 0, 0]
-Gripper: 292
+point_6 cartesian: [-645.99, 76.38, 243.84, -180.0, 90.0, 0.0]
+point_6 angular: [-189.909669, 10.964292, -50.042649, -192.682956, 51.612382, 7.955519]
+Gripper: 705
 Track: 600
 Type: linear
 
-spatula_firm_grip cartesian: [-522.9, 82.5, 273.6, 180, 90, 0]
-spatula_firm_grip angular: [0, 0, 0, 0, 0, 0]
-Gripper: 275
+point_7 cartesian: [-652.989746, 76.37999, 243.839996, -179.999963, 89.999981, 0.0]
+point_7 angular: [-189.735318, 12.082591, -51.602756, -192.539029, 51.15711, 7.94108]
+Gripper: 369
+Track: 600
+Type: linear
+
+point_8 cartesian: [-652.989746, 76.37999, 244.83992, -179.999963, 89.999981, 0.0]
+point_8 angular: [-189.728156, 11.956942, -51.631404, -192.55702, 51.00562, 7.978437]
+Gripper: 299
+Track: 600
+Type: linear
+
+point_9 cartesian: [-652.989746, 76.37999, 244.83992, -179.999963, 89.999981, 0.0]
+point_9 angular: [-189.728156, 11.956942, -51.631404, -192.55702, 51.00562, 7.978437]
+Gripper: 283
+Track: 600
+Type: linear
+
+point_10 cartesian: [-652.989746, 76.37999, 244.83992, -179.999963, 89.999981, 0.0]
+point_10 angular: [-189.728156, 11.956942, -51.631404, -192.55702, 51.00562, 7.978437]
+Gripper: 272
+Track: 600
+Type: linear
+
+point_11 cartesian: [-652.989746, 76.37999, 294.840149, -179.999963, 89.999981, 0.0]
+point_11 angular: [-189.336539, 6.275951, -53.772376, -193.67658, 43.325407, 10.038679]
+Gripper: 272
+Track: 600
+Type: linear
+
+point_12 cartesian: [-612.98999, 76.37999, 294.840149, -134.999972, 89.999981, 0.0]
+point_12 angular: [-168.462082, 9.237913, -54.463592, -114.962263, 66.957051, -40.058803]
+Gripper: 273
+Track: 600
+Type: linear
+
+point_13 cartesian: [-572.990234, 76.37999, 294.840149, -94.999955, 89.999981, 0.0]
+point_13 angular: [-159.138913, 32.92989, -87.310575, -80.604218, 102.836642, -53.3214]
+Gripper: 273
+Track: 600
+Type: linear
+
+point_14 cartesian: [-512.990601, 76.37999, 294.840149, -94.999955, 89.999981, 0.0]
+point_14 angular: [-156.684935, 22.982082, -72.660388, -77.910515, 103.862122, -48.20334]
+Gripper: 273
 Track: 600
 Type: linear
