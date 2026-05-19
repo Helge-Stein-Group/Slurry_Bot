@@ -250,27 +250,26 @@ def on_press(key):
 
         # ── Greifer g/c/o ────────────────────────────────────
         elif key.char == "g":
-            if space_held:
-                gripper_position = min(
-                    gripper_position + controls["gripper_step"],
-                    GRIPPER_MAX
-                )
-            else:
-                gripper_position = max(
-                    gripper_position - controls["gripper_step"],
-                    GRIPPER_MIN
-                )
-            arm.set_gripper_position(gripper_position, wait=False)
-            print(f"Gripper: {gripper_position}")
-
+            print(f"\nCurrent gripper: {gripper_position}")
+            print("Enter gripper value (0-850):")
+            try:
+                value = int(input("> ").strip())
+                if GRIPPER_MIN <= value <= GRIPPER_MAX:
+                    gripper_position = value
+                    arm.set_gripper_position(gripper_position, wait=True, timeout=3)
+                    print(f"Gripper: {gripper_position}")
+                else:
+                    print(f"⚠️ Value must be between {GRIPPER_MIN} and {GRIPPER_MAX}")
+            except ValueError:
+                print("Invalid – gripper unchanged")
         elif key.char == "c":
             gripper_position = GRIPPER_MIN
-            arm.set_gripper_position(gripper_position, wait=False)
+            arm.set_gripper_position(gripper_position, wait=True, timeout=3)
             print(f"Gripper: FULL CLOSED ({GRIPPER_MIN})")
 
         elif key.char == "o":
             gripper_position = GRIPPER_MAX
-            arm.set_gripper_position(gripper_position, wait=False)
+            arm.set_gripper_position(gripper_position, wait=True, timeout=3)
             print(f"Gripper: FULL OPEN ({GRIPPER_MAX})")
 
         # ── Schrittgröße +/- ─────────────────────────────────
