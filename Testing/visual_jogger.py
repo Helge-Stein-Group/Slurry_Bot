@@ -1506,6 +1506,31 @@ class PositionTable(QWidget):
             return None
         return rows[0].row()
 
+    def commit_editor(self):
+        """Close any open cell editor and commit its value to the table item.
+
+        Call this before any Go To / navigation action so that in-progress edits
+        are never silently discarded.
+        """
+        editor = self._table.focusWidget()
+        if editor and editor is not self._table:
+            # Closing the persistent editor via the index is the Qt-recommended way.
+            idx = self._table.currentIndex()
+            if idx.isValid():
+                self._table.commitData(editor)
+                self._table.closeEditor(editor,
+                                        QStyledItemDelegate.SubmitModelCache)
+        # Now force a sync so self._points is up to date.
+        self._sync_points_from_table()
+
+    def get_point(self, row):
+        """Return the current (live) point dict for *row*, always reading from
+        the table widget so that any manual edits are included.
+
+        Always call ``commit_editor()`` first if an editor might be open.
+        """
+        return self._row_to_point(row)
+
     def update_current_position(self, pos, gripper, track):
         self._current_pos = {"x": pos[0], "y": pos[1], "z": pos[2],
                              "roll": pos[3], "pitch": pos[4], "yaw": pos[5],
@@ -1682,7 +1707,8 @@ class PositionTable(QWidget):
         if row is None:
             return
         import copy
-        pt = copy.deepcopy(self._row_to_point(row))
+        self.commit_editor()
+        pt = copy.deepcopy(self.get_point(row))
         insert_at = row + 1
         self._table.blockSignals(True)
         self._insert_row(insert_at, pt)
@@ -1692,7 +1718,8 @@ class PositionTable(QWidget):
         self._dirty = True
 
     def _go_to_row(self, row):
-        pt = self._row_to_point(row)
+        self.commit_editor()            # flush any in-progress cell edit first
+        pt = self.get_point(row)        # read live table values
         self.go_to_requested.emit(pt)
 
     def _capture_here(self, row):
@@ -1752,17 +1779,32 @@ class PositionTable(QWidget):
         if self._current_pos is None:
             return
         cp = self._current_pos
-        self._table.blockSignals(True)
+
+        def _read_float(row, col):
+            item = self._table.item(row, col)
+            try:
+                return float(item.text()) if item else 0.0
+            except ValueError:
+                return 0.0
+
+        # Compute which rows are "at position" BEFORE blocking signals,
+        # so self._points is never read inside the blocked window.
+        highlights = []
         for row in range(self._table.rowCount()):
-            pt = self._row_to_point(row)
             at = (
-                abs(pt["x"] - cp["x"]) <= AT_POSITION_TOLERANCE_MM and
-                abs(pt["y"] - cp["y"]) <= AT_POSITION_TOLERANCE_MM and
-                abs(pt["z"] - cp["z"]) <= AT_POSITION_TOLERANCE_MM and
-                abs(pt["roll"] - cp["roll"]) <= AT_POSITION_TOLERANCE_DEG and
-                abs(pt["pitch"] - cp["pitch"]) <= AT_POSITION_TOLERANCE_DEG and
-                abs(pt["yaw"] - cp["yaw"]) <= AT_POSITION_TOLERANCE_DEG
+                abs(_read_float(row, COL_IDX["X"])     - cp["x"])     <= AT_POSITION_TOLERANCE_MM and
+                abs(_read_float(row, COL_IDX["Y"])     - cp["y"])     <= AT_POSITION_TOLERANCE_MM and
+                abs(_read_float(row, COL_IDX["Z"])     - cp["z"])     <= AT_POSITION_TOLERANCE_MM and
+                abs(_read_float(row, COL_IDX["Roll"])  - cp["roll"])  <= AT_POSITION_TOLERANCE_DEG and
+                abs(_read_float(row, COL_IDX["Pitch"]) - cp["pitch"]) <= AT_POSITION_TOLERANCE_DEG and
+                abs(_read_float(row, COL_IDX["Yaw"])   - cp["yaw"])   <= AT_POSITION_TOLERANCE_DEG
             )
+            highlights.append(at)
+
+        # Apply background colours with signals blocked so itemChanged
+        # (background role) doesn't trigger a spurious _sync_points_from_table.
+        self._table.blockSignals(True)
+        for row, at in enumerate(highlights):
             color = QColor("#1a4a1a") if at else QColor("transparent")
             for col in range(self._table.columnCount()):
                 item = self._table.item(row, col)
@@ -2431,7 +2473,9 @@ class MainWindow(QMainWindow):
         self._nav_go(self._nav_index)
 
     def _nav_go(self, index):
-        pt = self._pos_table._row_to_point(index)
+        # Commit any open cell editor and sync _points before reading values.
+        self._pos_table.commit_editor()
+        pt = self._pos_table.get_point(index)   # always live table values
         self._pos_table._table.selectRow(index)
         self._robot.go_to_position(pt)
         self.statusBar().showMessage(
@@ -2563,3 +2607,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
